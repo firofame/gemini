@@ -30,7 +30,7 @@ image = (
     .apt_install("git")
     .uv_pip_install("comfy-cli", "huggingface-hub")
     .run_commands("comfy --skip-prompt install --nvidia")
-    .env({"HF_XET_HIGH_PERFORMANCE": "1", "HF_HOME": "/cache"})
+    .env({"HF_XET_HIGH_PERFORMANCE": "1", "HF_HOME": "/cache", "TORCH_CUDA_ARCH_LIST": "8.9"})
     .run_function(hf_download, volumes={"/cache": vol})
     .add_local_file(f"{file_path}/{file_name}", f"/root/comfy/ComfyUI/input/{file_name}")
 )

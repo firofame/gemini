@@ -4,8 +4,17 @@ import wave
 from google import genai
 from google.genai import types
 
-INPUT_TEXT = "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى وَمِنَ الْعَمَلِ مَا تَرْضَى اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ اللَّهُمَّ أَنْتَ الصَّاحِبُ فِي السَّفَرِ وَالْخَلِيفَةُ فِي الأَهْلِ اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ وَعْثَاءِ السَّفَرِ وَكَآبَةِ الْمَنْظَرِ وَسُوءِ الْمُنْقَلَبِ فِي الْمَالِ وَالأَهْلِ"
-SYSTEM_INSTRUCTION = 'word by word translate to malayalam for learning the arabic dua'
+INPUT_TEXT = "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ"
+
+SYSTEM_INSTRUCTION = """
+You are Quran Translation Voice, a text-to-audio assistant. Your job is to output ONLY the English translation of the provided Qur’anic Arabic, suitable to be spoken aloud.
+
+Rules:
+- Output ONLY the translation itself. Do NOT say “Surah”, “Ayah”, numbers, headings, or any meta text.
+- Do NOT include Arabic, transliteration, commentary, tafsir, explanations, or notes.
+- Be faithful to the Arabic meaning. Do not add details. Keep a dignified, neutral tone.
+- Use clear modern English.
+"""
 
 async def main():
     config = types.LiveConnectConfig(
@@ -14,7 +23,7 @@ async def main():
         speech_config={"voice_config": {"prebuilt_voice_config": {"voice_name": "Charon"}}},
     )
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-    async with client.aio.live.connect(model="gemini-2.5-flash-native-audio-preview-09-2025", config=config) as session:
+    async with client.aio.live.connect(model="gemini-2.5-flash-native-audio-preview-12-2025", config=config) as session:
         wf = wave.open("audio.wav", "wb")
         wf.setnchannels(1)
         wf.setsampwidth(2)

@@ -1,37 +1,36 @@
 from internetarchive import upload
 
-identifier = "Quran-English-SaheehInternational-Audio"
-source_directory = "audio"
+identifier = "Tadabbur-Quran-English-Audio"
+source_directory = "Tadabbur"
 
 def upload_to_archive():
     metadata = {
         'collection': 'opensource_audio',
         'mediatype': 'audio',
-        'creator': 'kokoro',
-        'title': 'The Holy Quran - English Translation (Saheeh International) - TTS Audio',
-        'description': 'Complete English translation of the Holy Quran, narrated by Text-to-Speech (TTS) technology. This collection contains all 114 Surahs (chapters), with each Surah in its own directory. Audio files are organized by verse number within each Surah directory (e.g., 001/001.wav, 001/002.wav, etc.).\n\nNote: This recording contains English translation only. No Arabic recitation is included.\n\nThe Saheeh International translation is known for its clear, modern English and precision in conveying Islamic terminology.',
+        'creator': 'Tadabbur Project',
+        'title': 'Tadabbur - The Holy Quran - English Translation - Audio',
+        'description': f'Complete English translation of the Holy Quran in audio format from the Tadabbur project.\n\nClear English recitation of the Quranic text. The Tadabbur project aims to make Quranic content accessible through high-quality audio recordings.\n\nNote: This recording contains English translation only. No Arabic recitation is included.',
         'subject': [
             'Quran',
             'Islam',
             'English Translation',
-            'Saheeh International',
-            'TTS',
+            'Tadabbur',
             'Audio Quran',
             'Holy Quran',
-            'Religious Texts'
+            'Religious Texts',
+            'Islamic Audio'
         ],
-        'translator': 'Saheeh International',
         'language': 'eng',
-        'licenseurl': 'https://quran.com/license',
-        'rights': 'The English translation is © Saheeh International. Used with permission for non-commercial, educational purposes. Audio recording released under Creative Commons BY-NC-SA 4.0.',
-        'date': '2025-11-22',
-        'files_count': '6236',
-        'surahs': '114',
+        'licenseurl': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+        'rights': 'Released under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). For non-commercial, educational use only.',
+        'date': '2025-12-30',
         'format': 'WAV',
-        'tts_engine': 'kokoro',
-        'tts_voice': 'af_heart',
+        'project': 'Tadabbur',
+        'audio_type': 'English Translation',
+        'recitation_style': 'Clear English Narration'
     }
-    print(f"\nStarting bulk upload to https://archive.org/details/{identifier}\n")
+    
+    print(f"\nStarting bulk upload to https://archive.org/details/{identifier}")    
     try:
         upload(identifier, source_directory, metadata=metadata, verbose=True, delete=True, retries=3, retries_sleep=10)
     except Exception as e:

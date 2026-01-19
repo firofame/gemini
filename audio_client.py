@@ -6,7 +6,7 @@ from google.genai import types
 
 INPUT_TEXT = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
 
-SYSTEM_INSTRUCTION = "Read the text aloud in a clear and natural voice."
+SYSTEM_INSTRUCTION = "Provide a clear, natural, and respectful phonetic transcription of the input text."
 
 async def main():
     config = types.LiveConnectConfig(

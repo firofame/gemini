@@ -65,7 +65,6 @@ You must write out honorifics in full Malayalam script. The TTS must not read br
 """
 
 client = genai.Client(
-    api_key="",
     http_options={'base_url': 'http://127.0.0.1:8045'}
 )
 

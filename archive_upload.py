@@ -1,53 +1,45 @@
 from internetarchive import upload
-import datetime
+from pathlib import Path
 
-# CHANGED: Generic identifier (No branding)
-identifier = "The-Holy-Quran-Malayalam-Translation-Audio"
-source_directory = "audio"
+# Archive item identifier
+identifier = "Umm-ul-Amraz-Hazrat-Sheikh-ul-Hadith-Maulana-Zakariya-Rahimahullah"
+source_file = "Umm-ul-Amraz_Hazrat-Sheikh-ul-Hadith_Maulana-Zakariya-Rahimahullah.txt"
 
 def upload_to_archive():
+    if not Path(source_file).is_file():
+        print(f"\n✗ FILE NOT FOUND: {source_file}")
+        return
+
     metadata = {
-        'collection': 'opensource_audio',
-        'mediatype': 'audio',
-        'creator': 'GEMINI', 
-        'title': 'The Holy Quran - Malayalam Translation - Audio (വിശുദ്ധ ഖുർആൻ മലയാളം പരിഭാഷ)',
+        'collection': 'opensource',
+        'mediatype': 'texts',
+        'creator': 'Hazrat Sheikh ul Hadith Maulana Zakariya Rahimahullah',
+        'title': 'Umm ul Amraz (ام الامراض)',
         'description': (
-            'Complete Malayalam translation of the Holy Quran in audio format.\n\n'
-            'This collection contains the audio translation of the Quran in Malayalam (മലയാളം), intended for speakers '
-            'in Kerala and the Malayalam-speaking diaspora.\n\n'
-            'Original Title: വിശുദ്ധ ഖുർആൻ (The Holy Quran)\n'
-            'Language: Malayalam\n\n'
-            'This collection aims to make Quranic content accessible through high-quality audio recordings.\n\n'
-            'Note: This recording contains Malayalam translation only. No Arabic recitation is included.'
+            'Text upload of "Umm ul Amraz" (ام الامراض), attributed to '
+            'Hazrat Sheikh ul Hadith Maulana Zakariya Rahimahullah.\n\n'
+            'This item contains a plain text file for reading and archival access.'
         ),
         'subject': [
-            'Quran',
-            'Islam',
-            'Malayalam Translation',
-            'Audio Quran',
-            'Holy Quran',
-            'Kerala',
-            'Malabari',
-            'Mappila',
-            'South Indian',
-            'വിശുദ്ധ ഖുർആൻ', # Quran in Malayalam script
-            'മലയാളം'        # Malayalam in Malayalam script
+            'Islamic Literature',
+            'Umm ul Amraz',
+            'Maulana Zakariya',
+            'Urdu',
+            'Arabic Script'
         ],
-        'language': 'mal',
-        'format': 'mp3',
-        'audio_type': 'Malayalam Translation',
-        'recitation_style': 'Clear Narration'
+        'language': 'urd',
+        'format': 'txt'
     }
     
-    print(f"\nStarting bulk upload to https://archive.org/details/{identifier}")    
+    print(f"\nStarting file upload to https://archive.org/details/{identifier}")
     
     try:
         upload(
             identifier, 
-            source_directory, 
+            source_file,
             metadata=metadata, 
             verbose=True, 
-            delete=True, 
+            delete=False,
             retries=3, 
             retries_sleep=10,
             checksum=True

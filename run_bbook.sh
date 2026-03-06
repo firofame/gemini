@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 bbook_maker \
-  -m openai \
-  --model_lis "gemini-3.1-flash-lite-preview-high" \
+  --model openai \
+  --model_list "gemini-3.1-flash-lite-preview-high" \
   --openai_key "123456" \
   --api_base "http://localhost:7860/v1" \
   --language ml \

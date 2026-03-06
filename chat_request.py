@@ -9,7 +9,6 @@ headers = {
     "Authorization": f"Bearer {API_KEY}",
 }
 payload = {
-    # "model": "gemini-3.1-pro-preview",
     "model": "gemini-3.1-flash-lite-preview",
     "messages": [
         {"role": "user", "content": "Hello, how are you?"},

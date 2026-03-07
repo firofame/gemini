@@ -1,52 +1,66 @@
 from internetarchive import upload
 from pathlib import Path
 
-# Archive item identifier
-identifier = "Umm-ul-Amraz-Hazrat-Sheikh-ul-Hadith-Maulana-Zakariya-Rahimahullah"
-source_file = "Umm-ul-Amraz_Hazrat-Sheikh-ul-Hadith_Maulana-Zakariya-Rahimahullah.txt"
+
+identifier = "Akabir-Ka-Ramazan-Hazrat-Sheikh-ul-Hadith-Maulana-Zakariya-Rahimahullah"
+source_files = [
+    "Akabir-Ka-Ramazan-Urdu_Hazrat-Sheikh-ul-Hadith_Maulana-Zakariya-Rahimahullah.txt",
+    "malayalam-audio-അക്കാബിരീങ്ങളുടെ-റമദാൻ-Sheikh-ul-Hadith_Maulana-Zakariya-Rahimahullah.mp3",
+]
+
 
 def upload_to_archive():
-    if not Path(source_file).is_file():
-        print(f"\n✗ FILE NOT FOUND: {source_file}")
+    missing_files = [file_name for file_name in source_files if not Path(file_name).is_file()]
+    if missing_files:
+        print("\n✗ FILES NOT FOUND:")
+        for file_name in missing_files:
+            print(f"  - {file_name}")
         return
 
     metadata = {
-        'collection': 'opensource',
-        'mediatype': 'texts',
-        'creator': 'Hazrat Sheikh ul Hadith Maulana Zakariya Rahimahullah',
-        'title': 'Umm ul Amraz (ام الامراض)',
-        'description': (
-            'Text upload of "Umm ul Amraz" (ام الامراض), attributed to '
-            'Hazrat Sheikh ul Hadith Maulana Zakariya Rahimahullah.\n\n'
-            'This item contains a plain text file for reading and archival access.'
+        "collection": "opensource",
+        "mediatype": "audio",
+        "creator": "Hazrat Sheikh ul Hadith Maulana Zakariya Rahimahullah",
+        "title": "Akabir Ka Ramazan - Urdu Text and Malayalam Audio",
+        "description": (
+            'Archive upload containing the Urdu text file "Akabir Ka Ramazan" '
+            "and its Malayalam audio version, attributed to Hazrat Sheikh ul "
+            "Hadith Maulana Zakariya Rahimahullah."
         ),
-        'subject': [
-            'Islamic Literature',
-            'Umm ul Amraz',
-            'Maulana Zakariya',
-            'Urdu',
-            'Arabic Script'
+        "subject": [
+            "Islamic Literature",
+            "Ramazan",
+            "Ramadan",
+            "Akabir Ka Ramazan",
+            "Maulana Zakariya",
+            "Urdu",
+            "Malayalam",
+            "Audio Lecture",
+            "Text Archive",
         ],
-        'language': 'urd',
-        'format': 'txt'
+        "language": "urd;mal",
     }
-    
+
     print(f"\nStarting file upload to https://archive.org/details/{identifier}")
-    
+    print("Files to upload:")
+    for file_name in source_files:
+        print(f"  - {file_name}")
+
     try:
         upload(
-            identifier, 
-            source_file,
-            metadata=metadata, 
-            verbose=True, 
+            identifier,
+            source_files,
+            metadata=metadata,
+            verbose=True,
             delete=False,
-            retries=3, 
+            retries=3,
             retries_sleep=10,
-            checksum=True
+            checksum=True,
         )
         print(f"\n✓ UPLOAD SUCCESSFUL! View at: https://archive.org/details/{identifier}")
-    except Exception as e:
-        print(f"\n✗ AN ERROR OCCURRED: {e}")
+    except Exception as error:
+        print(f"\n✗ AN ERROR OCCURRED: {error}")
+
 
 if __name__ == "__main__":
     upload_to_archive()

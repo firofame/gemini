@@ -5,7 +5,7 @@ import argparse
 import re
 from pathlib import Path
 
-DEFAULT_MAX_CHARS = 20_000
+DEFAULT_MAX_CHARS = 12_000
 DEFAULT_OUTPUT_DIR = "chapters"
 
 
@@ -41,7 +41,12 @@ def split_paragraphs(text: str) -> list[str]:
     text = text.strip()
     if not text:
         return []
-    return re.split(r"\n\s*\n+", text)
+    paragraphs = [part.strip() for part in re.split(r"\n\s*\n+", text) if part.strip()]
+    if len(paragraphs) > 1:
+        return paragraphs
+
+    # Some source texts are verse- or line-oriented and contain few or no blank lines.
+    return [line.strip() for line in text.splitlines() if line.strip()]
 
 
 def build_chapters(paragraphs: list[str], max_chars: int) -> list[str]:

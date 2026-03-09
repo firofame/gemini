@@ -7,10 +7,10 @@ fi
 
 bbook_maker \
   --model openai \
-  --model_list "gemini-3.1-pro-preview-high" \
-  --openai_key "123456" \
-  --api_base "http://localhost:7860/v1" \
-  --batch_size 500 \
+  --model_list "gemini-3.1-pro-high" \
+  --openai_key "sk-8e2af9daeacb423e9ac505c1faa6c976" \
+  --api_base "http://127.0.0.1:8045/v1" \
+  --batch_size 100 \
   --language ml \
   --single_translate \
   --prompt "prompt.txt" \

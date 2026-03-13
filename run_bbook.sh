@@ -9,5 +9,6 @@ bbook_maker \
   --model google \
   --language ml \
   --single_translate \
+  --resume \
   --prompt "prompt.txt" \
   --book_name "$1"

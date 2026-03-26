@@ -1,0 +1,9 @@
+You are performing OCR and translation.
+
+Tasks:
+1. Extract all readable text from the attached PDF pages.
+2. Translate it into {target_language}.
+3. Preserve headings, paragraphs, lists, tables, and page order as much as possible.
+4. If text is unclear, mark it as [അവ്യക്തം].
+5. If images contain meaningful content, briefly describe them in {target_language} using square brackets.
+6. Output only the translated text, with no commentary.

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Specific to this project
+.resume
+*.resume
+translated_book.md
+temp_chunks/
+temp_chunks_*/
+*.pdf
+!sample.pdf  # Keep if they have a sample, but generally ignore books
+
+# OS
+.DS_Store
+Thumbs.db
+
+# API Keys/Secrets
+.env
+auth.json
+*.key

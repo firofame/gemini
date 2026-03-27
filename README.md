@@ -4,12 +4,13 @@ A comprehensive Python toolkit for automating the process of OCR, translating PD
 
 ## Features
 
-- **PDF to Malayalam Translation**: Leverages Google Gemini for high-quality OCR and translation.
+- **Audio/Video Transcription**: Uses OpenAI Whisper on Modal to transcribe media files into text with automatic language detection.
+- **PDF to Malayalam Translation**: Leverages Google Gemini for high-quality OCR and translation of books.
 - **Context-Aware Processing**: Maintains story/topic context between PDF chunks for coherent translations.
+- **TTS optimization**: Converts Malayalam text into professional audiobook scripts with honorific expansions and natural pauses.
 - **Text-to-Speech (TTS)**: Uses Google Docs' natural-sounding voices via Playwright automation.
 - **Internet Archive Integration**: Automatically uploads text and audio files to archive.org with full metadata.
 - **Instagram Audio Downloader**: Utility to download audio from Instagram Reels for reference or inclusion.
-- **Resume Support**: Automatically saves progress and allows resuming from where the script left off.
 
 ## Prerequisites
 
@@ -18,6 +19,7 @@ A comprehensive Python toolkit for automating the process of OCR, translating PD
 - Google Account (for TTS/Google Docs access)
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) (for audio downloads)
 - [Playwright](https://playwright.dev/python/docs/intro)
+- [Modal](https://modal.com/) (for Whisper GPU transcription)
 
 ## Installation
 
@@ -37,7 +39,7 @@ A comprehensive Python toolkit for automating the process of OCR, translating PD
    ```bash
    pip install -r requirements.txt
    # If requirements.txt doesn't exist, install these:
-   pip install google-genai pypdf playwright internetarchive camoufox
+   pip install google-genai pypdf playwright internetarchive camoufox modal
    ```
 
 4. Install Playwright browsers:
@@ -45,7 +47,7 @@ A comprehensive Python toolkit for automating the process of OCR, translating PD
    playwright install firefox
    ```
 
-## Usage
+## Workflow Guide
 
 ### 1. Authentication
 Before running the TTS or translation scripts that interact with Google services, you need to authenticate:
@@ -54,23 +56,50 @@ python auth.py
 ```
 This will open a browser for you to sign in. The session will be saved to `auth.json`.
 
-### 2. Translate a Book
-To translate a PDF book to Malayalam:
-```bash
-python translate_book.py path/to/your/book.pdf --output translated_book.md
-```
-- `--pages`: Number of pages per chunk (default: 10).
-- `--model`: Gemini model to use (default: gemini-2.5-pro).
-- `--prompt`: Custom prompt file (default: prompt.txt).
+---
 
-### 3. Generate Audio (TTS)
-To convert the translated text into MP3 audio:
-```bash
-python tts.py translated_book.md output.mp3
-```
-Note: This script requires `auth.json` and a valid `doc_url` configured in `tts.py`.
+### Workflow A: PDF Book Processing
+1. **Translate the Book**:
+   ```bash
+   python translate_book.py path/to/your/book.pdf --output translated_book.md
+   ```
+2. **Generate Audio**:
+   ```bash
+   python tts.py translated_book.md output.mp3
+   ```
 
-### 4. Upload to Internet Archive
+---
+
+### Workflow B: Audio/Video to Malayalam Audiobook
+This workflow transcribes a source audio file, translates the content to Malayalam, and formats it for a high-quality audiobook listening experience.
+
+1. **Transcribe source audio**:
+   ```bash
+   modal run transcribe.py --audio-file downloads/audio.mp3
+   ```
+   *Note: Language defaults to English or auto-detected. Use `--language ar` for Arabic.*
+
+2. **Translate transcript to Malayalam**:
+   ```bash
+   python translate_transcript.py downloads/audio_transcript.txt
+   ```
+
+3. **Format for Audiobook TTS**:
+   ```bash
+   python audiobook_script.py downloads/audio_transcript_ml.txt
+   ```
+   *This expands honorifics (S.A.W, R.A) and adds natural breathing pauses.*
+
+4. **Generate Final Audiobook MP3**:
+   ```bash
+   python tts.py downloads/audio_transcript_ml_audiobook.txt output.mp3
+   ```
+
+---
+
+### Other Utilities
+
+#### Upload to Internet Archive
 To upload your results to archive.org:
 1. Configure the `identifier` and `source_files` in `archive_upload.py`.
 2. Run the script:
@@ -78,7 +107,7 @@ To upload your results to archive.org:
 python archive_upload.py
 ```
 
-### 5. Download Instagram Audio
+#### Download Instagram Audio
 To download audio from an Instagram Reel:
 ```bash
 python download_audio.py <reel-url>

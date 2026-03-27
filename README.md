@@ -4,22 +4,22 @@ A comprehensive Python toolkit for automating the process of OCR, translating PD
 
 ## Features
 
-- **Audio/Video Transcription**: Uses OpenAI Whisper on Modal to transcribe media files into text with automatic language detection.
+- **Audio/Video Transcription**: Uses Cloudflare Workers AI (Whisper-large-v3-turbo) to transcribe local files or URLs (Instagram, YouTube, etc.) directly into text.
 - **PDF to Malayalam Translation**: Leverages Google Gemini for high-quality OCR and translation of books.
 - **Context-Aware Processing**: Maintains story/topic context between PDF chunks for coherent translations.
 - **TTS optimization**: Converts Malayalam text into professional audiobook scripts with honorific expansions and natural pauses.
 - **Text-to-Speech (TTS)**: Uses Google Docs' natural-sounding voices via Playwright automation.
 - **Internet Archive Integration**: Automatically uploads text and audio files to archive.org with full metadata.
-- **Instagram Audio Downloader**: Utility to download audio from Instagram Reels for reference or inclusion.
+- **URL Transcription**: Supports direct URLs (Instagram, YouTube) by automatically downloading audio via yt-dlp before transcription.
 
 ## Prerequisites
 
 - Python 3.8+
 - [Google Gemini API Key](https://aistudio.google.com/app/apikey)
+- [Cloudflare Account ID & API Token](https://developers.cloudflare.com/workers-ai/)
 - Google Account (for TTS/Google Docs access)
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) (for audio downloads)
 - [Playwright](https://playwright.dev/python/docs/intro)
-- [Modal](https://modal.com/) (for Whisper GPU transcription)
 
 ## Installation
 
@@ -39,7 +39,7 @@ A comprehensive Python toolkit for automating the process of OCR, translating PD
    ```bash
    pip install -r requirements.txt
    # If requirements.txt doesn't exist, install these:
-   pip install google-genai pypdf playwright internetarchive camoufox modal
+   pip install google-genai pypdf playwright internetarchive camoufox requests
    ```
 
 4. Install Playwright browsers:
@@ -73,11 +73,15 @@ This will open a browser for you to sign in. The session will be saved to `auth.
 ### Workflow B: Audio/Video to Malayalam Audiobook
 This workflow transcribes a source audio file, translates the content to Malayalam, and formats it for a high-quality audiobook listening experience.
 
-1. **Transcribe source audio**:
+1. **Transcribe source audio (Local or URL)**:
    ```bash
-   modal run transcribe.py --audio-file downloads/audio.mp3
+   # For a local file
+   python3 transcribe.py --audio-file downloads/audio.mp3
+
+   # For a URL (Instagram, YouTube, etc.)
+   python3 transcribe.py --audio-file https://www.instagram.com/reels/DVXct1kj91A/
    ```
-   *Note: Language defaults to English or auto-detected. Use `--language ar` for Arabic.*
+   *Note: Uses Cloudflare Workers AI with specialized support for religious speakers/mixed languages via the turbo model. Use `--language ar` for Arabic.*
 
 2. **Translate transcript to Malayalam**:
    ```bash
@@ -107,10 +111,10 @@ To upload your results to archive.org:
 python archive_upload.py
 ```
 
-#### Download Instagram Audio
-To download audio from an Instagram Reel:
+#### Direct URL Support
+You can now pass a URL directly to the transcription script. It will handle the download and transcription in one go:
 ```bash
-python download_audio.py <reel-url>
+python3 transcribe.py --audio-file <reel-url>
 ```
 
 ## Configuration

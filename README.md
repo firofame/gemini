@@ -1,59 +1,94 @@
-# Gemini Book Translator
+# Gemini Book Toolkit
 
-A powerful Python tool to OCR and translate multi-page PDF books (both digital and scanned) to Malayalam using the Google Gemini 1.5/2.0 API.
+A comprehensive Python toolkit for automating the process of OCR, translating PDF books into Malayalam, and generating audio versions (MP3) using Gemini and Google Docs.
 
-## 🚀 Features
+## Features
 
-- **High-Quality OCR & Translation**: Leverages Gemini's multimodal capabilities to handle scanned images and complex layouts natively.
-- **Batch Processing**: Automatically splits large books (e.g., 600+ pages) into manageable chunks to ensure reliability and stay within API limits.
-- **Resume Functionality**: Progress is tracked automatically. If interrupted, the script skips already processed chunks upon restart.
-- **Context-Awareness**: Maintains consistency in character names, plot, and style by passing summaries from previous batches to the next section.
-- **Configurable Prompts**: Easily customize translation instructions via `prompt.txt`.
+- **PDF to Malayalam Translation**: Leverages Google Gemini for high-quality OCR and translation.
+- **Context-Aware Processing**: Maintains story/topic context between PDF chunks for coherent translations.
+- **Text-to-Speech (TTS)**: Uses Google Docs' natural-sounding voices via Playwright automation.
+- **Internet Archive Integration**: Automatically uploads text and audio files to archive.org with full metadata.
+- **Instagram Audio Downloader**: Utility to download audio from Instagram Reels for reference or inclusion.
+- **Resume Support**: Automatically saves progress and allows resuming from where the script left off.
 
-## 🛠️ Prerequisites
+## Prerequisites
 
-- **Python**: 3.8 or higher.
-- **Gemini API Key**: Obtain one from [Google AI Studio](https://aistudio.google.com/).
-- **Dependencies**: `google-genai` and `pypdf`.
+- Python 3.8+
+- [Google Gemini API Key](https://aistudio.google.com/app/apikey)
+- Google Account (for TTS/Google Docs access)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) (for audio downloads)
+- [Playwright](https://playwright.dev/python/docs/intro)
 
-## 📦 Installation
+## Installation
 
-1. **Clone or download** this repository.
-2. **Setup a virtual environment** (recommended):
+1. Clone the repository:
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
-3. **Install dependencies**:
-   ```bash
-   pip install google-genai pypdf
+   git clone <repository-url>
+   cd gemini-book-toolkit
    ```
 
-## 📖 Usage
-
-1. **Set your API key**:
+2. Create and activate a virtual environment:
    ```bash
-   export GOOGLE_API_KEY="your-api-key-here"
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
-2. **Run the translator**:
+3. Install dependencies:
    ```bash
-   python translate_book.py path/to/your_book.pdf --output malayalam_version.md
+   pip install -r requirements.txt
+   # If requirements.txt doesn't exist, install these:
+   pip install google-genai pypdf playwright internetarchive camoufox
    ```
 
-### Command Line Options
+4. Install Playwright browsers:
+   ```bash
+   playwright install firefox
+   ```
 
-| Option | Shorthand | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `--output` | `-o` | `translated_book.md` | Path to the output file. |
-| `--pages` | `-p` | `10` | Number of pages per batch. |
-| `--model` | `-m` | `gemini-1.5-flash` | The Gemini model to use. |
-| `--prompt` | | `prompt.txt` | Path to your custom prompt template. |
+## Usage
 
-## ⚙️ Configuration
+### 1. Authentication
+Before running the TTS or translation scripts that interact with Google services, you need to authenticate:
+```bash
+python auth.py
+```
+This will open a browser for you to sign in. The session will be saved to `auth.json`.
 
-You can customize the translation instructions by editing **`prompt.txt`**. The script uses `{target_language}` as a placeholder which it fills dynamically.
+### 2. Translate a Book
+To translate a PDF book to Malayalam:
+```bash
+python translate_book.py path/to/your/book.pdf --output translated_book.md
+```
+- `--pages`: Number of pages per chunk (default: 10).
+- `--model`: Gemini model to use (default: gemini-2.5-pro).
+- `--prompt`: Custom prompt file (default: prompt.txt).
 
-## 📝 License
+### 3. Generate Audio (TTS)
+To convert the translated text into MP3 audio:
+```bash
+python tts.py translated_book.md output.mp3
+```
+Note: This script requires `auth.json` and a valid `doc_url` configured in `tts.py`.
 
-MIT
+### 4. Upload to Internet Archive
+To upload your results to archive.org:
+1. Configure the `identifier` and `source_files` in `archive_upload.py`.
+2. Run the script:
+```bash
+python archive_upload.py
+```
+
+### 5. Download Instagram Audio
+To download audio from an Instagram Reel:
+```bash
+python download_audio.py <reel-url>
+```
+
+## Configuration
+
+- **`prompt.txt`**: The system prompt used for Gemini OCR/Translation. You can customize this to change the translation style or target language.
+- **`tts.py`**: Update `CONFIG['doc_url']` to a Google Doc you have edit access to.
+
+## License
+
+[MIT License](LICENSE)

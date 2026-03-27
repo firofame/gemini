@@ -31,7 +31,7 @@ def translate_text(input_file: str, output_file: str, target_language: str = "Ma
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python3 translate_transcript.py <input_file> [output_file]")
+        print("Usage: python3 translate_text.py <input_file> [output_file]")
         sys.exit(1)
     
     input_file = sys.argv[1]

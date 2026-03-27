@@ -81,7 +81,7 @@ This workflow transcribes a source audio file, translates the content to Malayal
 
 2. **Translate transcript to Malayalam**:
    ```bash
-   python translate_transcript.py downloads/audio_transcript.txt
+   python translate_text.py downloads/audio_transcript.txt
    ```
 
 3. **Format for Audiobook TTS**:

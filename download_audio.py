@@ -16,7 +16,7 @@ def download_audio(url: str, out_dir: Path = OUT_DIR) -> Path:
             url,
             "-x",
             "--audio-format",
-            "wav",
+            "mp3",
             "--audio-quality",
             "0",
             "--print",

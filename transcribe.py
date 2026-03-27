@@ -12,7 +12,7 @@ image = (
 )
 
 @app.function(image=image, gpu="T4", timeout=1200)
-def transcribe(audio_bytes: bytes, filename: str, language: str = "ar") -> str:
+def transcribe(audio_bytes: bytes, filename: str, language: str = None) -> dict:
     import whisper
     import os
     import tempfile
@@ -24,21 +24,19 @@ def transcribe(audio_bytes: bytes, filename: str, language: str = "ar") -> str:
         tmp_path = f.name
         
     try:
-        # 'medium' is a good balance between speed and accuracy for Arabic
         print(f"Loading Whisper 'medium' model...")
         model = whisper.load_model("medium")
-        print(f"Transcribing {filename} (language: {language})...")
+        print(f"Transcribing {filename} (language: {'auto' if language is None else language})...")
         result = model.transcribe(tmp_path, language=language)
-        return result["text"]
+        return {"text": result["text"], "language": result.get("language")}
     finally:
         if os.path.exists(tmp_path):
             os.remove(tmp_path)
 
 @app.local_entrypoint()
-def main(audio_file: str, output_file: str = "transcript.txt", language: str = "ar"):
+def main(audio_file: str, output_file: str = "transcript.txt", language: str = None):
     audio_path = Path(audio_file)
     if not audio_path.exists():
-        # Try looking in downloads folder if not found directly
         if not audio_file.startswith("downloads/") and (Path("downloads") / audio_file).exists():
             audio_path = Path("downloads") / audio_file
         else:
@@ -46,7 +44,8 @@ def main(audio_file: str, output_file: str = "transcript.txt", language: str = "
             return
 
     print(f"Processing {audio_path}...")
-    text = transcribe.remote(audio_path.read_bytes(), audio_path.name, language)
+    result = transcribe.remote(audio_path.read_bytes(), audio_path.name, language)
     
-    Path(output_file).write_text(text, encoding="utf-8")
+    print(f"Detected language: {result['language']}")
+    Path(output_file).write_text(result["text"], encoding="utf-8")
     print(f"Saved transcript to {output_file}")

@@ -8,7 +8,7 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 |--------|-------------|
 | `auth.py` | Google account authentication via Camoufox browser |
 | `tts.py` | Text-to-Speech converter using Google Docs and Playwright |
-| `audiobook_script.py` | Converts Malayalam text to TTS-optimized audiobook script using Gemini |
+| `translate.py` | Converts text or audio files to TTS-optimized Malayalam audiobook script |
 | `archive_upload.py` | Uploads text and audio files to Internet Archive |
 | `list.py` | Lists Gemini models that support `generateContent` |
 | `sample.py` | Simple Gemini API test script |
@@ -20,6 +20,7 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 - Google Account (for TTS via Google Docs)
 - [Playwright](https://playwright.dev/python/docs/intro) with Firefox
 - [Camoufox](https://camoufox.com/) (anti-detect browser for auth)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) (for URL audio downloads)
 - [internetarchive](https://pypi.org/project/internetarchive/) (for archive.org uploads)
 
 ## Installation
@@ -56,10 +57,17 @@ python auth.py
 
 Opens a browser for Google sign-in. Saves session to `auth.json`.
 
-### 2. Convert Text to Audiobook Script
+### 2. Convert to Audiobook Script
 
 ```bash
-python audiobook_script.py input.txt [output.txt]
+# From text file
+python translate.py input.txt [output.txt]
+
+# From audio file (mp3, wav, m4a, etc.)
+python translate.py audio.mp3 [output.txt]
+
+# From URL (YouTube, Instagram, etc.) — auto-downloads audio via yt-dlp
+python translate.py https://www.youtube.com/watch?v=... [output.txt]
 ```
 
 Uses Gemini to optimize Malayalam text for TTS by expanding Islamic honorifics, converting numerals, and adding natural pauses.
@@ -82,8 +90,8 @@ python archive_upload.py
 
 ## Configuration
 
+- **`prompt.txt`**: System prompt for translation/transcription. Customize style, language, or honorific rules.
 - **`tts.py`**: Update `CONFIG['doc_url']` to a Google Doc you have edit access to.
-- **`audiobook_script.py`**: Customize `SYSTEM_PROMPT` to change the conversion style.
 
 ## License
 

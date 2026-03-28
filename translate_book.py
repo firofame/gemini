@@ -99,8 +99,8 @@ def main():
     )
     parser.add_argument(
         "--model", "-m",
-        default="gemini-2.5-pro",
-        help="Gemini model to use (default: gemini-2.5-pro)"
+        default="gemini-3.1-flash-lite-preview",
+        help="Gemini model to use (default: gemini-3.1-flash-lite-preview)"
     )
     parser.add_argument(
         "--prompt",

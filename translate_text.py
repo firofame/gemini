@@ -16,9 +16,9 @@ def translate_text(input_file: str, output_file: str, target_language: str = "Ma
 
     print(f"Translating to {target_language} using Gemini...")
     client = genai.Client()
-    # Using gemini-2.5-flash which is available in your environment
+    # Using gemini-3.1-flash-lite-preview which is available in your environment
     response = client.models.generate_content(
-        model="models/gemini-2.5-flash",
+        model="models/gemini-3.1-flash-lite-preview",
         contents=[prompt]
     )
 

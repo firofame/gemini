@@ -70,6 +70,7 @@ def convert_to_audiobook_script(input_file: str, output_file: str):
     response = client.models.generate_content(
         model="models/gemini-3.1-flash-lite-preview",
         contents=contents,
+        config={"temperature": 0.1},
     )
 
     if not response.text:
@@ -97,6 +98,6 @@ if __name__ == "__main__":
         input_file = input_arg
         default_name = Path(input_file).stem + "_audiobook.txt"
 
-    output_file = sys.argv[2] if len(sys.argv) > 2 else str(Path("downloads") / default_name)
+    output_file = sys.argv[2] if len(sys.argv) > 2 else str(Path(input_file).parent / default_name)
 
     convert_to_audiobook_script(input_file, output_file)

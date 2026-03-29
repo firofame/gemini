@@ -46,6 +46,11 @@ def split_text(text: str) -> list[str]:
     current = ''
 
     for line in text.split('\n'):
+        # Break long lines at first comma
+        while len(line) > 300 and ',' in line:
+            idx = line.index(',')
+            line = line[:idx] + '.' + line[idx + 1:]
+
         if current and len(current) + len(line) + 1 > CONFIG['max_chunk_length']:
             chunks.append(current)
             current = ''

@@ -6,7 +6,7 @@ import json
 def authenticate():
     print('Launching Camoufox for Google authentication...\n')
     
-    with Camoufox(headless=False, geoip=True) as browser:
+    with Camoufox(headless=False) as browser:
         page = browser.new_page()
         page.goto('https://docs.google.com/document/u/0/')
         

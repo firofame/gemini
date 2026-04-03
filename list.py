@@ -2,6 +2,7 @@ from google import genai
 
 client = genai.Client()
 
-print("List of models that support generateContent:\n")
+print("Models with generateContent:\n")
 for m in client.models.list():
-    print(m.name)
+    if m.supported_actions and 'generateContent' in m.supported_actions:
+        print(f"{m.name}")

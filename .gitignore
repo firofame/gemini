@@ -21,6 +21,7 @@ wheels/
 *.egg
 
 # Specific to this project
+.camoufox-profile
 .resume
 *.resume
 translated_book.md

@@ -6,8 +6,7 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 
 | Script | Description |
 |--------|-------------|
-| `auth.py` | Google account authentication via Camoufox browser |
-| `tts.py` | Text-to-Speech converter using Google Docs and Playwright |
+| `tts.py` | Text-to-Speech converter using Google Docs and a persistent Camoufox profile |
 | `archive_upload.py` | Uploads text and audio files to Internet Archive |
 | `list.py` | Lists Gemini models that support `generateContent` |
 | `sample.py` | Simple Gemini API test script |
@@ -17,8 +16,8 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 - Python 3.10+
 - [Google Gemini API Key](https://aistudio.google.com/app/apikey) (set as `GEMINI_API_KEY` env var)
 - Google Account (for TTS via Google Docs)
-- [Playwright](https://playwright.dev/python/docs/intro) with Firefox
-- [Camoufox](https://camoufox.com/) (anti-detect browser for auth)
+- [Camoufox](https://camoufox.com/) (used for auth and TTS automation)
+- [Playwright](https://playwright.dev/python/docs/intro) runtime dependency used by Camoufox
 - [internetarchive](https://pypi.org/project/internetarchive/) (for archive.org uploads)
 
 ## Installation
@@ -40,30 +39,25 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
    pip install google-genai playwright camoufox internetarchive
    ```
 
-4. Install Playwright browsers:
+4. Install browser dependencies:
    ```bash
-   playwright install firefox
+   python -m camoufox fetch
    ```
+
+Camoufox is the browser automation library used directly by `tts.py`. It is Playwright-compatible and still depends on Playwright under the hood, so `playwright` remains in the Python dependencies even though the script does not import it directly.
 
 ## Workflow
 
-### 1. Authenticate with Google
-
-```bash
-python auth.py
-```
-
-Opens a browser for Google sign-in. Saves session to `auth.json`.
-
-### 2. Generate Audio (MP3)
+### 1. Generate Audio (MP3)
 
 ```bash
 python tts.py input.txt [output.mp3]
 ```
 
 Inserts text into Google Docs and uses its TTS engine to generate MP3 audio.
+The first run opens Camoufox and keeps you signed in via `.camoufox-profile/`.
 
-### 3. Upload to Internet Archive
+### 2. Upload to Internet Archive
 
 Edit `identifier` and `source_files` in `archive_upload.py`, then:
 

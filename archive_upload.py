@@ -1,58 +1,67 @@
 from internetarchive import upload
 from pathlib import Path
+import os
+import datetime
 
+# Configuration
+identifier = "Quran-Malayalam-Audio-Translation"
+search_dir = Path("../quran_malayalam_audio")
 
-identifier = "Akabir-Ka-Ramazan-Hazrat-Sheikh-ul-Hadith-Maulana-Zakariya-Rahimahullah"
-source_files = [
-    "Akabir-Ka-Ramazan-Urdu_Hazrat-Sheikh-ul-Hadith_Maulana-Zakariya-Rahimahullah.txt",
-    "malayalam-audio-അക്കാബിരീങ്ങളുടെ-റമദാൻ-Sheikh-ul-Hadith_Maulana-Zakariya-Rahimahullah.mp3",
-]
-
+def get_source_files():
+    """Returns a map of {remote_filename: local_filepath} for all files in search_dir."""
+    if not search_dir.is_dir():
+        return {}
+    
+    # Map each file's relative path to its absolute path for a root-level upload
+    return {f.relative_to(search_dir).as_posix(): str(f) for f in search_dir.glob("**/*") if f.is_file()}
 
 def upload_to_archive():
-    missing_files = [file_name for file_name in source_files if not Path(file_name).is_file()]
-    if missing_files:
-        print("\n✗ FILES NOT FOUND:")
-        for file_name in missing_files:
-            print(f"  - {file_name}")
+    source_files_map = get_source_files()
+    if not source_files_map:
+        print(f"\n✗ DIRECTORY NOT FOUND: {search_dir}")
         return
 
+    # Authentication - prioritize environment variables
+    access_key = os.environ.get("IA_ACCESS_KEY")
+    secret_key = os.environ.get("IA_SECRET_KEY")
+
     metadata = {
-        "collection": "opensource",
+        "collection": "opensource_audio",
         "mediatype": "audio",
-        "creator": "Hazrat Sheikh ul Hadith Maulana Zakariya Rahimahullah",
-        "title": "Akabir Ka Ramazan - Urdu Text and Malayalam Audio",
+        "creator": "gemma4:31b",
+        "title": "Quran Malayalam Audio Translation",
         "description": (
-            'Archive upload containing the Urdu text file "Akabir Ka Ramazan" '
-            "and its Malayalam audio version, attributed to Hazrat Sheikh ul "
-            "Hadith Maulana Zakariya Rahimahullah."
+            "Complete Quran Malayalam audio translation. "
+            "Includes individual surah files and associated text translations."
         ),
         "subject": [
-            "Islamic Literature",
-            "Ramazan",
-            "Ramadan",
-            "Akabir Ka Ramazan",
-            "Maulana Zakariya",
-            "Urdu",
+            "Quran",
             "Malayalam",
-            "Audio Lecture",
-            "Text Archive",
+            "Translation",
+            "Audio",
+            "Islam",
         ],
-        "language": "urd;mal",
+        "language": "mal",
+        "date": str(datetime.datetime.now().year),
     }
 
-    print(f"\nStarting file upload to https://archive.org/details/{identifier}")
-    print("Files to upload:")
-    for file_name in source_files:
-        print(f"  - {file_name}")
+    print(f"\nStarting upload to https://archive.org/details/{identifier}")
+    print(f"Total files found in {search_dir}: {len(source_files_map)}")
+    
+    if access_key and secret_key:
+        print("✓ Using authentication keys from environment variables.")
+    else:
+        print("! No keys in environment variables. Falling back to local configuration ('ia configure').")
 
     try:
         upload(
             identifier,
-            source_files,
+            source_files_map,
             metadata=metadata,
+            access_key=access_key,
+            secret_key=secret_key,
             verbose=True,
-            delete=False,
+            delete=True,
             retries=3,
             retries_sleep=10,
             checksum=True,
@@ -60,7 +69,6 @@ def upload_to_archive():
         print(f"\n✓ UPLOAD SUCCESSFUL! View at: https://archive.org/details/{identifier}")
     except Exception as error:
         print(f"\n✗ AN ERROR OCCURRED: {error}")
-
 
 if __name__ == "__main__":
     upload_to_archive()

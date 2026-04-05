@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Text-to-Speech converter using Google Docs and Playwright."""
+"""Text-to-Speech converter using Google Docs and Camoufox."""
 
 import sys
 import base64
 import asyncio
 from pathlib import Path
-from playwright.async_api import async_playwright, Page
+from typing import Any
+from dataclasses import dataclass
+from camoufox.async_api import AsyncCamoufox
 
 # Configuration
 CONFIG = {
@@ -13,6 +15,9 @@ CONFIG = {
     'max_chunk_length': 20_000,
     'insert_chunk_size': 4000,
     'timeout': 120_000,
+    'retry_attempts': 3,
+    'retry_delay_seconds': 5,
+    'profile_dir': Path(__file__).resolve().parent / '.camoufox-profile',
 }
 
 SELECTORS = {
@@ -27,7 +32,7 @@ SELECTORS = {
 def parse_args():
     """Parse command line arguments."""
     if len(sys.argv) < 2:
-        print('Usage: python google_docs_tts.py input.txt [output.mp3]', file=sys.stderr)
+        print('Usage: python tts.py input.txt [output.mp3|output_dir]', file=sys.stderr)
         sys.exit(1)
 
     input_path = Path(sys.argv[1]).resolve()
@@ -40,16 +45,14 @@ def parse_args():
     return input_path, output_path
 
 
+
 def split_text(text: str) -> list[str]:
     """Split text into chunks that fit within maxChunkLength."""
     chunks = []
     current = ''
 
     for line in text.split('\n'):
-        # Break long lines at first comma
-        while len(line) > 300 and ',' in line:
-            idx = line.index(',')
-            line = line[:idx] + '.' + line[idx + 1:]
+        line = normalize_long_lead_sentence(line)
 
         if current and len(current) + len(line) + 1 > CONFIG['max_chunk_length']:
             chunks.append(current)
@@ -67,12 +70,27 @@ def suffix_path(file_path: Path, suffix: str) -> Path:
     return file_path.with_name(f"{file_path.stem}{suffix}{file_path.suffix}")
 
 
-async def click(page: Page, selector: str):
+def normalize_long_lead_sentence(text: str) -> str:
+    """Break very long leading clauses to avoid Google Docs TTS issues."""
+    punctuation_marks = ',;:?!،؛؟'
+
+    while len(text) > 300:
+        positions = [text.index(mark) for mark in punctuation_marks if mark in text]
+        if not positions:
+            break
+
+        idx = min(positions)
+        text = text[:idx] + '.' + text[idx + 1:]
+    return text
+
+
+
+async def click(page: Any, selector: str):
     """Click first matching element."""
     await page.locator(selector).first.click(timeout=CONFIG['timeout'])
 
 
-async def wait_for_time_display(page: Page):
+async def wait_for_time_display(page: Any):
     """Wait for time display to show valid format."""
     import re
 
@@ -89,7 +107,7 @@ async def wait_for_time_display(page: Page):
     )
 
 
-async def get_blob_url(page: Page, prev_url: str = '') -> str:
+async def get_blob_url(page: Any, prev_url: str = '') -> str:
     """Get blob URL from audio player."""
     result = await page.wait_for_function(
         """() => {
@@ -101,7 +119,7 @@ async def get_blob_url(page: Page, prev_url: str = '') -> str:
     return await result.json_value()
 
 
-async def save_blob(page: Page, blob_url: str, output_path: Path):
+async def save_blob(page: Any, blob_url: str, output_path: Path):
     """Download blob and save to file."""
     base64_data = await page.evaluate("""async (url) => {
         const res = await fetch(url);
@@ -116,7 +134,7 @@ async def save_blob(page: Page, blob_url: str, output_path: Path):
     output_path.write_bytes(base64.b64decode(base64_data))
 
 
-async def close_player(page: Page):
+async def close_player(page: Any):
     """Close audio player if open."""
     try:
         await page.locator(SELECTORS['player_close']).first.click(timeout=3000)
@@ -125,7 +143,7 @@ async def close_player(page: Page):
         pass  # Already closed
 
 
-async def insert_text(page: Page, text: str):
+async def insert_text(page: Any, text: str):
     """Insert text into document editor."""
     await click(page, SELECTORS['editor'])
     await asyncio.sleep(0.5)
@@ -149,7 +167,7 @@ async def insert_text(page: Page, text: str):
     await asyncio.sleep(0.5)
 
 
-async def generate_audio(page: Page, prev_blob_url: str) -> str:
+async def generate_audio(page: Any, prev_blob_url: str) -> str:
     """Generate audio from document text."""
     # First trigger initializes, second generates
     for i in range(2):
@@ -163,7 +181,7 @@ async def generate_audio(page: Page, prev_blob_url: str) -> str:
     return await get_blob_url(page, prev_blob_url)
 
 
-async def process_chunk(page: Page, text: str, output_path: Path, prev_blob_url: str) -> str:
+async def process_chunk(page: Any, text: str, output_path: Path, prev_blob_url: str) -> str:
     """Process a single text chunk."""
     print(f'Inserting {len(text)} chars...')
     await insert_text(page, text)
@@ -178,32 +196,35 @@ async def process_chunk(page: Page, text: str, output_path: Path, prev_blob_url:
     return blob_url
 
 
+async def open_tts_page(context):
+    """Open a page in the persistent Camoufox profile."""
+    page = await context.new_page()
+    await page.goto(CONFIG['doc_url'], wait_until='domcontentloaded')
+    await page.wait_for_selector(SELECTORS['editor'], timeout=CONFIG['timeout'])
+    return page
+
+
+
 async def main():
     """Main entry point."""
     input_path, output_path = parse_args()
 
     text = input_path.read_text(encoding='utf-8')
-    if not text.strip():
-        raise ValueError('Empty input file')
-
     chunks = split_text(text)
     print(f'Processing {len(chunks)} chunk(s)...')
 
-    async with async_playwright() as p:
-        browser = await p.firefox.launch(
-            headless=False,
-            firefox_user_prefs={'media.volume_scale': '0.0'}
-        )
+    CONFIG['profile_dir'].mkdir(parents=True, exist_ok=True)
+
+    async with AsyncCamoufox(
+        headless=True,
+        persistent_context=True,
+        user_data_dir=str(CONFIG['profile_dir']),
+        firefox_user_prefs={'media.volume_scale': '0.0'}
+    ) as context:
+        page = await open_tts_page(context)
+        last_blob_url = ''
 
         try:
-            context = await browser.new_context(storage_state='auth.json')
-            page = await context.new_page()
-
-            await page.goto(CONFIG['doc_url'], wait_until='domcontentloaded')
-            await page.wait_for_selector(SELECTORS['editor'], timeout=CONFIG['timeout'])
-
-            last_blob_url = ''
-
             for i, chunk in enumerate(chunks):
                 print(f'\n--- Chunk {i + 1}/{len(chunks)} ---')
 
@@ -216,9 +237,8 @@ async def main():
                 await close_player(page)
 
             print('\nDone!')
-
         finally:
-            await browser.close()
+            await page.close()
 
 
 if __name__ == '__main__':

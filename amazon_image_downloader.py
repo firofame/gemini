@@ -2,12 +2,23 @@ from camoufox.async_api import AsyncCamoufox
 import asyncio
 from pathlib import Path
 
+import sys
+import argparse
+
 async def main():
+    parser = argparse.ArgumentParser(description="Download high-res images from an Amazon product page.")
+    parser.add_argument("url", nargs="?", 
+                        default="https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-SU18BKY3W/dp/B0GHQVNMKQ",
+                        help="The Amazon product URL to download images from.")
+    args = parser.parse_args()
+    
+    url = args.url
+    
     # Configuration from tts.py for consistency
     profile_dir = Path(__file__).resolve().parent / '.camoufox-profile'
     window_size = (1100, 700)
     
-    url = "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-SU18BKY3W/dp/B0GHQVNMKQ"
+    print(f"Target URL: {url}")
     
     async with AsyncCamoufox(
         headless=False,
@@ -17,26 +28,45 @@ async def main():
         firefox_user_prefs={'media.volume_scale': '0.0'}
     ) as context:
         page = await context.new_page()
-        print(f"Opening {url}...")
+        print(f"Opening page...")
         await page.goto(url, wait_until="domcontentloaded")
         
         # Wait for and click the product image to open gallery
         image_selector = "#landingImage"
         print(f"Waiting for product image ({image_selector})...")
         gallery_opened = False
+        
+        # Try clicking the main image first
         try:
             await page.wait_for_selector(image_selector, timeout=20000)
-            print("Clicking product image to open gallery...")
+            print("Clicking product image...")
             await page.click(image_selector)
-            gallery_opened = True
-        except Exception as e:
-            print(f"Could not click image: {e}")
+            await asyncio.sleep(2)
+            if await page.is_visible("#imageBlock") or await page.is_visible("#ivContainer"):
+                gallery_opened = True
+        except Exception:
+            pass
+
+        # If gallery didn't open, try the "Click to see full view" link
+        if not gallery_opened:
+            caption_selector = "#canvasCaption a"
+            print(f"Gallery not open. Trying {caption_selector}...")
+            try:
+                if await page.is_visible(caption_selector):
+                    await page.click(caption_selector)
+                    gallery_opened = True
+                    print("Gallery opened via caption link.")
+            except Exception as e:
+                print(f"Caption click failed: {e}")
+
+        # Final fallback for legacy layouts
+        if not gallery_opened:
             try:
                 print("Trying fallback image selector...")
                 await page.click("#imgTagWrapperId img")
                 gallery_opened = True
             except Exception:
-                print("Fallback also failed.")
+                print("All gallery triggers failed.")
 
         if gallery_opened:
             print("Gallery opened. Starting download...")
@@ -149,6 +179,11 @@ async def main():
                             original_url = re.sub(r'\._AC_.*_\.', '.', img_url)
                             if original_url != img_url:
                                 img_url = original_url
+
+                            # Filter out logos, marketing, or very small images
+                            is_junk = any(x in img_url.lower() for x in ["logo", "marketing", "prime", "badge", "sprite"])
+                            if is_junk:
+                                continue
 
                             if img_url in downloaded_urls:
                                 continue

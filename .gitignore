@@ -22,6 +22,7 @@ wheels/
 
 # Specific to this project
 .camoufox-profile
+images/
 .resume
 *.resume
 translated_book.md

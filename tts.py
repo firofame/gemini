@@ -18,6 +18,7 @@ CONFIG = {
     'retry_attempts': 3,
     'retry_delay_seconds': 5,
     'profile_dir': Path(__file__).resolve().parent / '.camoufox-profile',
+    'login_window_size': (1100, 700),
 }
 
 SELECTORS = {
@@ -29,20 +30,36 @@ SELECTORS = {
 }
 
 
-def parse_args():
+@dataclass
+class Args:
+    """Command line arguments."""
+    input_path: Path | None
+    output_path: Path | None
+    login_only: bool = False
+
+
+def parse_args() -> Args:
     """Parse command line arguments."""
-    if len(sys.argv) < 2:
-        print('Usage: python tts.py input.txt [output.mp3|output_dir]', file=sys.stderr)
+    args = sys.argv[1:]
+
+    if not args:
+        print(
+            'Usage: python tts.py --login | input.txt [output.mp3|output_dir]',
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    input_path = Path(sys.argv[1]).resolve()
+    if args[0] == '--login':
+        return Args(input_path=None, output_path=None, login_only=True)
 
-    if len(sys.argv) > 2:
-        output_path = Path(sys.argv[2]).resolve()
+    input_path = Path(args[0]).resolve()
+
+    if len(args) > 1:
+        output_path = Path(args[1]).resolve()
     else:
         output_path = input_path.with_suffix('.mp3')
 
-    return input_path, output_path
+    return Args(input_path=input_path, output_path=output_path)
 
 
 
@@ -143,19 +160,47 @@ async def close_player(page: Any):
         pass  # Already closed
 
 
+async def clear_editor(page: Any):
+    """Clear the editor and verify the previous content is gone."""
+    mod = 'Meta' if sys.platform == 'darwin' else 'Control'
+
+    for attempt in range(3):
+        await click(page, SELECTORS['editor'])
+        await asyncio.sleep(0.7)
+        await page.keyboard.press(f'{mod}+A')
+        await asyncio.sleep(0.5)
+        await page.keyboard.press('Backspace')
+        await asyncio.sleep(1.2)
+
+        is_empty = await page.evaluate("""() => {
+            const editor = document.querySelector('.kix-appview-editor');
+            if (!editor) return false;
+
+            const text = (editor.innerText || editor.textContent || '')
+                .replace(/[\\u200b\\u200c\\u200d\\ufeff\\u00a0]/g, '')
+                .replace(/\\s+/g, '');
+            return text.length === 0;
+        }""")
+        if is_empty:
+            return True
+
+        print(f'Editor not empty after clear attempt {attempt + 1}, retrying...')
+
+    # Leave the document selected so the first inserted chunk replaces any
+    # leftover whitespace or stale content that Docs still reports internally.
+    await click(page, SELECTORS['editor'])
+    await asyncio.sleep(0.7)
+    await page.keyboard.press(f'{mod}+A')
+    await asyncio.sleep(0.5)
+    print('Proceeding with select-all replacement despite non-empty editor check...')
+    return False
+
+
 async def insert_text(page: Any, text: str):
     """Insert text into document editor."""
     await click(page, SELECTORS['editor'])
     await asyncio.sleep(0.5)
-
-    # Determine modifier key based on platform
-    mod = 'Meta' if sys.platform == 'darwin' else 'Control'
-
-    # Clear existing content
-    await page.keyboard.press(f'{mod}+A')
-    await asyncio.sleep(0.2)
-    await page.keyboard.press('Backspace')
-    await asyncio.sleep(0.7)
+    await clear_editor(page)
 
     # Insert text in chunks
     normalized = text.replace('\r\n', '\n')
@@ -204,23 +249,42 @@ async def open_tts_page(context):
     return page
 
 
+async def login_flow(context):
+    """Open the document in a visible browser and let the user sign in."""
+    page = await context.new_page()
+    await page.goto(CONFIG['doc_url'], wait_until='domcontentloaded')
+    print(f'Browser profile: {CONFIG["profile_dir"]}')
+    print('Log in to Google in the opened browser, then press Enter here to continue.')
+    await asyncio.to_thread(input)
+    await page.close()
+
+
 
 async def main():
     """Main entry point."""
-    input_path, output_path = parse_args()
-
-    text = input_path.read_text(encoding='utf-8')
-    chunks = split_text(text)
-    print(f'Processing {len(chunks)} chunk(s)...')
+    args = parse_args()
 
     CONFIG['profile_dir'].mkdir(parents=True, exist_ok=True)
 
     async with AsyncCamoufox(
-        headless=True,
+        headless=False,
         persistent_context=True,
         user_data_dir=str(CONFIG['profile_dir']),
+        window=CONFIG['login_window_size'],
         firefox_user_prefs={'media.volume_scale': '0.0'}
     ) as context:
+        if args.login_only:
+            await login_flow(context)
+            print('Login session saved.')
+            return
+
+        assert args.input_path is not None
+        assert args.output_path is not None
+
+        text = args.input_path.read_text(encoding='utf-8')
+        chunks = split_text(text)
+        print(f'Processing {len(chunks)} chunk(s)...')
+
         page = await open_tts_page(context)
         last_blob_url = ''
 
@@ -229,9 +293,9 @@ async def main():
                 print(f'\n--- Chunk {i + 1}/{len(chunks)} ---')
 
                 if len(chunks) > 1:
-                    out = suffix_path(output_path, f'-{i + 1}')
+                    out = suffix_path(args.output_path, f'-{i + 1}')
                 else:
-                    out = output_path
+                    out = args.output_path
 
                 last_blob_url = await process_chunk(page, chunk, out, last_blob_url)
                 await close_player(page)

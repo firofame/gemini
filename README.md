@@ -48,16 +48,24 @@ Camoufox is the browser automation library used directly by `tts.py`. It is Play
 
 ## Workflow
 
-### 1. Generate Audio (MP3)
+### 1. Login Once
+
+```bash
+python tts.py --login
+```
+
+Opens Camoufox with the persistent profile at `.camoufox-profile/` so you can sign in to Google once and reuse that session later.
+
+### 2. Generate Audio (MP3)
 
 ```bash
 python tts.py input.txt [output.mp3]
 ```
 
 Inserts text into Google Docs and uses its TTS engine to generate MP3 audio.
-The first run opens Camoufox and keeps you signed in via `.camoufox-profile/`.
+Uses the saved Google session from `.camoufox-profile/`.
 
-### 2. Upload to Internet Archive
+### 3. Upload to Internet Archive
 
 Edit `identifier` and `source_files` in `archive_upload.py`, then:
 

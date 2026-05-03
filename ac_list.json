@@ -5,7 +5,14 @@
         "price": "45999",
         "rating": "3.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/Hitachi-Inverter-Convertible-Anti-bacterial-RAS-V518PCDIBM1/dp/B0GP736CV2/ref=sr_1_1"
+        "url": "https://www.amazon.in/Hitachi-Inverter-Convertible-Anti-bacterial-RAS-V518PCDIBM1/dp/B0GP736CV2/ref=sr_1_1",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.60",
+            "cooling_capacity": "5000 W",
+            "consumption": "690.72 kWh/year",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GHQVNMKQ",
@@ -13,7 +20,14 @@
         "price": "36990",
         "rating": "3.7",
         "reviews": "168",
-        "url": "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-SU18BKY3W/dp/B0GHQVNMKQ/ref=sr_1_2"
+        "url": "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-SU18BKY3W/dp/B0GHQVNMKQ/ref=sr_1_2",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.50",
+            "cooling_capacity": "5100",
+            "consumption": "877.74",
+            "model_year": "CS-SU18BKY3W/CU-SU18BKY3W/2026"
+        }
     },
     {
         "asin": "B0GWMMD2DT",
@@ -21,7 +35,14 @@
         "price": "48490",
         "rating": "4.2",
         "reviews": "758",
-        "url": "https://www.amazon.in/LG-Convertible-AntiVirus-Protection-AS-Q19YNZE1/dp/B0GWMMD2DT/ref=sr_1_3"
+        "url": "https://www.amazon.in/LG-Convertible-AntiVirus-Protection-AS-Q19YNZE1/dp/B0GWMMD2DT/ref=sr_1_3",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.77",
+            "cooling_capacity": "5000",
+            "consumption": "671.15",
+            "model_year": "AS-Q18YNZE1/2026"
+        }
     },
     {
         "asin": "B0DZ6B4K8C",
@@ -29,7 +50,14 @@
         "price": "38490",
         "rating": "3.6",
         "reviews": "403",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Corrosion-GLS18I5KWGGW/dp/B0DZ6B4K8C/ref=sr_1_4"
+        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Corrosion-GLS18I5KWGGW/dp/B0DZ6B4K8C/ref=sr_1_4",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "5.20",
+            "cooling_capacity": "4800",
+            "consumption": "715.07",
+            "model_year": "GLS18I5KWGGW/2025"
+        }
     },
     {
         "asin": "B0GHR4W2DR",
@@ -37,7 +65,14 @@
         "price": "45990",
         "rating": "3.6",
         "reviews": "271",
-        "url": "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-NU18BKY5WX/dp/B0GHR4W2DR/ref=sr_1_5"
+        "url": "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-NU18BKY5WX/dp/B0GHR4W2DR/ref=sr_1_5",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.80",
+            "cooling_capacity": "5100",
+            "consumption": "681.01",
+            "model_year": "CS-NU18BKY5WX/CU-NU18BKY5WX/2026"
+        }
     },
     {
         "asin": "B0GMDCW6DX",
@@ -45,7 +80,14 @@
         "price": "N/A",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Condenser/dp/B0GMDCW6DX/ref=sr_1_6"
+        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Condenser/dp/B0GMDCW6DX/ref=sr_1_6",
+        "verified_data": {
+            "star_rating": 3,
+            "iseer": "4.39",
+            "cooling_capacity": "6100",
+            "consumption": "1076.57",
+            "model_year": "HIC 24J3TS/2026"
+        }
     },
     {
         "asin": "B0GSZRBDND",
@@ -53,7 +95,14 @@
         "price": "33990",
         "rating": "3.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/Voltas-Convertible-Anti-dust-183INV-CAV/dp/B0GSZRBDND/ref=sr_1_7"
+        "url": "https://www.amazon.in/Voltas-Convertible-Anti-dust-183INV-CAV/dp/B0GSZRBDND/ref=sr_1_7",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.30",
+            "cooling_capacity": "5000",
+            "consumption": "900.94",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GHQVN35Z",
@@ -61,7 +110,14 @@
         "price": "30240",
         "rating": "3.2",
         "reviews": "11",
-        "url": "https://www.amazon.in/Whirlpool-Magicool-Inverter-MAGICOOL-Convertible/dp/B0GHQVN35Z/ref=sr_1_8"
+        "url": "https://www.amazon.in/Whirlpool-Magicool-Inverter-MAGICOOL-Convertible/dp/B0GHQVN35Z/ref=sr_1_8",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.33",
+            "cooling_capacity": "4800",
+            "consumption": "858.22",
+            "model_year": "SAI17P3MCT6/2026"
+        }
     },
     {
         "asin": "B0GCDHG1FX",
@@ -69,7 +125,14 @@
         "price": "58990",
         "rating": "3.9",
         "reviews": "8",
-        "url": "https://www.amazon.in/Carrier-Convertible6-1withWi-Fi-EnergyDisplay-WiFi-CAI24EE5R36W1/dp/B0GCDHG1FX/ref=sr_1_9"
+        "url": "https://www.amazon.in/Carrier-Convertible6-1withWi-Fi-EnergyDisplay-WiFi-CAI24EE5R36W1/dp/B0GCDHG1FX/ref=sr_1_9",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.05",
+            "cooling_capacity": "6000",
+            "consumption": "920.55",
+            "model_year": "CAI24EE5R35W3/2024"
+        }
     },
     {
         "asin": "B0GJDVGS6P",
@@ -77,7 +140,14 @@
         "price": "N/A",
         "rating": "2.7",
         "reviews": "10",
-        "url": "https://www.amazon.in/Lloyd-Convertible-Installation-Indication-GLS18I3AGGSC/dp/B0GJDVGS6P/ref=sr_1_10"
+        "url": "https://www.amazon.in/Lloyd-Convertible-Installation-Indication-GLS18I3AGGSC/dp/B0GJDVGS6P/ref=sr_1_10",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.30",
+            "cooling_capacity": "4750",
+            "consumption": "858.74",
+            "model_year": "GLS18I3AGGSC/2026"
+        }
     },
     {
         "asin": "B0GHQRWTNH",
@@ -85,7 +155,14 @@
         "price": "29690",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Whirlpool-Magicool-Inverter-MAGICOOL-Convertible/dp/B0GHQRWTNH/ref=sr_1_11"
+        "url": "https://www.amazon.in/Whirlpool-Magicool-Inverter-MAGICOOL-Convertible/dp/B0GHQRWTNH/ref=sr_1_11",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.37",
+            "cooling_capacity": "3350",
+            "consumption": "594.03",
+            "model_year": "SAI1F3MCPO / 2025"
+        }
     },
     {
         "asin": "B0G9V5F1RW",
@@ -93,7 +170,14 @@
         "price": "41490",
         "rating": "5.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/Samsung-WindFree-Inverter-Convertible-AR60H18D1LWNNA/dp/B0G9V5F1RW/ref=sr_1_12"
+        "url": "https://www.amazon.in/Samsung-WindFree-Inverter-Convertible-AR60H18D1LWNNA/dp/B0G9V5F1RW/ref=sr_1_12",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.75",
+            "cooling_capacity": "5100",
+            "consumption": "681.01",
+            "model_year": "AR60H18D1LWNNA/2025"
+        }
     },
     {
         "asin": "B0GX6XHZ3S",
@@ -101,7 +185,14 @@
         "price": "39230",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG12CPWA-B-Installation/dp/B0GX6XHZ3S/ref=sr_1_13"
+        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG12CPWA-B-Installation/dp/B0GX6XHZ3S/ref=sr_1_13",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.30",
+            "cooling_capacity": "3580",
+            "consumption": "632.48",
+            "model_year": "ASGG12CPWA-B/2026"
+        }
     },
     {
         "asin": "B0GSJLW576",

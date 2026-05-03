@@ -18,28 +18,47 @@ async def main():
     profile_dir = Path(__file__).resolve().parent / '.camoufox-profile'
     window_size = (1100, 700)
     
-    print(f"Target URL: {url}")
+    print(f"Target URL: {url}", flush=True)
     
     async with AsyncCamoufox(
-        headless=False,
+        headless=True,
         persistent_context=True,
         user_data_dir=str(profile_dir),
         window=window_size,
         firefox_user_prefs={'media.volume_scale': '0.0'}
     ) as context:
         page = await context.new_page()
-        print(f"Opening page...")
+        print(f"Opening page...", flush=True)
         await page.goto(url, wait_until="domcontentloaded", timeout=60000)
         
-        # Wait for and click the product image to open gallery
+        # Smart wait for network to settle, but only for 3 seconds
+        try:
+            await page.wait_for_load_state("networkidle", timeout=3000)
+        except Exception:
+            pass
+        
+        # Wait for product image
         image_selector = "#landingImage"
-        print(f"Waiting for product image ({image_selector})...")
+        print(f"Waiting for product image ({image_selector})...", flush=True)
+        img_element = await page.wait_for_selector(image_selector, timeout=20000)
+
+        # Wiggle mouse OVER THE IMAGE for human-like behavior
+        print("Wiggling mouse over image...", flush=True)
+        box = await img_element.bounding_box()
+        if box:
+            import random
+            for _ in range(3):
+                # Calculate points within the image box
+                x = box['x'] + random.randint(10, int(box['width'] - 10))
+                y = box['y'] + random.randint(10, int(box['height'] - 10))
+                await page.mouse.move(x, y, steps=5)
+                await asyncio.sleep(0.2)
+        
         gallery_opened = False
         
         # Try clicking the main image first
         try:
-            await page.wait_for_selector(image_selector, timeout=20000)
-            print("Clicking product image...")
+            print("Clicking product image...", flush=True)
             await page.click(image_selector)
             await asyncio.sleep(2)
             if await page.is_visible("#imageBlock") or await page.is_visible("#ivContainer"):
@@ -50,26 +69,26 @@ async def main():
         # If gallery didn't open, try the "Click to see full view" link
         if not gallery_opened:
             caption_selector = "#canvasCaption a"
-            print(f"Gallery not open. Trying {caption_selector}...")
+            print(f"Gallery not open. Trying {caption_selector}...", flush=True)
             try:
                 if await page.is_visible(caption_selector):
                     await page.click(caption_selector)
                     gallery_opened = True
-                    print("Gallery opened via caption link.")
+                    print("Gallery opened via caption link.", flush=True)
             except Exception as e:
-                print(f"Caption click failed: {e}")
+                print(f"Caption click failed: {e}", flush=True)
 
         # Final fallback for legacy layouts
         if not gallery_opened:
             try:
-                print("Trying fallback image selector...")
+                print("Trying fallback image selector...", flush=True)
                 await page.click("#imgTagWrapperId img")
                 gallery_opened = True
             except Exception:
-                print("All gallery triggers failed.")
+                print("All gallery triggers failed.", flush=True)
 
         if gallery_opened:
-            print("Gallery opened. Starting download...")
+            print("Gallery opened. Starting download...", flush=True)
             output_dir = Path(__file__).resolve().parent / 'images'
             output_dir.mkdir(parents=True, exist_ok=True)
             
@@ -79,16 +98,16 @@ async def main():
                 found_selector = None
                 for selector in gallery_selectors:
                     try:
-                        print(f"Checking for gallery selector: {selector}...")
+                        print(f"Checking for gallery selector: {selector}...", flush=True)
                         await page.wait_for_selector(selector, timeout=5000)
                         found_selector = selector
-                        print(f"Found gallery via: {found_selector}")
+                        print(f"Found gallery via: {found_selector}", flush=True)
                         break
                     except Exception:
                         continue
                 
                 if not found_selector:
-                    print("Could not find a recognized gallery container. Trying to proceed with general search...")
+                    print("Could not find a recognized gallery container. Trying to proceed with general search...", flush=True)
 
                 # Robust thumbnail search: Wait for thumbnails to actually load
                 thumb_selectors = [
@@ -101,9 +120,12 @@ async def main():
                 
                 thumb_selector = None
                 thumb_count = 0
-                print("Waiting for thumbnails to load...")
-                # Give the gallery a moment to stabilize
-                await asyncio.sleep(2)
+                print("Waiting for gallery to stabilize...", flush=True)
+                try:
+                    # Smart wait: try to let the network settle, but only for 3 seconds
+                    await page.wait_for_load_state("networkidle", timeout=3000)
+                except Exception:
+                    pass
                 
                 for t_selector in thumb_selectors:
                     try:
@@ -120,16 +142,16 @@ async def main():
                         if valid_elements:
                             thumb_selector = t_selector
                             thumb_count = len(valid_elements)
-                            print(f"Found {thumb_count} valid thumbnails using selector: {thumb_selector}")
+                            print(f"Found {thumb_count} valid thumbnails using selector: {thumb_selector}", flush=True)
                             break
                     except Exception:
                         continue
                 
                 if not thumb_selector:
-                    print("No thumbnails found. Attempting to extract images directly from the page...")
+                    print("No thumbnails found. Attempting to extract images directly from the page...", flush=True)
                     thumb_selector = f"{found_selector or 'body'} img"
                 
-                print(f"Processing up to 10 images...")
+                print(f"Processing up to 20 images...", flush=True)
                 downloaded_urls = set()
                 download_count = 0
                 
@@ -137,8 +159,8 @@ async def main():
                 loc = page.locator(thumb_selector)
                 total_found = await loc.count()
                 
-                for i in range(min(20, total_found)):
-                    if download_count >= 10:
+                for i in range(min(30, total_found)):
+                    if download_count >= 20:
                         break
                         
                     try:
@@ -191,7 +213,7 @@ async def main():
                             downloaded_urls.add(img_url)
                             download_count += 1
                             
-                            print(f"[{download_count}] Downloading: {img_url}")
+                            print(f"[{download_count}] Downloading: {img_url}", flush=True)
                             img_response = await page.request.get(img_url)
                             if img_response.status == 200:
                                 img_data = await img_response.body()
@@ -203,15 +225,16 @@ async def main():
                                 
                                 file_path = output_dir / f"product_image_{download_count}.{ext}"
                                 file_path.write_bytes(img_data)
-                                print(f"    ✅ Saved to {file_path.name}")
+                                print(f"    ✅ Saved to {file_path.name}", flush=True)
                             else:
-                                print(f"    ❌ Failed (Status {img_response.status})")
+                                print(f"    ❌ Failed (Status {img_response.status})", flush=True)
                     except Exception as item_err:
-                        print(f"    ❌ Error on item {i+1}: {item_err}")
+                        print(f"    ❌ Error on item {i+1}: {item_err}", flush=True)
             except Exception as gallery_err:
-                print(f"Error accessing gallery: {gallery_err}")
+                print(f"Error accessing gallery: {gallery_err}", flush=True)
 
-        print("\nProcess complete.")
+        print("\nProcess complete.", flush=True)
+
         
 if __name__ == "__main__":
     try:

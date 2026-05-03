@@ -200,7 +200,14 @@
         "price": "36990",
         "rating": "4.0",
         "reviews": "55",
-        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI193GN22RGM3/dp/B0GSJLW576/ref=sr_1_14"
+        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI193GN22RGM3/dp/B0GSJLW576/ref=sr_1_14",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "5000",
+            "consumption": "889.95",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GCDZCJ7K",
@@ -208,7 +215,14 @@
         "price": "35490",
         "rating": "3.9",
         "reviews": "268",
-        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI18EE3R36W0/dp/B0GCDZCJ7K/ref=sr_1_15"
+        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI18EE3R36W0/dp/B0GCDZCJ7K/ref=sr_1_15",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "4800",
+            "consumption": "854.39",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GMDDY284",
@@ -216,7 +230,14 @@
         "price": "N/A",
         "rating": "3.7",
         "reviews": "156",
-        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Inverter/dp/B0GMDDY284/ref=sr_1_16"
+        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Inverter/dp/B0GMDDY284/ref=sr_1_16",
+        "verified_data": {
+            "star_rating": null,
+            "iseer": "5.65",
+            "cooling_capacity": "4800",
+            "consumption": "657.81",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GSJV6XTF",
@@ -224,7 +245,14 @@
         "price": "30990",
         "rating": "4.0",
         "reviews": "54",
-        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI133SL11RGM3/dp/B0GSJV6XTF/ref=sr_1_17"
+        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI133SL11RGM3/dp/B0GSJV6XTF/ref=sr_1_17",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "3350",
+            "consumption": "596.65",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GCFB848D",
@@ -232,7 +260,14 @@
         "price": "41990",
         "rating": "4.1",
         "reviews": "309",
-        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI12EE5R36W0/dp/B0GCFB848D/ref=sr_1_18"
+        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI12EE5R36W0/dp/B0GCFB848D/ref=sr_1_18",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.05",
+            "cooling_capacity": "3500",
+            "consumption": "536.20",
+            "model_year": "2024"
+        }
     },
     {
         "asin": "B0GMD5NPX6",
@@ -240,7 +275,14 @@
         "price": "32790",
         "rating": "1.0",
         "reviews": "1",
-        "url": "https://www.amazon.in/Godrej-Comprehensive-1-5T-HIC-18Q3TH/dp/B0GMD5NPX6/ref=sr_1_19"
+        "url": "https://www.amazon.in/Godrej-Comprehensive-1-5T-HIC-18Q3TH/dp/B0GMD5NPX6/ref=sr_1_19",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.39",
+            "cooling_capacity": "4800",
+            "consumption": "846.37",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0FJXWD3XD",
@@ -248,7 +290,14 @@
         "price": "31490",
         "rating": "3.6",
         "reviews": "81",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Anti-Viral-GLS18I3FWGSC/dp/B0FJXWD3XD/ref=sr_1_20"
+        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Anti-Viral-GLS18I3FWGSC/dp/B0FJXWD3XD/ref=sr_1_20",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.95",
+            "cooling_capacity": "4800",
+            "consumption": "941.76",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GQ9PWN3Y",
@@ -256,7 +305,14 @@
         "price": "N/A",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA18KU-RAI4NB-I/dp/B0GQ9PWN3Y/ref=sr_1_21"
+        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA18KU-RAI4NB-I/dp/B0GQ9PWN3Y/ref=sr_1_21",
+        "verified_data": {
+            "star_rating": "4 Star",
+            "iseer": "5.05",
+            "cooling_capacity": "4800",
+            "consumption": "735.94",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GVJ3PXPG",
@@ -264,7 +320,14 @@
         "price": "N/A",
         "rating": "4.2",
         "reviews": "145",
-        "url": "https://www.amazon.in/IFB-Conditioner-Compressor-100-Copper-CI195SS32SGM3/dp/B0GVJ3PXPG/ref=sr_1_17"
+        "url": "https://www.amazon.in/IFB-Conditioner-Compressor-100-Copper-CI195SS32SGM3/dp/B0GVJ3PXPG/ref=sr_1_17",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.65",
+            "cooling_capacity": "4700",
+            "consumption": "644.41",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GSZHHYSQ",
@@ -272,7 +335,14 @@
         "price": "N/A",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Godrej-Inverter-Convertible-Condenser-Conditioner/dp/B0GSZHHYSQ/ref=sr_1_18"
+        "url": "https://www.amazon.in/Godrej-Inverter-Convertible-Condenser-Conditioner/dp/B0GSZHHYSQ/ref=sr_1_18",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.31",
+            "cooling_capacity": "3380",
+            "consumption": "607.63",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GX9458BR",
@@ -280,7 +350,14 @@
         "price": "N/A",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG24CGAA-B-Installation/dp/B0GX9458BR/ref=sr_1_19"
+        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG24CGAA-B-Installation/dp/B0GX9458BR/ref=sr_1_19",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.50",
+            "cooling_capacity": "7000",
+            "consumption": "1205.19",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GF1GJK5K",
@@ -288,7 +365,14 @@
         "price": "60587",
         "rating": "5.0",
         "reviews": "1",
-        "url": "https://www.amazon.in/LG-Convertible-Anti-Virus-Protection-AS-Q24ENXE/dp/B0GF1GJK5K/ref=sr_1_20"
+        "url": "https://www.amazon.in/LG-Convertible-Anti-Virus-Protection-AS-Q24ENXE/dp/B0GF1GJK5K/ref=sr_1_20",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.43",
+            "cooling_capacity": "5000",
+            "consumption": "1102.34",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GJDVC3Q2",
@@ -296,7 +380,14 @@
         "price": "N/A",
         "rating": "3.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS24I3GGCSR/dp/B0GJDVC3Q2/ref=sr_1_21"
+        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS24I3GGCSR/dp/B0GJDVC3Q2/ref=sr_1_21",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.47",
+            "cooling_capacity": "6400",
+            "consumption": "1109.55",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GN1NRFK3",
@@ -304,7 +395,14 @@
         "price": "N/A",
         "rating": "2.9",
         "reviews": "4",
-        "url": "https://www.amazon.in/Lloyd-Convertible-Installation-Indication-GLS18V3AGGSC/dp/B0GN1NRFK3/ref=sr_1_22"
+        "url": "https://www.amazon.in/Lloyd-Convertible-Installation-Indication-GLS18V3AGGSC/dp/B0GN1NRFK3/ref=sr_1_22",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.47",
+            "cooling_capacity": "4800",
+            "consumption": "831.01",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GQ9SSDYZ",
@@ -312,7 +410,14 @@
         "price": "N/A",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA19KHD-BZAI3NB-I/dp/B0GQ9SSDYZ/ref=sr_1_23"
+        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA19KHD-BZAI3NB-I/dp/B0GQ9SSDYZ/ref=sr_1_23",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "5200",
+            "consumption": "925.39",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GP6VJMVD",
@@ -320,7 +425,14 @@
         "price": "44499",
         "rating": "4.2",
         "reviews": "15",
-        "url": "https://www.amazon.in/Hitachi-Inverter-Display-Anti-bacterial-RAS-V518PCDIBT/dp/B0GP6VJMVD/ref=sr_1_24"
+        "url": "https://www.amazon.in/Hitachi-Inverter-Display-Anti-bacterial-RAS-V518PCDIBT/dp/B0GP6VJMVD/ref=sr_1_24",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.60",
+            "cooling_capacity": "5000.00",
+            "consumption": "690.72",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GQ9P81TF",
@@ -328,7 +440,14 @@
         "price": "N/A",
         "rating": "3.2",
         "reviews": "7",
-        "url": "https://www.amazon.in/Haier-Inverter-Convertible-Cooling-HSA17VP-R3NB-I/dp/B0GQ9P81TF/ref=sr_1_25"
+        "url": "https://www.amazon.in/Haier-Inverter-Convertible-Cooling-HSA17VP-R3NB-I/dp/B0GQ9P81TF/ref=sr_1_25",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "4800",
+            "consumption": "854.39",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GCFBDLDW",
@@ -336,7 +455,14 @@
         "price": "46990",
         "rating": "3.8",
         "reviews": "85",
-        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI18EE5R36W0/dp/B0GCFBDLDW/ref=sr_1_26"
+        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI18EE5R36W0/dp/B0GCFBDLDW/ref=sr_1_26",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.60",
+            "cooling_capacity": "4800",
+            "consumption": "663.31",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0F2J56GZR",
@@ -344,7 +470,14 @@
         "price": "30000",
         "rating": "3.5",
         "reviews": "15",
-        "url": "https://www.amazon.in/Blue-Star-Convertible-Activated-2025/dp/B0F2J56GZR/ref=sr_1_27"
+        "url": "https://www.amazon.in/Blue-Star-Convertible-Activated-2025/dp/B0F2J56GZR/ref=sr_1_27",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.95",
+            "cooling_capacity": "3450",
+            "consumption": "676.06",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GQ9WTR71",

@@ -29,7 +29,7 @@ async def main():
     ) as context:
         page = await context.new_page()
         print(f"Opening page...")
-        await page.goto(url, wait_until="domcontentloaded")
+        await page.goto(url, wait_until="domcontentloaded", timeout=60000)
         
         # Wait for and click the product image to open gallery
         image_selector = "#landingImage"
@@ -180,8 +180,8 @@ async def main():
                             if original_url != img_url:
                                 img_url = original_url
 
-                            # Filter out logos, marketing, or very small images
-                            is_junk = any(x in img_url.lower() for x in ["logo", "marketing", "prime", "badge", "sprite"])
+                            # Filter out logos, marketing, or very small images, and GIFs
+                            is_junk = any(x in img_url.lower() for x in ["logo", "marketing", "prime", "badge", "sprite", ".gif"])
                             if is_junk:
                                 continue
 
@@ -199,6 +199,7 @@ async def main():
                                 ext = "jpg"
                                 if ".png" in img_url.lower(): ext = "png"
                                 elif ".webp" in img_url.lower(): ext = "webp"
+                                elif ".gif" in img_url.lower(): ext = "gif"
                                 
                                 file_path = output_dir / f"product_image_{download_count}.{ext}"
                                 file_path.write_bytes(img_data)

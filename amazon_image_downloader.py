@@ -211,15 +211,8 @@ async def main():
             except Exception as gallery_err:
                 print(f"Error accessing gallery: {gallery_err}")
 
-        print("\nProcess complete. Browser is open for inspection.")
-        print("Press Ctrl+C to exit.")
+        print("\nProcess complete.")
         
-        try:
-            while True:
-                await asyncio.sleep(1)
-        except (asyncio.CancelledError, KeyboardInterrupt):
-            pass
-
 if __name__ == "__main__":
     try:
         asyncio.run(main())

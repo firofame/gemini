@@ -8,8 +8,9 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 |--------|-------------|
 | `tts.py` | Text-to-Speech converter using Google Docs and a persistent Camoufox profile |
 | `archive_upload.py` | Uploads text and audio files to Internet Archive |
-| `list.py` | Lists Gemini models that support `generateContent` |
+| `list_models.py` | Lists Gemini models that support `generateContent` |
 | `sample.py` | Simple Gemini API test script |
+| `comfi.py` | Modal app for running ComfyUI with Qwen-Image-Edit models |
 
 ## Prerequisites
 
@@ -54,7 +55,7 @@ Camoufox is the browser automation library used directly by `tts.py`. It is Play
 python tts.py --login
 ```
 
-Opens Camoufox with the persistent profile at `.camoufox-profile/` so you can sign in to Google once and reuse that session later.
+Opens Camoufox with the persistent profile at `~/.camoufox-profile` so you can sign in to Google once and reuse that session later.
 
 ### 2. Generate Audio (MP3)
 
@@ -76,6 +77,10 @@ python archive_upload.py
 ## Configuration
 
 - **`tts.py`**: Update `CONFIG['doc_url']` to a Google Doc you have edit access to.
+
+## Related Projects
+
+- **[AC Scraper](file:///home/firoz/Desktop/ac-scraper)**: An automated pipeline for extracting technical AC data from Amazon. (Moved to separate repository).
 
 ## License
 

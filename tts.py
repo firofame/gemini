@@ -17,7 +17,7 @@ CONFIG = {
     'timeout': 120_000,
     'retry_attempts': 3,
     'retry_delay_seconds': 5,
-    'profile_dir': Path(__file__).resolve().parent / '.camoufox-profile',
+    'profile_dir': Path.home() / '.camoufox-profile',
     'login_window_size': (1100, 700),
 }
 

@@ -75,21 +75,6 @@
         }
     },
     {
-        "asin": "B0GMDCW6DX",
-        "title": "Godrej 2 Ton 3 Star AC,New star rated, 5-Year Comprehensive Warranty, AI Powered, 5-in-1 Convertible Cooling, I-Sense, Self Clean, Inverter Split AC, Copper Condenser (AC 2T EC HIC 24J3TS WA, White)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Condenser/dp/B0GMDCW6DX/ref=sr_1_6",
-        "verified_data": {
-            "star_rating": 3,
-            "iseer": "4.39",
-            "cooling_capacity": "6100",
-            "consumption": "1076.57",
-            "model_year": "HIC 24J3TS/2026"
-        }
-    },
-    {
         "asin": "B0GSZRBDND",
         "title": "Voltas 1.5 ton 3 star,New star rated, Rating Inverter Split AC (Copper, Convertible 5-in-1 Cooling Mode, 2-Way Air Swing, Anti-dust Filter with Anti Microbial Coating, Auto Clean (183INV CAV, White)",
         "price": "33990",
@@ -132,21 +117,6 @@
             "cooling_capacity": "6000",
             "consumption": "920.55",
             "model_year": "CAI24EE5R35W3/2024"
-        }
-    },
-    {
-        "asin": "B0GJDVGS6P",
-        "title": "Lloyd 1.5 Ton 3 Star Inverter Split AC, 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, Turbo Cool, Installation Check, Clean Filter Indication, 100% Copper, White, GLS18I3AGGSC)",
-        "price": "N/A",
-        "rating": "2.7",
-        "reviews": "10",
-        "url": "https://www.amazon.in/Lloyd-Convertible-Installation-Indication-GLS18I3AGGSC/dp/B0GJDVGS6P/ref=sr_1_10",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.30",
-            "cooling_capacity": "4750",
-            "consumption": "858.74",
-            "model_year": "GLS18I3AGGSC/2026"
         }
     },
     {
@@ -225,21 +195,6 @@
         }
     },
     {
-        "asin": "B0GMDDY284",
-        "title": "Godrej 1.5 Ton 5 Star,New Star rated, 5 Years Comprehensive Warranty, AI powered, 5-In-1 Convertible Cooling Inverter Split AC (Copper, Heavy Duty Cooling at 52 \u00b0C, AC 1.5T EC HIC 18J5TG WA, White)",
-        "price": "N/A",
-        "rating": "3.7",
-        "reviews": "156",
-        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Inverter/dp/B0GMDDY284/ref=sr_1_16",
-        "verified_data": {
-            "star_rating": null,
-            "iseer": "5.65",
-            "cooling_capacity": "4800",
-            "consumption": "657.81",
-            "model_year": "2026"
-        }
-    },
-    {
         "asin": "B0GSJV6XTF",
         "title": "IFB 1 Ton 3 Star,New star rated, AI Powered Inverter Split Air Conditioner,Hybrid Mode, 8in1 Flexi Mode, Heavy Duty Compressor, Long Air Throw, Self Clean, Dual Gold Fins, 100% Copper, CI133SL11RGM3",
         "price": "30990",
@@ -300,66 +255,6 @@
         }
     },
     {
-        "asin": "B0GQ9PWN3Y",
-        "title": "Haier 1.5 Ton 4 Star,New star rated,Wi-Fi HEXA Inverter Smart Split AC (AI Cooling, Energy Saving & Self-Clean, 7 in 1 Convertible, Copper, 4-way Swing, Cools in 10 Sec at 60\u00b0C,White)-HSA18KU-RAI4NB-I",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA18KU-RAI4NB-I/dp/B0GQ9PWN3Y/ref=sr_1_21",
-        "verified_data": {
-            "star_rating": "4 Star",
-            "iseer": "5.05",
-            "cooling_capacity": "4800",
-            "consumption": "735.94",
-            "model_year": "2026"
-        }
-    },
-    {
-        "asin": "B0GVJ3PXPG",
-        "title": "IFB 1.5 Ton 5Star,New star rated,AI Powered Inverter Split Air Conditioner with Inbuilt WiFi,Hybrid Mode, 8in1 Flexi Mode,Heavy Duty Compressor,Long Air Throw,Self Clean,100%Copper Tubes,CI195SS32SGM3",
-        "price": "N/A",
-        "rating": "4.2",
-        "reviews": "145",
-        "url": "https://www.amazon.in/IFB-Conditioner-Compressor-100-Copper-CI195SS32SGM3/dp/B0GVJ3PXPG/ref=sr_1_17",
-        "verified_data": {
-            "star_rating": "5 Star",
-            "iseer": "5.65",
-            "cooling_capacity": "4700",
-            "consumption": "644.41",
-            "model_year": "2026"
-        }
-    },
-    {
-        "asin": "B0GSZHHYSQ",
-        "title": "Godrej 1 Ton 3 Star,New star rated, Inverter Split AC, 5-in-1 Convertible Cooling, AI Powered, Self Clean, Copper Condenser, AC with Air Filter Air Conditioner (AC 1T EC HIC 12Y3TH CA, White)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Godrej-Inverter-Convertible-Condenser-Conditioner/dp/B0GSZHHYSQ/ref=sr_1_18",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.31",
-            "cooling_capacity": "3380",
-            "consumption": "607.63",
-            "model_year": "2026"
-        }
-    },
-    {
-        "asin": "B0GX9458BR",
-        "title": "GENERAL 2 Ton BEE 2026 4 Star Rated,Inverter Split AC(Copper,7040W,Powerful Cooling,15m Long Reach Airflow,4 Way Swing,55\u00b0C Max,Suitable for 250~300 Sft,ASGG24CGAA-B, White,Free Standard Installation)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG24CGAA-B-Installation/dp/B0GX9458BR/ref=sr_1_19",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.50",
-            "cooling_capacity": "7000",
-            "consumption": "1205.19",
-            "model_year": "2026"
-        }
-    },
-    {
         "asin": "B0GF1GJK5K",
         "title": "LG 2Ton 3Star,New star rated, DUAL Inverter Split AC (Copper, AI Convertible 6in1, Diet Mode+,Faster Cooling & Energy Saving, 4 Way Swing, HDFilter with Anti-Virus Protection,AS-Q24ENXE,White)",
         "price": "60587",
@@ -375,51 +270,6 @@
         }
     },
     {
-        "asin": "B0GJDVC3Q2",
-        "title": "Lloyd 2 Ton 3 Star Inverter Split AC, 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, DG Mode, Ice Clean, Smart 4 Way Swing, Installation Check, White with Silver Deco Strip, GLS24I3GGCSR)",
-        "price": "N/A",
-        "rating": "3.0",
-        "reviews": "2",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS24I3GGCSR/dp/B0GJDVC3Q2/ref=sr_1_21",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.47",
-            "cooling_capacity": "6400",
-            "consumption": "1109.55",
-            "model_year": "2026"
-        }
-    },
-    {
-        "asin": "B0GN1NRFK3",
-        "title": "Lloyd 1.5 Ton 3 Star Wi-Fi Inverter Split AC, 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, Voice & Wi-Fi, Turbo Cool, Installation Check, Clean Filter Indication, White, GLS18V3AGGSC)",
-        "price": "N/A",
-        "rating": "2.9",
-        "reviews": "4",
-        "url": "https://www.amazon.in/Lloyd-Convertible-Installation-Indication-GLS18V3AGGSC/dp/B0GN1NRFK3/ref=sr_1_22",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.47",
-            "cooling_capacity": "4800",
-            "consumption": "831.01",
-            "model_year": "2026"
-        }
-    },
-    {
-        "asin": "B0GQ9SSDYZ",
-        "title": "Haier 1.5 Ton 3 Star,New star rated,Wi-Fi HEXA Inverter Split AC (AI Cooling, Energy Saving & Self-Clean, 7 in 1 Convertible, Copper, 4-way Swing, Cools in 10 Sec at 60\u00b0C, Black AC)-HSA19KHD-BZAI3NB-I",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA19KHD-BZAI3NB-I/dp/B0GQ9SSDYZ/ref=sr_1_23",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.35",
-            "cooling_capacity": "5200",
-            "consumption": "925.39",
-            "model_year": "2025"
-        }
-    },
-    {
         "asin": "B0GP6VJMVD",
         "title": "Hitachi 1.5 Ton 5 Star, New Star rated, Inverter Split AC (Copper, Smart View Display, 4 Way Swing, ice Clean, Anti-bacterial Filter,RAS.V518PCDIBT, White)",
         "price": "44499",
@@ -432,21 +282,6 @@
             "cooling_capacity": "5000.00",
             "consumption": "690.72",
             "model_year": "2025"
-        }
-    },
-    {
-        "asin": "B0GQ9P81TF",
-        "title": "Haier 1.5 Ton 3 Star, New star rated, Twin Inverter Split AC (Long Air Flow, HD Filter, 5 in 1 Convertible, Copper, 2-way Swing, Turbo Cooling even at 54\u00b0C, White)-HSA17VP-R3NB-I",
-        "price": "N/A",
-        "rating": "3.2",
-        "reviews": "7",
-        "url": "https://www.amazon.in/Haier-Inverter-Convertible-Cooling-HSA17VP-R3NB-I/dp/B0GQ9P81TF/ref=sr_1_25",
-        "verified_data": {
-            "star_rating": "3 Star",
-            "iseer": "4.35",
-            "cooling_capacity": "4800",
-            "consumption": "854.39",
-            "model_year": "2026"
         }
     },
     {
@@ -480,28 +315,19 @@
         }
     },
     {
-        "asin": "B0GQ9WTR71",
-        "title": "Haier 2 Ton 3 Star, New star rated, Twin Inverter Split AC (Long Air Flow, HD Filter, 5 in 1 Convertible, Copper, 2-way Swing, Turbo Cooling even at 54\u00b0C, White)-HSA24VP-W3NB-I",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Convertible-Cooling-HSA24VP-W3NB-I/dp/B0GQ9WTR71/ref=sr_1_33"
-    },
-    {
         "asin": "B0GNZ9J864",
         "title": "Samsung 1.5Ton 5Star,New Star rated, Bespoke AI Inverter Smart Split AC (Wifi, Energy Saving, Voice Control, Powerful Cooling, Copper, Digital Inverter, 4 Way swing, 5 Step Convertible,AR50H18D1NHNNA)",
         "price": "52490",
         "rating": "3.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/Samsung-Inverter-Powerful-Convertible-AR50H18D1NHNNA/dp/B0GNZ9J864/ref=sr_1_34"
-    },
-    {
-        "asin": "B0GSZWPSKS",
-        "title": "Voltas 2 ton 3 Star,New star rated, Inverter Split AC (Copper, Convertible 5-in-1 Cooling Mode, 2-Way Air Swing, Anti-dust Filter with Anti Microbial Coating, Auto Clean, (243INV CAM, White)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Voltas-Convertible-Anti-dust-243INV-CAM/dp/B0GSZWPSKS/ref=sr_1_35"
+        "url": "https://www.amazon.in/Samsung-Inverter-Powerful-Convertible-AR50H18D1NHNNA/dp/B0GNZ9J864/ref=sr_1_34",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.77",
+            "cooling_capacity": "4750",
+            "consumption": "636.71",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GHQBSX9Y",
@@ -509,7 +335,14 @@
         "price": "38490",
         "rating": "3.6",
         "reviews": "35",
-        "url": "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-SU18BKY3WXH/dp/B0GHQBSX9Y/ref=sr_1_36"
+        "url": "https://www.amazon.in/Panasonic-DustBuster-Convertible-CS-CU-SU18BKY3WXH/dp/B0GHQBSX9Y/ref=sr_1_36",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.50",
+            "cooling_capacity": "5280",
+            "consumption": "908.45",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GMDS7CY7",
@@ -517,15 +350,14 @@
         "price": "34490",
         "rating": "3.9",
         "reviews": "574",
-        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Heavy-Duty/dp/B0GMDS7CY7/ref=sr_1_37"
-    },
-    {
-        "asin": "B0GN1B9X6R",
-        "title": "Lloyd 1.5 Ton 5 Star Wi-Fi Inverter Split AC 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, Voice & Wi-Fi Enabled, DG Mode, Ice Clean, 4 Way Swing, Installation Check, White,GLS18V5AGGGW)",
-        "price": "N/A",
-        "rating": "3.8",
-        "reviews": "4",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS18V5AGGGW/dp/B0GN1B9X6R/ref=sr_1_33"
+        "url": "https://www.amazon.in/Godrej-Comprehensive-Warranty-Convertible-Heavy-Duty/dp/B0GMDS7CY7/ref=sr_1_37",
+        "verified_data": {
+            "star_rating": null,
+            "iseer": "5.70",
+            "cooling_capacity": "3450",
+            "consumption": "468.65",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GVJ3WB54",
@@ -533,31 +365,14 @@
         "price": "36490",
         "rating": "3.8",
         "reviews": "28",
-        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI183SS22SGM3/dp/B0GVJ3WB54/ref=sr_1_34"
-    },
-    {
-        "asin": "B0GJCXCJ2D",
-        "title": "Samsung 2Ton 3Star,New Star rated,Bespoke AI Inverter Smart Split AC (WiFi, Energy Saving, Voice Control, Powerful Cooling, Copper, Digital Inverter, 4 Way swing, 5 Step Convertible, AR50H24D1XHNNA)",
-        "price": "N/A",
-        "rating": "4.5",
-        "reviews": "2",
-        "url": "https://www.amazon.in/Samsung-Inverter-Powerful-Convertible-AR50H24D1XHNNA/dp/B0GJCXCJ2D/ref=sr_1_35"
-    },
-    {
-        "asin": "B0GQ9M175H",
-        "title": "Haier Desert Rose 1.8 Ton 5 Star, New star rated, Wi-Fi HEXA Inverter Smart Split AC (AI Cooling, Energy Saving & Self-Clean, Human Detection, Copper, 4-way, Cools in 10 Sec at 60\u00b0C)-HSA20DSD-GAI5NB-I",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Detection-HSA20DSD-GAI5NB-I/dp/B0GQ9M175H/ref=sr_1_36"
-    },
-    {
-        "asin": "B0GS9Z9C25",
-        "title": "Lloyd 2 Ton 5 Star Inverter Split AC, 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, DG Mode, Ice Clean, Smart 4 Way Swing, Installation Check, White with Golden Deco Strip, GLS24I5AGCGR)",
-        "price": "N/A",
-        "rating": "3.8",
-        "reviews": "367",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS24I5AGCGR/dp/B0GS9Z9C25/ref=sr_1_37"
+        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI183SS22SGM3/dp/B0GVJ3WB54/ref=sr_1_34",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "4800",
+            "consumption": "854.70",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0DQTBQV3C",
@@ -565,23 +380,14 @@
         "price": "32999",
         "rating": "4.0",
         "reviews": "11",
-        "url": "https://www.amazon.in/Hitachi-Xpandable-Inverter-3400SXL-RAS-D318PCCIBS/dp/B0DQTBQV3C/ref=sr_1_38"
-    },
-    {
-        "asin": "B0GSZSLW6N",
-        "title": "Voltas 1.5 ton 3 Star, New star rated, Inverter Split AC (Copper, Convertible 6-in-1 cooling modes, Ai Enabled, 4-way Swing, Sleep Mode, Auto Clean (183INV VERTIS AI ZEST GOLD, White)",
-        "price": "N/A",
-        "rating": "3.7",
-        "reviews": "4",
-        "url": "https://www.amazon.in/Voltas-183INV-VERTIS-ZEST-GOLD/dp/B0GSZSLW6N/ref=sr_1_39"
-    },
-    {
-        "asin": "B0GQB17SDH",
-        "title": "Haier 1 Ton 5 Star, New star rated,Wi-Fi HEXA Inverter Smart Split AC (AI Cooling, Energy Saving & Self-Clean, 7 in 1 Convertible, Copper, 4-way Swing, Cools in 10 Sec at 60\u00b0C, White)-HSA14KU-GAI5NB-I",
-        "price": "N/A",
-        "rating": "5.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA14KU-GAI5NB-I/dp/B0GQB17SDH/ref=sr_1_40"
+        "url": "https://www.amazon.in/Hitachi-Xpandable-Inverter-3400SXL-RAS-D318PCCIBS/dp/B0DQTBQV3C/ref=sr_1_38",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.82",
+            "cooling_capacity": "5000",
+            "consumption": "1013.01",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GSJLC587",
@@ -589,23 +395,14 @@
         "price": "44490",
         "rating": "4.2",
         "reviews": "143",
-        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI205GN32RGM3/dp/B0GSJLC587/ref=sr_1_41"
-    },
-    {
-        "asin": "B0GSJLWC8B",
-        "title": "IFB 1.5Ton 5Star,New star rated,AI Powered Inverter Split Air Conditioner,Hybrid Mode, 8in1 Flexi Mode,Heavy Duty Compressor,Long Air Throw,Self Clean, Dual Gold Fins,100% Copper Tubes,CI195GD32RGM3",
-        "price": "N/A",
-        "rating": "4.1",
-        "reviews": "11",
-        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI195GD32RGM3/dp/B0GSJLWC8B/ref=sr_1_42"
-    },
-    {
-        "asin": "B0GMYF4SNM",
-        "title": "Blue Star 1.5 Ton 5 Star,New Star Rated, Wi-Fi Smart Inverter Split AC (Copper,4-Way Swing, DigiQ Hepta Sensor, Blue Fins,Turbo Cool, Self Clean Technology (IA518ZXUS, White))",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Blue-Star-Inverter-Technology-IA518ZXUS/dp/B0GMYF4SNM/ref=sr_1_43"
+        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI205GN32RGM3/dp/B0GSJLC587/ref=sr_1_41",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.65",
+            "cooling_capacity": "5210",
+            "consumption": "714.30",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GSJXQ557",
@@ -613,23 +410,14 @@
         "price": "48490",
         "rating": "3.9",
         "reviews": "57",
-        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI223GD32RGM3/dp/B0GSJXQ557/ref=sr_1_49"
-    },
-    {
-        "asin": "B0GD16BJ1Z",
-        "title": "Samsung 1.5 Ton 4 Star Bespoke AI WindFree Inverter Smart Split AC (2026 Model, WiFi, Energy Saving, Voice Control, Powerful Cooling, Digital Inverter, 4 Way swing, 5 Step Convertible, AR60H19D1AWNNA)",
-        "price": "N/A",
-        "rating": "5.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Samsung-WindFree-Inverter-Convertible-AR60H19D1AWNNA/dp/B0GD16BJ1Z/ref=sr_1_50"
-    },
-    {
-        "asin": "B0GX779NPD",
-        "title": "GENERAL 1.5Ton BEE 2026 3 Star Rated,Inverter Split AC(Copper,5300W,Powerful Cooling,15m Long Reach Airflow,4 Way Swing,55\u00b0C Max,Suitable for 170~200 Sft,ASGG18CPWA-B,White,Free Standard Installation)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG18CPWA-B-Installation/dp/B0GX779NPD/ref=sr_1_51"
+        "url": "https://www.amazon.in/IFB-Inverter-Conditioner-Compressor-CI223GD32RGM3/dp/B0GSJXQ557/ref=sr_1_49",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "6200",
+            "consumption": "1104.43",
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GCDYL2T1",
@@ -637,31 +425,14 @@
         "price": "33490",
         "rating": "4.2",
         "reviews": "130",
-        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI12EE3R36W0/dp/B0GCDYL2T1/ref=sr_1_52"
-    },
-    {
-        "asin": "B0D184ZZDL",
-        "title": "Lloyd 1 Ton 3 Star Inverter Split AC (5 in 1 Convertible, Cools Up To 52\u00b0C, Smart 4 Way Air Swing, Turbo Cool, Installation Check, 100% Copper, White with Silver Deco Strip, GLS12I3FWSEA)",
-        "price": "N/A",
-        "rating": "3.4",
-        "reviews": "116",
-        "url": "https://www.amazon.in/Lloyd-Convertible-Corrosion-Anti-Viral-GLS12I3FWSEA/dp/B0D184ZZDL/ref=sr_1_53"
-    },
-    {
-        "asin": "B0DT6L856K",
-        "title": "Godrej 1.5 Ton 3 Star (5 Years Comprehensive Warranty) 5-In-1 Convertible Cooling Inverter Split AC (Copper, Model, Heavy Duty Cooling at 52 \u00b0C, AC 1.5T EI 18A3T PYA IVBL IOT, White)",
-        "price": "N/A",
-        "rating": "3.6",
-        "reviews": "271",
-        "url": "https://www.amazon.in/Godrej-1-5T-18A3T-PYA-IVBL/dp/B0DT6L856K/ref=sr_1_49"
-    },
-    {
-        "asin": "B0GW833VQ1",
-        "title": "Blue Star 1.5 Ton 3 Star, New Star Rated, Smart Inverter Split AC (Copper, 5 in 1 Convertible Cooling, DigiQ Hepta Sensor, Blue Fins,Turbo Cool,Blue Fins (IA318ZXU, White)",
-        "price": "N/A",
-        "rating": "1.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Blue-Star-Inverter-Convertible-IA318ZXU/dp/B0GW833VQ1/ref=sr_1_50"
+        "url": "https://www.amazon.in/Carrier-Flexicool-Convertible-Geo-Fencing-WiFi-CAI12EE3R36W0/dp/B0GCDYL2T1/ref=sr_1_52",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "3400",
+            "consumption": "604.99",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GD5MMZCN",
@@ -669,7 +440,14 @@
         "price": "28990",
         "rating": "3.8",
         "reviews": "4",
-        "url": "https://www.amazon.in/Hisense-Convertible-Intelligent-corrosion-AS-18TR4R3E2/dp/B0GD5MMZCN/ref=sr_1_51"
+        "url": "https://www.amazon.in/Hisense-Convertible-Intelligent-corrosion-AS-18TR4R3E2/dp/B0GD5MMZCN/ref=sr_1_51",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.90",
+            "cooling_capacity": "5100",
+            "consumption": "1012.16",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GHQRF65R",
@@ -677,23 +455,14 @@
         "price": "41490",
         "rating": "1.0",
         "reviews": "4",
-        "url": "https://www.amazon.in/Whirlpool-Inverter-S6M3PP0-Convertible-Cooling/dp/B0GHQRF65R/ref=sr_1_52"
-    },
-    {
-        "asin": "B0GF83P843",
-        "title": "LG 1.5 Ton 4 Star DUAL Inverter Split AC (Copper, AI Convertible 6-in-1, VIRAAT Mode, Faster Cooling & Energy Saving, 4 Way Swing, HD Filter with Anti-Virus Protection & Him Clean, AS-Q19JNYE, White)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/LG-Convertible-Anti-Virus-Protection-AS-Q19JNYE/dp/B0GF83P843/ref=sr_1_53"
-    },
-    {
-        "asin": "B0GX6YC87D",
-        "title": "GENERAL 1.5Ton BEE 2026 5 Star Rated,Inverter Split AC(Copper,5280W,Powerful Cooling,15m Long Reach Airflow,4 Way Swing,55\u00b0C Max,Suitable for 170~200 Sft,ASGG18CGAB-B,White,Free Standard Installation)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG18CGAB-B-Installation/dp/B0GX6YC87D/ref=sr_1_54"
+        "url": "https://www.amazon.in/Whirlpool-Inverter-S6M3PP0-Convertible-Cooling/dp/B0GHQRF65R/ref=sr_1_52",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.01",
+            "cooling_capacity": null,
+            "consumption": null,
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0GRTWJ7PS",
@@ -701,39 +470,14 @@
         "price": "31990",
         "rating": "3.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/comprehensive-warranty-Inverter-Compressor-Convertible/dp/B0GRTWJ7PS/ref=sr_1_55"
-    },
-    {
-        "asin": "B0GKMP6VYS",
-        "title": "Lloyd 1.5 Ton 5 Star Inverter Split AC, 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, DG Mode, Ice Clean, Smart 4 Way Swing, Turbo Cool, Installation Check, White, GLS18I5AGGGW)",
-        "price": "N/A",
-        "rating": "5.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS18I5AGGGW/dp/B0GKMP6VYS/ref=sr_1_56"
-    },
-    {
-        "asin": "B0GQ9QCBGS",
-        "title": "Haier 1.5 Ton 3 Star,New star rated, Wi-Fi HEXA Inverter Smart Split AC (AI Cooling, Energy Saving & Self-Clean, 7in1 Convertible, Copper, 4-way Swing, Cools in 10 Sec at 60\u00b0C, White)-HSA18KU-GAI3NB-I",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA18KU-GAI3NB-I/dp/B0GQ9QCBGS/ref=sr_1_57"
-    },
-    {
-        "asin": "B0GS9CMDNK",
-        "title": "Lloyd 1 Ton 5 Star Inverter Split AC, 2026 New Star Rated (6 in 1 Convertible, Cools Up To 54\u00b0C, DG Mode, Ice Clean, Smart 4 Way Swing, Turbo Cool, Installation Check, White, GLS12I5GGGGR)",
-        "price": "N/A",
-        "rating": "4.0",
-        "reviews": "12",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Convertible-Installation-GLS12I5GGGGR/dp/B0GS9CMDNK/ref=sr_1_58"
-    },
-    {
-        "asin": "B0GRTMHWLD",
-        "title": "Sharp 1 Ton 3 star, New Star Rated (5 Years comprehensive warranty, 4 Way Swing, 100% copper, Hi-Tech Inverter Compressor, 7 in 1 Convertible, Turbo cool, Dust filter) - AH-SI12V3B-GCN, White",
-        "price": "N/A",
-        "rating": "5.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/comprehensive-warranty-Inverter-Compressor-Convertible/dp/B0GRTMHWLD/ref=sr_1_59"
+        "url": "https://www.amazon.in/comprehensive-warranty-Inverter-Compressor-Convertible/dp/B0GRTWJ7PS/ref=sr_1_55",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.35",
+            "cooling_capacity": "4800",
+            "consumption": null,
+            "model_year": "2026"
+        }
     },
     {
         "asin": "B0DYNDH4TH",
@@ -741,15 +485,14 @@
         "price": "49390",
         "rating": "3.2",
         "reviews": "7",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Expandable-Lighting-GLS18V5FWMGT/dp/B0DYNDH4TH/ref=sr_1_65"
-    },
-    {
-        "asin": "B0GQ9HY2V7",
-        "title": "Haier 1 Ton 4 Star, New star rated, Wi-Fi HEXA Inverter Smart Split AC (AI Cooling, Energy Saving & Self-Clean, 7 in 1 Convertible, Copper, 4-way Swing, Cools in 10 Sec at 60\u00b0C,White)-HSA14KU-CAI4NB-I",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA14KU-CAI4NB-I/dp/B0GQ9HY2V7/ref=sr_1_66"
+        "url": "https://www.amazon.in/Lloyd-Inverter-Expandable-Lighting-GLS18V5FWMGT/dp/B0DYNDH4TH/ref=sr_1_65",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.20",
+            "cooling_capacity": "5200",
+            "consumption": "774.22",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0DYVJ6WMT",
@@ -757,7 +500,14 @@
         "price": "60790",
         "rating": "3.0",
         "reviews": "23",
-        "url": "https://www.amazon.in/Lloyd-Stunnair-Inverter-Expandable-GLS19V5KOOQZ/dp/B0DYVJ6WMT/ref=sr_1_67"
+        "url": "https://www.amazon.in/Lloyd-Stunnair-Inverter-Expandable-GLS19V5KOOQZ/dp/B0DYVJ6WMT/ref=sr_1_67",
+        "verified_data": {
+            "star_rating": null,
+            "iseer": "5.20",
+            "cooling_capacity": "5200",
+            "consumption": "773.58",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0CSNHJ576",
@@ -765,39 +515,14 @@
         "price": "30590",
         "rating": "4.1",
         "reviews": "80",
-        "url": "https://www.amazon.in/Haier-Intelli-Copper-Convertible-Bacterial/dp/B0CSNHJ576/ref=sr_1_68"
-    },
-    {
-        "asin": "B0GL2LWCVL",
-        "title": "Acerpure Chill Neo1.5 Ton 3 star, New star rated, 4800W AC5IPG61.5TN3W48W 7 in 1 Convertible, Ice Blast Mode, 4 way swing, Cooling @ 58 degree",
-        "price": "N/A",
-        "rating": "3.2",
-        "reviews": "19",
-        "url": "https://www.amazon.in/Acerpure-Neo1-5-AC5IPG61-5TN3W48W-Convertible-Cooling/dp/B0GL2LWCVL/ref=sr_1_69"
-    },
-    {
-        "asin": "B0GXBN4NCN",
-        "title": "IFB 1.5 Ton 3 Star 2026 AI Powered Inverter Split Air Conditioner with Hybrid Mode, 8-in-1 Flexi Mode, Heavy Duty Compressor, Long Air Throw, Self Clean, Copper Condenser (CI183GD22RGM3,White)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/IFB-Conditioner-Compressor-Condenser-CI183GD22RGM3/dp/B0GXBN4NCN/ref=sr_1_65"
-    },
-    {
-        "asin": "B0GX7BPT2T",
-        "title": "GENERAL 2 Ton BEE 2026 3 Star Rated,Inverter Split AC(Copper,7040W,Powerful Cooling,15m Long Reach Airflow,4 Way Swing,55\u00b0C Max,Suitable for 250~300 Sft, ASGG24CPWA-B,White,Free Standard Installation)",
-        "price": "N/A",
-        "rating": "N/A",
-        "reviews": "0",
-        "url": "https://www.amazon.in/GENERAL-Inverter-Powerful-ASGG24CPWA-B-Installation/dp/B0GX7BPT2T/ref=sr_1_66"
-    },
-    {
-        "asin": "B0GRV41HNL",
-        "title": "Sharp 2 Ton 3 star, New Star Rated (5 Years comprehensive warranty, 4 Way Swing, 100% copper, Hi-Tech Inverter Compressor, 7 in 1 Convertible, Turbo cool, Dust filter) - AH-SI24V3B-SCN, White",
-        "price": "N/A",
-        "rating": "5.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/comprehensive-warranty-Inverter-Compressor-Convertible/dp/B0GRV41HNL/ref=sr_1_67"
+        "url": "https://www.amazon.in/Haier-Intelli-Copper-Convertible-Bacterial/dp/B0CSNHJ576/ref=sr_1_68",
+        "verified_data": {
+            "star_rating": "4 Star",
+            "iseer": "4.45",
+            "cooling_capacity": "3470",
+            "consumption": "603.94",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0GD4PTQV2",
@@ -805,15 +530,14 @@
         "price": "26990",
         "rating": "3.0",
         "reviews": "7",
-        "url": "https://www.amazon.in/Hisense-Convertible-Intelligent-corrosion-AS-12TR4R3E/dp/B0GD4PTQV2/ref=sr_1_68"
-    },
-    {
-        "asin": "B0CFG6H596",
-        "title": "GENERAL 1.5Ton BEE 2026 4 Star Rated,Hot & Cold Inverter Split AC(Copper,5280W,15m Long Reach Airflow,4 Way Swing,-15\u00b0C~55\u00b0C Max,Suitable for 170~250 Sft,ASGG18KJTA-B,White,Free Standard Installation)",
-        "price": "N/A",
-        "rating": "1.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Inverter-Suitable-ASGG18KJTA-B-Standard-Installation/dp/B0CFG6H596/ref=sr_1_69"
+        "url": "https://www.amazon.in/Hisense-Convertible-Intelligent-corrosion-AS-12TR4R3E/dp/B0GD4PTQV2/ref=sr_1_68",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.90",
+            "cooling_capacity": "3400",
+            "consumption": "675.70",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0DQYBR74K",
@@ -821,7 +545,14 @@
         "price": "28990",
         "rating": "3.7",
         "reviews": "82",
-        "url": "https://www.amazon.in/Convertible-Technology-Microbacterial-Temperature-AR15AS3IS1HLE25/dp/B0DQYBR74K/ref=sr_1_70"
+        "url": "https://www.amazon.in/Convertible-Technology-Microbacterial-Temperature-AR15AS3IS1HLE25/dp/B0DQYBR74K/ref=sr_1_70",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.81",
+            "cooling_capacity": "4800",
+            "consumption": "975.29",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0DYNHVWVB",
@@ -829,7 +560,10 @@
         "price": "55090",
         "rating": "3.0",
         "reviews": "7",
-        "url": "https://www.amazon.in/Lloyd-Inverter-Expandable-Lighting-GLS18V5FBGST/dp/B0DYNHVWVB/ref=sr_1_71"
+        "url": "https://www.amazon.in/Lloyd-Inverter-Expandable-Lighting-GLS18V5FBGST/dp/B0DYNHVWVB/ref=sr_1_71",
+        "verified_data": {
+            "error": "NO_LABEL_FOUND_IN_ANY_IMAGE"
+        }
     },
     {
         "asin": "B0CNRS528M",
@@ -837,7 +571,14 @@
         "price": "44590",
         "rating": "3.4",
         "reviews": "3",
-        "url": "https://www.amazon.in/Blue-Star-Convertible-Diagnosis-IC318VCUHC/dp/B0CNRS528M/ref=sr_1_72"
+        "url": "https://www.amazon.in/Blue-Star-Convertible-Diagnosis-IC318VCUHC/dp/B0CNRS528M/ref=sr_1_72",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.05",
+            "cooling_capacity": "5210",
+            "consumption": "996.39",
+            "model_year": "2023"
+        }
     },
     {
         "asin": "B0DZH9NR6V",
@@ -845,7 +586,14 @@
         "price": "44990",
         "rating": "3.4",
         "reviews": "10",
-        "url": "https://www.amazon.in/SHARP-Inverter-Comprehensive-Convertible-AHSI20V5BSCHD/dp/B0DZH9NR6V/ref=sr_1_73"
+        "url": "https://www.amazon.in/SHARP-Inverter-Comprehensive-Convertible-AHSI20V5BSCHD/dp/B0DZH9NR6V/ref=sr_1_73",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.15",
+            "cooling_capacity": "5300",
+            "consumption": "797.12",
+            "model_year": "2025"
+        }
     },
     {
         "asin": "B0F1KN7VZN",
@@ -853,7 +601,10 @@
         "price": "35490",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Candy-Convertible-Inverter-technology-CS18EP5N-INV/dp/B0F1KN7VZN/ref=sr_1_74"
+        "url": "https://www.amazon.in/Candy-Convertible-Inverter-technology-CS18EP5N-INV/dp/B0F1KN7VZN/ref=sr_1_74",
+        "verified_data": {
+            "error": "NO_LABEL_FOUND_IN_ANY_IMAGE"
+        }
     },
     {
         "asin": "B09W5K2L16",
@@ -861,7 +612,14 @@
         "price": "38490",
         "rating": "3.8",
         "reviews": "10",
-        "url": "https://www.amazon.in/Voltas-Split-Conditioner-White-4503222/dp/B09W5K2L16/ref=sr_1_75"
+        "url": "https://www.amazon.in/Voltas-Split-Conditioner-White-4503222/dp/B09W5K2L16/ref=sr_1_75",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.8",
+            "cooling_capacity": "3500",
+            "consumption": "635.1",
+            "model_year": "2023"
+        }
     },
     {
         "asin": "B0BBTVT1BJ",
@@ -869,23 +627,14 @@
         "price": "36090",
         "rating": "4.3",
         "reviews": "7",
-        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV183C1AA/dp/B0BBTVT1BJ/ref=sr_1_81"
-    },
-    {
-        "asin": "B0GQ9N7BNS",
-        "title": "Haier 1 Ton 3 Star,New star rated, Wi-Fi HEXA Inverter Smart Split AC (AI Cooling, Energy Saving & Self-Clean, 7 in 1 Convertible, Copper, 4-way Swing, Cools in 10 Sec at 60\u00b0C, White)-HSA14KU-GAI3NB-I",
-        "price": "N/A",
-        "rating": "1.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Haier-Inverter-Self-Clean-Convertible-HSA14KU-GAI3NB-I/dp/B0GQ9N7BNS/ref=sr_1_82"
-    },
-    {
-        "asin": "B0CHMTNC5K",
-        "title": "GENERAL 2 Ton BEE 2026 3 Star Rated,Hot & Cold Inverter Split AC(Copper,7040W,15m Long Reach Airflow,4 Way Swing,-15\u00b0C~55\u00b0C Max,Suitable for 250~320 Sft,ASGG24KJTA-B, White,Free Standard Installation)",
-        "price": "N/A",
-        "rating": "4.0",
-        "reviews": "1",
-        "url": "https://www.amazon.in/Inverter-Operation-Suitable-ASGG24KJTA-B-Installation/dp/B0CHMTNC5K/ref=sr_1_83"
+        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV183C1AA/dp/B0BBTVT1BJ/ref=sr_1_81",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.94",
+            "cooling_capacity": "5100",
+            "consumption": "1000.90",
+            "model_year": "2022"
+        }
     },
     {
         "asin": "B0BBVRPCHV",
@@ -893,7 +642,14 @@
         "price": "45590",
         "rating": "2.6",
         "reviews": "6",
-        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV185C3HA/dp/B0BBVRPCHV/ref=sr_1_84"
+        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV185C3HA/dp/B0BBVRPCHV/ref=sr_1_84",
+        "verified_data": {
+            "star_rating": null,
+            "iseer": "5.15",
+            "cooling_capacity": "5050",
+            "consumption": "758.60",
+            "model_year": "2022"
+        }
     },
     {
         "asin": "B09RFDKSVF",
@@ -901,7 +657,14 @@
         "price": "47090",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Blue-Star-Inverter-IA319VCU-Matt-Gloss/dp/B09RFDKSVF/ref=sr_1_85"
+        "url": "https://www.amazon.in/Blue-Star-Inverter-IA319VCU-Matt-Gloss/dp/B09RFDKSVF/ref=sr_1_85",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.99",
+            "cooling_capacity": "5850",
+            "consumption": "1134.00",
+            "model_year": "2022"
+        }
     },
     {
         "asin": "B0BBTSBVQL",
@@ -909,7 +672,14 @@
         "price": "38890",
         "rating": "4.2",
         "reviews": "7",
-        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV125C3HA/dp/B0BBTSBVQL/ref=sr_1_81"
+        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV125C3HA/dp/B0BBTSBVQL/ref=sr_1_81",
+        "verified_data": {
+            "star_rating": "5 Star",
+            "iseer": "5.15",
+            "cooling_capacity": "3450",
+            "consumption": "518.39",
+            "model_year": "2022"
+        }
     },
     {
         "asin": "B0BBTT1CLQ",
@@ -917,7 +687,14 @@
         "price": "32290",
         "rating": "3.7",
         "reviews": "6",
-        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV123C1AA/dp/B0BBTT1CLQ/ref=sr_1_82"
+        "url": "https://www.amazon.in/Electrolux-Convertible-Anti-Corrosion-UltimateHome-ESV123C1AA/dp/B0BBTT1CLQ/ref=sr_1_82",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "4.00",
+            "cooling_capacity": "3450",
+            "consumption": "668.13",
+            "model_year": "2022"
+        }
     },
     {
         "asin": "B08HRF8SDT",
@@ -925,7 +702,14 @@
         "price": "42690",
         "rating": "3.5",
         "reviews": "7",
-        "url": "https://www.amazon.in/Livpure-Inverter-Copper-LPS-IN24K3SW-A20/dp/B08HRF8SDT/ref=sr_1_83"
+        "url": "https://www.amazon.in/Livpure-Inverter-Copper-LPS-IN24K3SW-A20/dp/B08HRF8SDT/ref=sr_1_83",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.70",
+            "cooling_capacity": "5450",
+            "consumption": "1139.65",
+            "model_year": "2020"
+        }
     },
     {
         "asin": "B078Y5V6N2",
@@ -933,7 +717,14 @@
         "price": "39890",
         "rating": "3.8",
         "reviews": "201",
-        "url": "https://www.amazon.in/Samsung-Inverter-Copper-AR18NV3HFTRNNA-Starflower/dp/B078Y5V6N2/ref=sr_1_84"
+        "url": "https://www.amazon.in/Samsung-Inverter-Copper-AR18NV3HFTRNNA-Starflower/dp/B078Y5V6N2/ref=sr_1_84",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": null,
+            "cooling_capacity": null,
+            "consumption": null,
+            "model_year": null
+        }
     },
     {
         "asin": "B079FG5JVL",
@@ -941,7 +732,14 @@
         "price": "32290",
         "rating": "3.9",
         "reviews": "3",
-        "url": "https://www.amazon.in/Samsung-Inverter-Split-AR12NV3PAWK-Maldives/dp/B079FG5JVL/ref=sr_1_85"
+        "url": "https://www.amazon.in/Samsung-Inverter-Split-AR12NV3PAWK-Maldives/dp/B079FG5JVL/ref=sr_1_85",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": null,
+            "cooling_capacity": null,
+            "consumption": null,
+            "model_year": null
+        }
     },
     {
         "asin": "B00LFA5H7A",
@@ -949,7 +747,10 @@
         "price": "36990",
         "rating": "2.7",
         "reviews": "2",
-        "url": "https://www.amazon.in/LG-LSA3SP5D-Split-Rating-White/dp/B00LFA5H7A/ref=sr_1_86"
+        "url": "https://www.amazon.in/LG-LSA3SP5D-Split-Rating-White/dp/B00LFA5H7A/ref=sr_1_86",
+        "verified_data": {
+            "error": "NO_LABEL_FOUND_IN_ANY_IMAGE"
+        }
     },
     {
         "asin": "B09SP8VPLP",
@@ -957,7 +758,10 @@
         "price": "33790",
         "rating": "3.5",
         "reviews": "3",
-        "url": "https://www.amazon.in/Haier-Inverter-convertible-HSU19E-TXS3B-INV/dp/B09SP8VPLP/ref=sr_1_87"
+        "url": "https://www.amazon.in/Haier-Inverter-convertible-HSU19E-TXS3B-INV/dp/B09SP8VPLP/ref=sr_1_87",
+        "verified_data": {
+            "error": "NO_LABEL_FOUND_IN_ANY_IMAGE"
+        }
     },
     {
         "asin": "B0BTVSZQ9V",
@@ -965,7 +769,14 @@
         "price": "53890",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/HITACHI-5500FWXL-Split-System-Conditioners-Extra-RAS-V422PCAISH/dp/B0BTVSZQ9V/ref=sr_1_88"
+        "url": "https://www.amazon.in/HITACHI-5500FWXL-Split-System-Conditioners-Extra-RAS-V422PCAISH/dp/B0BTVSZQ9V/ref=sr_1_88",
+        "verified_data": {
+            "star_rating": "4 Star",
+            "iseer": "4.45",
+            "cooling_capacity": "6300.00",
+            "consumption": "1096.51",
+            "model_year": "2023"
+        }
     },
     {
         "asin": "B09WDSZSBQ",
@@ -973,7 +784,14 @@
         "price": "41190",
         "rating": "N/A",
         "reviews": "0",
-        "url": "https://www.amazon.in/Hitachi-Split-Ac-Inverter-Rmqg322Hfeoz1/dp/B09WDSZSBQ/ref=sr_1_89"
+        "url": "https://www.amazon.in/Hitachi-Split-Ac-Inverter-Rmqg322Hfeoz1/dp/B09WDSZSBQ/ref=sr_1_89",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.94",
+            "cooling_capacity": "6300.00",
+            "consumption": "1236.39",
+            "model_year": "2022"
+        }
     },
     {
         "asin": "B07P3M2HC3",
@@ -981,7 +799,10 @@
         "price": "36090",
         "rating": "3.8",
         "reviews": "5",
-        "url": "https://www.amazon.in/Samsung-Inverter-Split-Copper-AR12RV3HFTY/dp/B07P3M2HC3/ref=sr_1_90"
+        "url": "https://www.amazon.in/Samsung-Inverter-Split-Copper-AR12RV3HFTY/dp/B07P3M2HC3/ref=sr_1_90",
+        "verified_data": {
+            "error": "NO_LABEL_FOUND_IN_ANY_IMAGE"
+        }
     },
     {
         "asin": "B07P3M2HC8",
@@ -989,7 +810,10 @@
         "price": "39890",
         "rating": "3.0",
         "reviews": "2",
-        "url": "https://www.amazon.in/Samsung-Inverter-Split-Alloy-AR18RV3HFTV/dp/B07P3M2HC8/ref=sr_1_91"
+        "url": "https://www.amazon.in/Samsung-Inverter-Split-Alloy-AR18RV3HFTV/dp/B07P3M2HC8/ref=sr_1_91",
+        "verified_data": {
+            "error": "NO_LABEL_FOUND_IN_ANY_IMAGE"
+        }
     },
     {
         "asin": "B07NBRYWSR",
@@ -997,6 +821,13 @@
         "price": "41190",
         "rating": "3.2",
         "reviews": "7",
-        "url": "https://www.amazon.in/Hitachi-Inverter-Split-Copper-RMD322HCEA/dp/B07NBRYWSR/ref=sr_1_97"
+        "url": "https://www.amazon.in/Hitachi-Inverter-Split-Copper-RMD322HCEA/dp/B07NBRYWSR/ref=sr_1_97",
+        "verified_data": {
+            "star_rating": "3 Star",
+            "iseer": "3.80",
+            "cooling_capacity": "6300.00",
+            "consumption": "1282.37",
+            "model_year": "2019"
+        }
     }
 ]

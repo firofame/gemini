@@ -65,7 +65,7 @@ async def main():
                     reviews = re.sub(r'[^0-9]', '', reviews) if reviews else "0"
                     if not reviews: reviews = "0"
                     
-                    if asin:
+                    if asin and price != "N/A":
                         products.append({
                             "asin": asin,
                             "title": title.strip(),
@@ -75,7 +75,8 @@ async def main():
                             "url": url
                         })
                     else:
-                        print(f"Skipping item: ASIN missing for '{title[:30]}...'")
+                        reason = "ASIN missing" if not asin else "Price missing"
+                        print(f"Skipping item: {reason} for '{title[:30]}...'")
                 except Exception as e:
                     print(f"Error processing item: {e}")
                     continue

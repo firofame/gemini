@@ -11,7 +11,7 @@ async def main():
     )
     await client.init()
 
-    model = Model.BASIC_FLASH
+    model = Model.PLUS_THINKING
     response = await client.generate_content(
         "Tell me a joke about AI.",
         model=model,

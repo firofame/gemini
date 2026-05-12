@@ -10,6 +10,7 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 | `archive_upload.py` | Uploads text and audio files to Internet Archive |
 | `list_models.py` | Lists available Gemini models for your account |
 | `sample.py` | Gemini API test script using `gemini_webapi` |
+| `ocr.py` | OCR PDF pages via Gemini (renders pages as images, extracts text) |
 | `comfi.py` | Modal app for running ComfyUI with Qwen-Image-Edit models |
 
 ## Prerequisites

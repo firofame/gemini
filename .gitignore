@@ -38,4 +38,5 @@ Thumbs.db
 # API Keys/Secrets
 .env
 auth.json
+cookies.json
 *.key

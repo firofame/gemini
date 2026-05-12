@@ -1,11 +1,26 @@
-from google import genai
+import os
+import asyncio
+from gemini_webapi import GeminiClient
+from gemini_webapi.constants import Model
 
-client = genai.Client()
 
-response = client.models.generate_content(
-    model="gemini-3.1-flash-lite-preview",
-    contents="Tell me a joke about AI."
-)
+async def main():
+    client = GeminiClient(
+        secure_1psid=os.environ.get("SECURE_1PSID"),
+        secure_1psidts=os.environ.get("SECURE_1PSIDTS"),
+    )
+    await client.init()
 
-print(f"Model ID: gemini-3.1-flash-lite-preview")
-print(f"Response: {response.text}")
+    model = Model.BASIC_FLASH
+    response = await client.generate_content(
+        "Tell me a joke about AI.",
+        model=model,
+    )
+
+    print(f"Model: {model.model_name}")
+    print(f"Response: {response.text}")
+    await client.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

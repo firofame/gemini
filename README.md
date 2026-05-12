@@ -8,17 +8,16 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 |--------|-------------|
 | `tts.py` | Text-to-Speech converter using Google Docs and a persistent Camoufox profile |
 | `archive_upload.py` | Uploads text and audio files to Internet Archive |
-| `list_models.py` | Lists Gemini models that support `generateContent` |
-| `sample.py` | Simple Gemini API test script |
+| `list_models.py` | Lists available Gemini models for your account |
+| `sample.py` | Gemini API test script using `gemini_webapi` |
 | `comfi.py` | Modal app for running ComfyUI with Qwen-Image-Edit models |
 
 ## Prerequisites
 
 - Python 3.10+
-- [Google Gemini API Key](https://aistudio.google.com/app/apikey) (set as `GEMINI_API_KEY` env var)
-- Google Account (for TTS via Google Docs)
+- Google Account signed in at [gemini.google.com](https://gemini.google.com)
+- `__Secure-1PSID` and `__Secure-1PSIDTS` cookies from gemini.google.com (set as `SECURE_1PSID` / `SECURE_1PSIDTS` env vars, or use `browser-cookie3` for auto-detection)
 - [Camoufox](https://camoufox.com/) (used for auth and TTS automation)
-- [Playwright](https://playwright.dev/python/docs/intro) runtime dependency used by Camoufox
 - [internetarchive](https://pypi.org/project/internetarchive/) (for archive.org uploads)
 
 ## Installation
@@ -29,15 +28,16 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
    cd gemini
    ```
 
-2. Create and activate a virtual environment:
+2. Create and activate a virtual environment with `uv`:
    ```bash
-   python -m venv .venv
+   uv venv
    source .venv/bin/activate
    ```
 
 3. Install dependencies:
    ```bash
-   pip install google-genai playwright camoufox internetarchive
+   uv pip install gemini_webapi camoufox internetarchive
+   uv pip install "gemini_webapi[browser]"  # optional: auto-detect cookies from browser
    ```
 
 4. Install browser dependencies:
@@ -45,14 +45,24 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
    python -m camoufox fetch
    ```
 
-Camoufox is the browser automation library used directly by `tts.py`. It is Playwright-compatible and still depends on Playwright under the hood, so `playwright` remains in the Python dependencies even though the script does not import it directly.
+## Authentication
+
+`gemini_webapi` uses your Google account cookies instead of an API key. Export your cookies from [gemini.google.com](https://gemini.google.com):
+
+```bash
+export SECURE_1PSID="your-value"
+export SECURE_1PSIDTS="your-value"
+export GEMINI_COOKIE_PATH="$HOME/.cache/gemini_cookies"  # for auto-refresh persistence
+```
+
+Or install `gemini_webapi[browser]` to auto-detect cookies from your logged-in browser.
 
 ## Workflow
 
 ### 1. Login Once
 
 ```bash
-python tts.py --login
+uv run tts.py --login
 ```
 
 Opens Camoufox with the persistent profile at `~/.camoufox-profile` so you can sign in to Google once and reuse that session later.
@@ -60,7 +70,7 @@ Opens Camoufox with the persistent profile at `~/.camoufox-profile` so you can s
 ### 2. Generate Audio (MP3)
 
 ```bash
-python tts.py input.txt [output.mp3]
+uv run tts.py input.txt [output.mp3]
 ```
 
 Inserts text into Google Docs and uses its TTS engine to generate MP3 audio.
@@ -71,7 +81,7 @@ Uses the saved Google session from `.camoufox-profile/`.
 Edit `identifier` and `source_files` in `archive_upload.py`, then:
 
 ```bash
-python archive_upload.py
+uv run archive_upload.py
 ```
 
 ## Configuration

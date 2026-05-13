@@ -10,8 +10,16 @@ A Python toolkit for converting Malayalam text into audiobooks using Gemini AI a
 | `archive_upload.py` | Uploads text and audio files to Internet Archive |
 | `list_models.py` | Lists available Gemini models for your account |
 | `sample.py` | Gemini API test script using `gemini_webapi` |
-| `ocr.py` | OCR PDF pages via Gemini (renders pages as images, extracts text) |
+| `ocr.py` | OCR PDF via Mistral API (uploads PDF, saves full response as JSON) |
 | `comfi.py` | Modal app for running ComfyUI with Qwen-Image-Edit models |
+
+### 4. OCR a PDF
+
+```bash
+uv run ocr.py path/to/file.pdf
+```
+
+Requires `MISTRAL_API_KEY` env var. Saves the full API response as `{filename}-ocr-response.json` alongside the input.
 
 ## Prerequisites
 

@@ -28,8 +28,6 @@ images/
 translated_book.md
 temp_chunks/
 temp_chunks_*/
-*.pdf
-!sample.pdf  # Keep if they have a sample, but generally ignore books
 
 # OS
 .DS_Store

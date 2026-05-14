@@ -1,0 +1,5 @@
+google-genai
+pymupdf
+camoufox
+internetarchive
+python-dotenv

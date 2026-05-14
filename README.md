@@ -1,106 +1,120 @@
-# Gemini Book Toolkit
+# 📚 Gemini Book Toolkit
+### *Islamic Literature OCR & TTS Pipeline*
 
-A Python toolkit for converting Malayalam text into audiobooks using Gemini AI and Google Docs TTS.
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Gemini](https://img.shields.io/badge/AI-Gemini_3.1-orange?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
+[![Automation](https://img.shields.io/badge/Engine-Camoufox-green?style=for-the-badge&logo=firefox&logoColor=white)](https://camoufox.com)
+[![Package Manager](https://img.shields.io/badge/Managed_by-uv-purple?style=for-the-badge&logo=python&logoColor=white)](https://github.com/astral-sh/uv)
 
-## Scripts
+An end-to-end automation pipeline designed to transform Urdu/Arabic Islamic literature (like *Fazail-e-Sadaqat*) into professional, TTS-optimized Malayalam audiobooks.
 
-| Script | Description |
-|--------|-------------|
-| `tts.py` | Text-to-Speech converter using Google Docs and a persistent Camoufox profile |
-| `archive_upload.py` | Uploads text and audio files to Internet Archive |
-| `list_models.py` | Lists available Gemini models for your account |
-| `sample.py` | Gemini API test script using `gemini_webapi` |
-| `ocr.py` | OCR PDF via Mistral API (uploads PDF, saves full response as JSON) |
-| `comfi.py` | Modal app for running ComfyUI with Qwen-Image-Edit models |
+---
 
-### 4. OCR a PDF
+## 🚀 Key Features
 
-```bash
-uv run ocr.py path/to/file.pdf
+*   **🔍 Vision-Powered OCR**: Leverages Gemini 3.1 Flash-Lite to extract and translate complex Urdu/Arabic typography with high fidelity.
+*   **🧠 Contextual Continuity**: Intelligent multi-page batching that maintains context between pages, ensuring split sentences are reconstructed seamlessly.
+*   **🎙️ TTS-Optimized Scripting**: 
+    *   100% Malayalam script enforcement (no foreign characters).
+    *   Automatic expansion of honorifics (ﷺ, ؓ, etc.) into full Malayalam text.
+    *   Numeral-to-word conversion for natural speech.
+    *   Prosodic pause injection for chapter headers.
+*   **🤖 Browser Automation**: Uses **Camoufox** to drive Google Docs' high-quality TTS engine, bypassing standard API limitations.
+*   **⚡ High-Throughput Pipeline**: Multi-threaded processing with exponential backoff and smart rate-limiting to maximize API efficiency.
+*   **☁️ Archive Integration**: Automated uploads to Internet Archive with metadata synchronization.
+
+---
+
+## 🛠️ Project Architecture
+
+```mermaid
+graph TD
+    A[Fazail-e-Sadaqat.pdf] -->|PyMuPDF| B(Image Extraction)
+    B -->|Gemini 3.1 Flash| C{OCR & Translation}
+    C -->|Contextual Batching| D[Fazail-e-Sadaqat_OCR.md]
+    D -->|Camoufox Automation| E[Google Docs TTS]
+    E -->|Fragment Generation| F(Audio Chunks)
+    F -->|FFmpeg| G[Final Malayalam Audiobook .mp3]
+    G -->|Internet Archive API| H((Cloud Archive))
 ```
 
-Requires `MISTRAL_API_KEY` env var. Saves the full API response as `{filename}-ocr-response.json` alongside the input.
+---
 
-## Prerequisites
+## 📦 Installation
 
-- Python 3.10+
-- Google Account signed in at [gemini.google.com](https://gemini.google.com)
-- `__Secure-1PSID` and `__Secure-1PSIDTS` cookies from gemini.google.com (set as `SECURE_1PSID` / `SECURE_1PSIDTS` env vars, or use `browser-cookie3` for auto-detection)
-- [Camoufox](https://camoufox.com/) (used for auth and TTS automation)
-- [internetarchive](https://pypi.org/project/internetarchive/) (for archive.org uploads)
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd gemini
-   ```
-
-2. Create and activate a virtual environment with `uv`:
-   ```bash
-   uv venv
-   source .venv/bin/activate
-   ```
-
-3. Install dependencies:
-   ```bash
-   uv pip install gemini_webapi camoufox internetarchive
-   uv pip install "gemini_webapi[browser]"  # optional: auto-detect cookies from browser
-   ```
-
-4. Install browser dependencies:
-   ```bash
-   python -m camoufox fetch
-   ```
-
-## Authentication
-
-`gemini_webapi` uses your Google account cookies instead of an API key. Export your cookies from [gemini.google.com](https://gemini.google.com):
+This project uses `uv` for ultra-fast dependency management.
 
 ```bash
-export SECURE_1PSID="your-value"
-export SECURE_1PSIDTS="your-value"
-export GEMINI_COOKIE_PATH="$HOME/.cache/gemini_cookies"  # for auto-refresh persistence
+# 1. Clone & Enter
+git clone <repository-url>
+cd gemini
+
+# 2. Setup Virtual Environment
+uv venv
+source .venv/bin/activate
+
+# 3. Install Dependencies
+uv pip install -r requirements.txt  # Or manually install:
+uv pip install google-genai pymupdf camoufox internetarchive
 ```
 
-Or install `gemini_webapi[browser]` to auto-detect cookies from your logged-in browser.
+---
 
-## Workflow
+## ⚙️ Configuration
 
-### 1. Login Once
+Create a `.env` file or export the following variables:
 
+| Variable | Description |
+| :--- | :--- |
+| `GOOGLE_API_KEY` | Your Google AI Studio API Key. |
+| `MISTRAL_API_KEY` | Required for `ocr.py` (if using Mistral fallback). |
+| `IA_ACCESS_KEY` | Internet Archive S3 Access Key. |
+| `IA_SECRET_KEY` | Internet Archive S3 Secret Key. |
+
+---
+
+## 📖 Usage Guide
+
+### 1. OCR Extraction & Translation
+Processes the source PDF and generates a TTS-ready Markdown file.
+```bash
+uv run ocr.py
+```
+*Configurable in `ocr.py`: `MAX_WORKERS`, `PAGES_PER_BATCH`, and `WAVE_DELAY`.*
+
+### 2. Audio Generation
+Converts the Markdown text into high-quality audio fragments.
+
+**First-time Login (Headful):**
 ```bash
 uv run tts.py --login
 ```
 
-Opens Camoufox with the persistent profile at `~/.camoufox-profile` so you can sign in to Google once and reuse that session later.
-
-### 2. Generate Audio (MP3)
-
+**Generate Audio:**
 ```bash
-uv run tts.py input.txt [output.mp3]
+uv run tts.py Fazail-e-Sadaqat_OCR.md
 ```
+*This will generate multiple MP3 chunks and automatically concatenate them using FFmpeg.*
 
-Inserts text into Google Docs and uses its TTS engine to generate MP3 audio.
-Uses the saved Google session from `.camoufox-profile/`.
-
-### 3. Upload to Internet Archive
-
-Edit `identifier` and `source_files` in `archive_upload.py`, then:
-
+### 3. Archive Synchronization
+Upload the results to Internet Archive.
 ```bash
 uv run archive_upload.py
 ```
 
-## Configuration
+---
 
-- **`tts.py`**: Update `CONFIG['doc_url']` to a Google Doc you have edit access to.
+## 🛠️ Utility Scripts
 
-## Related Projects
+| Script | Purpose |
+| :--- | :--- |
+| `list_models.py` | Lists available Gemini models for your API key. |
+| `clean.py` | Sanitizes extracted text for better TTS compatibility. |
+| `comfi.py` | Modal-powered app for ComfyUI image editing (Bonus). |
+| `sample.py` | Quick test for Gemini API connectivity. |
 
-- **[AC Scraper](file:///home/firoz/Desktop/ac-scraper)**: An automated pipeline for extracting technical AC data from Amazon. (Moved to separate repository).
+---
 
-## License
+## 📜 License
 
-[MIT License](LICENSE)
+[MIT License](LICENSE) — Created with ❤️ for the Malayalam-speaking community.

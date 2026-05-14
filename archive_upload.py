@@ -4,8 +4,8 @@ import os
 import datetime
 
 # Configuration
-identifier = "Quran-Malayalam-Audio-Translation"
-search_dir = Path("../quran_malayalam_audio")
+identifier = "Fazail-e-Sadaqat-Malayalam"
+search_dir = Path("./Fazail-e-Sadaqat")
 
 def get_source_files():
     """Returns a map of {remote_filename: local_filepath} for all files in search_dir."""
@@ -28,18 +28,20 @@ def upload_to_archive():
     metadata = {
         "collection": "opensource_audio",
         "mediatype": "audio",
-        "creator": "gemma4:31b",
-        "title": "Quran Malayalam Audio Translation",
+        "creator": "Sheikhul Hadith Maulana Muhammad Zakariyya",
+        "title": "Fazail-e-Sadaqat (Malayalam Audio)",
         "description": (
-            "Complete Quran Malayalam audio translation. "
-            "Includes individual surah files and associated text translations."
+            "Fazail-e-Sadaqat (The Virtues of Charity) with audio chapters in Malayalam, "
+            "authored by Sheikhul Hadith Maulana Muhammad Zakariyya. "
+            "Includes individual chapter MP3 audio and text files."
         ),
         "subject": [
-            "Quran",
-            "Malayalam",
-            "Translation",
-            "Audio",
             "Islam",
+            "Hadith",
+            "Sadaqat",
+            "Charity",
+            "Malayalam",
+            "Audio",
         ],
         "language": "mal",
         "date": str(datetime.datetime.now().year),

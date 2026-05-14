@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Text-to-Speech converter using Google Docs and Camoufox."""
 
+import os
 import sys
 import base64
 import asyncio
@@ -299,6 +300,34 @@ async def main():
 
                 last_blob_url = await process_chunk(page, chunk, out, last_blob_url)
                 await close_player(page)
+
+            # Concatenate multiple audio chunks into a single file
+            if len(chunks) > 1:
+                print('\nConcatenating audio chunks...')
+                list_file = args.output_path.parent / 'ffmpeg_concat_list.txt'
+                try:
+                    with open(list_file, 'w') as f:
+                        for i in range(len(chunks)):
+                            chunk_path = suffix_path(args.output_path, f'-{i + 1}')
+                            f.write(f"file '{chunk_path}'\n")
+
+                    ret = os.system(
+                        f"ffmpeg -y -f concat -safe 0 -i '{list_file}' -c copy '{args.output_path}'"
+                    )
+                    if ret == 0:
+                        print(f'✅ Final audiobook saved as {args.output_path}')
+                        # Clean up individual chunk files
+                        for i in range(len(chunks)):
+                            chunk_path = suffix_path(args.output_path, f'-{i + 1}')
+                            if chunk_path.exists():
+                                chunk_path.unlink()
+                        print(f'Cleaned up {len(chunks)} chunk files.')
+                    else:
+                        print(f'⚠️  ffmpeg concatenation failed (exit code {ret}).')
+                        print(f'Individual chunks are preserved as {args.output_path.stem}-N{args.output_path.suffix}')
+                finally:
+                    if list_file.exists():
+                        list_file.unlink()
 
             print('\nDone!')
         finally:

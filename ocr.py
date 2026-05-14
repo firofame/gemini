@@ -98,6 +98,8 @@ def process_single_batch(doc, batch_pages, prompt, previous_text=""):
                 model=MODEL,
                 contents=image_parts + [context_prompt]
             )
+            if response.text is None:
+                raise ValueError("Model returned empty response")
             return (batch_pages, response.text.strip(), None)
         except Exception as e:
             attempts += 1

@@ -20,6 +20,7 @@ CONFIG = {
     'retry_delay_seconds': 5,
     'profile_dir': Path.home() / '.camoufox-profile',
     'login_window_size': (1100, 700),
+    'debug': False,
 }
 
 SELECTORS = {
@@ -43,9 +44,13 @@ def parse_args() -> Args:
     """Parse command line arguments."""
     args = sys.argv[1:]
 
+    if '--debug' in args:
+        CONFIG['debug'] = True
+        args.remove('--debug')
+
     if not args:
         print(
-            'Usage: python tts.py --login | input.txt [output.mp3|output_dir]',
+            'Usage: python tts.py [--debug] --login | input.txt [output.mp3|output_dir]',
             file=sys.stderr,
         )
         sys.exit(1)
@@ -70,7 +75,6 @@ def split_text(text: str) -> list[str]:
     current = ''
 
     for line in text.split('\n'):
-        line = normalize_long_lead_sentence(line)
 
         if current and len(current) + len(line) + 1 > CONFIG['max_chunk_length']:
             chunks.append(current)
@@ -88,18 +92,29 @@ def suffix_path(file_path: Path, suffix: str) -> Path:
     return file_path.with_name(f"{file_path.stem}{suffix}{file_path.suffix}")
 
 
-def normalize_long_lead_sentence(text: str) -> str:
-    """Break very long leading clauses to avoid Google Docs TTS issues."""
+def normalize_lines(text: str, num_lines: int = 1) -> str:
+    """Normalize the first N lines of a chunk for Google Docs TTS.
+
+    Google Docs TTS often fails to process the very first sentence.
+    Fix: replace all breakable punctuation with periods on the first N lines,
+    or append a period if a line has no punctuation at all.
+    On retries, num_lines is increased to normalize deeper into the text.
+    """
     punctuation_marks = ',;:?!،؛؟'
+    lines = text.split('\n')
+    limit = min(num_lines, len(lines))
 
-    while len(text) > 300:
-        positions = [text.index(mark) for mark in punctuation_marks if mark in text]
-        if not positions:
-            break
+    for i in range(limit):
+        line = lines[i]
+        has_punctuation = any(m in line for m in punctuation_marks)
+        if has_punctuation:
+            for mark in punctuation_marks:
+                line = line.replace(mark, '.')
+        elif not line.rstrip().endswith('.'):
+            line = line.rstrip() + '.'
+        lines[i] = line
 
-        idx = min(positions)
-        text = text[:idx] + '.' + text[idx + 1:]
-    return text
+    return '\n'.join(lines)
 
 
 
@@ -162,39 +177,37 @@ async def close_player(page: Any):
 
 
 async def clear_editor(page: Any):
-    """Clear the editor and verify the previous content is gone."""
+    """Clear editor content with retry and verification.
+
+    Ctrl+A intermittently fails in Google Docs, leaving old text behind.
+    We retry up to 5 times, checking the page count to verify the clear worked.
+    """
     mod = 'Meta' if sys.platform == 'darwin' else 'Control'
 
-    for attempt in range(3):
+    for attempt in range(5):
+        # Focus the editor and scroll to top first
         await click(page, SELECTORS['editor'])
-        await asyncio.sleep(0.7)
-        await page.keyboard.press(f'{mod}+A')
+        await asyncio.sleep(1)
+        await page.keyboard.press(f'{mod}+Home')
         await asyncio.sleep(0.5)
+
+        # Select all and delete
+        await page.keyboard.press(f'{mod}+A')
+        await asyncio.sleep(1)
         await page.keyboard.press('Backspace')
-        await asyncio.sleep(1.2)
+        await asyncio.sleep(1.5)
 
-        is_empty = await page.evaluate("""() => {
-            const editor = document.querySelector('.kix-appview-editor');
-            if (!editor) return false;
-
-            const text = (editor.innerText || editor.textContent || '')
-                .replace(/[\\u200b\\u200c\\u200d\\ufeff\\u00a0]/g, '')
-                .replace(/\\s+/g, '');
-            return text.length === 0;
+        # Verify: check if page count is 1 (cleared doc is always 1 page)
+        page_count = await page.evaluate(r"""() => {
+            const el = document.querySelector('.kix-page-paginator');
+            if (!el) return 1;
+            const m = (el.textContent || '').match(/(\d+)\s*of\s*(\d+)/i);
+            return m ? parseInt(m[2]) : 1;
         }""")
-        if is_empty:
-            return True
 
-        print(f'Editor not empty after clear attempt {attempt + 1}, retrying...')
-
-    # Leave the document selected so the first inserted chunk replaces any
-    # leftover whitespace or stale content that Docs still reports internally.
-    await click(page, SELECTORS['editor'])
-    await asyncio.sleep(0.7)
-    await page.keyboard.press(f'{mod}+A')
-    await asyncio.sleep(0.5)
-    print('Proceeding with select-all replacement despite non-empty editor check...')
-    return False
+        if page_count <= 1:
+            return
+        print(f'  Clear attempt {attempt + 1}: still {page_count} pages, retrying...')
 
 
 async def insert_text(page: Any, text: str):
@@ -210,6 +223,9 @@ async def insert_text(page: Any, text: str):
     for i in range(0, len(normalized), chunk_size):
         await page.keyboard.insert_text(normalized[i:i + chunk_size])
 
+    # Scroll back to top after inserting
+    mod = 'Meta' if sys.platform == 'darwin' else 'Control'
+    await page.keyboard.press(f'{mod}+Home')
     await asyncio.sleep(0.5)
 
 
@@ -228,18 +244,47 @@ async def generate_audio(page: Any, prev_blob_url: str) -> str:
 
 
 async def process_chunk(page: Any, text: str, output_path: Path, prev_blob_url: str) -> str:
-    """Process a single text chunk."""
-    print(f'Inserting {len(text)} chars...')
-    await insert_text(page, text)
+    """Process a single text chunk with retry on failure."""
+    attempts = CONFIG['retry_attempts']
+    debug_dir = output_path.parent / 'debug'
 
-    print('Generating audio...')
-    blob_url = await generate_audio(page, prev_blob_url)
+    async def debug_screenshot(name: str):
+        if not CONFIG['debug']:
+            return
+        debug_dir.mkdir(exist_ok=True)
+        path = debug_dir / f'{output_path.stem}_{name}.png'
+        await page.screenshot(path=str(path))
+        print(f'  📸 {path}')
 
-    print('Saving...')
-    await save_blob(page, blob_url, output_path)
-    print(f'✅ {output_path}')
+    for attempt in range(1, attempts + 1):
+        try:
+            # Normalize more lines on each attempt (1st line, then 2, then 3...)
+            normalized = normalize_lines(text, num_lines=attempt)
 
-    return blob_url
+            print(f'Inserting {len(normalized)} chars...')
+            await insert_text(page, normalized)
+            await debug_screenshot(f'after_insert_attempt{attempt}')
+
+            print('Generating audio...')
+            blob_url = await generate_audio(page, prev_blob_url)
+            await debug_screenshot(f'after_audio_attempt{attempt}')
+
+            print('Saving...')
+            await save_blob(page, blob_url, output_path)
+            print(f'\u2705 {output_path}')
+
+            return blob_url
+        except Exception as err:
+            await debug_screenshot(f'error_attempt{attempt}')
+            await close_player(page)
+            if attempt < attempts:
+                delay = CONFIG['retry_delay_seconds'] * attempt
+                print(f'\u26a0\ufe0f  Chunk failed (attempt {attempt}/{attempts}): {err}')
+                print(f'   Normalizing {attempt + 1} lines and retrying in {delay}s...')
+                await asyncio.sleep(delay)
+            else:
+                print(f'\u274c Chunk failed after {attempts} attempts: {err}')
+                raise
 
 
 async def open_tts_page(context):
@@ -297,6 +342,11 @@ async def main():
                     out = suffix_path(args.output_path, f'-{i + 1}')
                 else:
                     out = args.output_path
+
+                # Resume support: skip chunks already on disk
+                if out.exists() and out.stat().st_size > 0:
+                    print(f'⏭️  {out} already exists, skipping.')
+                    continue
 
                 last_blob_url = await process_chunk(page, chunk, out, last_blob_url)
                 await close_player(page)

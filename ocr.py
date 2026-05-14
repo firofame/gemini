@@ -1,6 +1,7 @@
 import os
 import re
 import time
+import json
 from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import fitz  # pymupdf — renders PDF pages as images
@@ -11,19 +12,22 @@ from google.genai import types
 PDF_PATH = "Fazail-e-Sadaqat.pdf"
 OUTPUT_FILE = "Fazail-e-Sadaqat_OCR.md"
 PROMPT_FILE = "prompt.txt"
-# MODEL = "gemini-3.1-flash-lite"
-MODEL = "gemma-4-31b-it"
+MODEL = "gemini-3.1-flash-lite"
+# MODEL = "gemma-4-31b-it"
 
 # Set this to True if you want to limit how many pages are processed in one run
-LIMIT_PROCESSING = True
+LIMIT_PROCESSING = False
 # How many pages to process before stopping
-MAX_PAGES_TO_PROCESS = 100
+MAX_PAGES_TO_PROCESS = 10
 # How many PDF pages to send per API request (1 = safest, 2 = halves requests)
-PAGES_PER_BATCH = 1
+PAGES_PER_BATCH = 2
 # Number of parallel API requests (tune to your RPM limit)
-MAX_WORKERS = 10
-# Seconds to wait between API requests (0 for unlimited RPD models like Gemma)
-REQUEST_DELAY = 0
+# Free tier gemma-4-31b: 15 RPM — keep workers low to avoid 429s
+MAX_WORKERS = 2
+# Seconds to wait between waves of requests (5 workers every 25s = 12 RPM, safely under 15)
+WAVE_DELAY = 5
+# Max retry attempts per batch (increased for transient 500s and 429s)
+MAX_RETRIES = 2
 # ---------------------
 
 client = genai.Client()
@@ -60,9 +64,26 @@ def get_last_page_text(filename):
     return ""
 
 
-def process_single_batch(doc, batch_pages, prompt, previous_text=""):
+def parse_retry_delay(error_msg):
+    """Try to extract the suggested retry delay from a 429 error message."""
+    s = str(error_msg)
+    # Look for 'retryDelay' field like '49s' or 'retry in 49.938153576s'
+    m = re.search(r'retryDelay["\']?:\s*["\']?(\d+)', s)
+    if m:
+        return int(m.group(1)) + 5  # add 5s buffer
+    # Look for 'Please retry in Xs' pattern
+    m = re.search(r'retry in (\d+(?:\.\d+)?)s', s, re.IGNORECASE)
+    if m:
+        return int(float(m.group(1))) + 5
+    return None
+
+
+def process_single_batch(doc, batch_pages, prompt, previous_text="", max_retries=None):
     """Process a single batch of pages. Returns (batch_pages, result_text, error).
     This function is thread-safe and called from the thread pool."""
+    if max_retries is None:
+        max_retries = MAX_RETRIES
+
     # Render pages as PNG images
     image_parts = []
     for pn in batch_pages:
@@ -92,7 +113,7 @@ def process_single_batch(doc, batch_pages, prompt, previous_text=""):
         )
 
     attempts = 0
-    while attempts < 3:
+    while attempts < max_retries:
         try:
             response = client.models.generate_content(
                 model=MODEL,
@@ -103,11 +124,19 @@ def process_single_batch(doc, batch_pages, prompt, previous_text=""):
             return (batch_pages, response.text.strip(), None)
         except Exception as e:
             attempts += 1
-            wait = attempts * 10
-            print(f"  -> Error on Page(s) {page_list}: {e}. Retrying in {wait}s...")
+            error_str = str(e)
+            # Smart delay: parse 429 retryDelay or use exponential backoff
+            if '429' in error_str or 'RESOURCE_EXHAUSTED' in error_str:
+                parsed_delay = parse_retry_delay(error_str)
+                wait = parsed_delay if parsed_delay else 60
+            elif '503' in error_str or 'UNAVAILABLE' in error_str:
+                wait = 30 * attempts  # longer waits for overloaded servers
+            else:
+                wait = attempts * 10
+            print(f"  -> Error on Page(s) {page_list}: {e}. Retrying in {wait}s (attempt {attempts}/{max_retries})...")
             time.sleep(wait)
 
-    return (batch_pages, None, f"Failed after 3 attempts for page(s) {page_list}")
+    return (batch_pages, None, f"Failed after {max_retries} attempts for page(s) {page_list}")
 
 
 def format_result(batch_pages, content, processed_pages):
@@ -211,8 +240,14 @@ def ocr_pdf():
     pages_processed_this_run = 0
 
     # Process batches in waves of MAX_WORKERS concurrent requests
-    for wave_start in range(0, len(all_batches), MAX_WORKERS):
+    failed_batches = []
+    total_batches = len(all_batches)
+
+    for wave_start in range(0, total_batches, MAX_WORKERS):
         wave = all_batches[wave_start : wave_start + MAX_WORKERS]
+        wave_num = wave_start // MAX_WORKERS + 1
+        total_waves = (total_batches + MAX_WORKERS - 1) // MAX_WORKERS
+        print(f"\n--- Wave {wave_num}/{total_waves} ---")
 
         # Submit all batches in this wave concurrently
         # Only the first batch in the wave gets cross-page context
@@ -231,6 +266,7 @@ def ocr_pdf():
                 batch_pages, content, error = future.result()
                 if error:
                     print(f"  ❌ {error}")
+                    failed_batches.append(batch_pages)
                 else:
                     results[batch_pages[0]] = (batch_pages, content)
 
@@ -251,10 +287,45 @@ def ocr_pdf():
             if count > 0:
                 print(f"  ✅ {label}")
 
-        if REQUEST_DELAY > 0:
-            time.sleep(REQUEST_DELAY)
+        # Rate-limit delay between waves
+        if wave_start + MAX_WORKERS < total_batches:
+            print(f"  ⏳ Waiting {WAVE_DELAY}s before next wave (rate limit)...")
+            time.sleep(WAVE_DELAY)
 
-    print(f"Finished. Extracted {pages_processed_this_run} pages. Results saved to {OUTPUT_FILE}")
+    # --- Retry pass for failed pages (one-at-a-time with generous delays) ---
+    if failed_batches:
+        print(f"\n{'='*50}")
+        print(f"Retrying {len(failed_batches)} failed batch(es) sequentially...")
+        print(f"{'='*50}")
+        still_failed = []
+        for batch_pages in failed_batches:
+            page_list = ", ".join(str(p) for p in batch_pages)
+            print(f"  🔄 Retrying page(s) {page_list}...")
+            time.sleep(15)  # generous delay before each retry
+            batch_pages_result, content, error = process_single_batch(
+                doc, batch_pages, prompt, previous_text, max_retries=5
+            )
+            if error:
+                print(f"  ❌ {error}")
+                still_failed.append(batch_pages)
+            else:
+                text_to_write, context_text, count = format_result(
+                    batch_pages_result, content, processed_pages
+                )
+                if text_to_write:
+                    with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
+                        f.write(text_to_write)
+                if context_text:
+                    previous_text = context_text
+                pages_processed_this_run += count
+                print(f"  ✅ Page(s) {page_list} recovered!")
+
+        if still_failed:
+            failed_pages = [p for b in still_failed for p in b]
+            print(f"\n⚠️  Permanently failed pages: {failed_pages}")
+            print(f"   Re-run the script to retry these pages.")
+
+    print(f"\nFinished. Extracted {pages_processed_this_run} pages. Results saved to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     ocr_pdf()

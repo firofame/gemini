@@ -3,3 +3,4 @@ pymupdf
 camoufox
 internetarchive
 python-dotenv
+modal

@@ -20,12 +20,12 @@ LIMIT_PROCESSING = False
 # How many pages to process before stopping
 MAX_PAGES_TO_PROCESS = 10
 # How many PDF pages to send per API request (1 = safest, 2 = halves requests)
-PAGES_PER_BATCH = 2
+PAGES_PER_BATCH = 1
 # Number of parallel API requests (tune to your RPM limit)
 # Free tier gemma-4-31b: 15 RPM — keep workers low to avoid 429s
-MAX_WORKERS = 3
+MAX_WORKERS = 5
 # Seconds to wait between waves of requests (5 workers every 25s = 12 RPM, safely under 15)
-WAVE_DELAY = 3
+WAVE_DELAY = 2
 # Max retry attempts per batch (increased for transient 500s and 429s)
 MAX_RETRIES = 2
 # ---------------------

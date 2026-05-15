@@ -20,7 +20,8 @@ CONFIG = {
     'retry_delay_seconds': 5,
     'profile_dir': Path.home() / '.camoufox-profile',
     'login_window_size': (1100, 700),
-    'debug': False,
+    'debug': True,
+    'headless': True,
 }
 
 SELECTORS = {
@@ -48,9 +49,13 @@ def parse_args() -> Args:
         CONFIG['debug'] = True
         args.remove('--debug')
 
+    if '--headless' in args:
+        CONFIG['headless'] = True
+        args.remove('--headless')
+
     if not args:
         print(
-            'Usage: python tts.py [--debug] --login | input.txt [output.mp3|output_dir]',
+            'Usage: python tts.py [--debug] [--headless] --login | input.txt [output.mp3|output_dir]',
             file=sys.stderr,
         )
         sys.exit(1)
@@ -312,8 +317,11 @@ async def main():
 
     CONFIG['profile_dir'].mkdir(parents=True, exist_ok=True)
 
+    # Force visible browser for login flow
+    is_headless = CONFIG['headless'] if not args.login_only else False
+
     async with AsyncCamoufox(
-        headless=False,
+        headless=is_headless,
         persistent_context=True,
         user_data_dir=str(CONFIG['profile_dir']),
         window=CONFIG['login_window_size'],

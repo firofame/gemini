@@ -4,8 +4,8 @@ import os
 import datetime
 
 # Configuration
-identifier = "Fazail-e-Sadaqat-Malayalam"
-search_dir = Path("./Fazail-e-Sadaqat")
+identifier = "Fazail-e-Sadqaat-Malayalam-Audio"
+search_dir = Path("./Fazail-e-Sadqaat")
 
 def get_source_files():
     """Returns a map of {remote_filename: local_filepath} for all files in search_dir."""
@@ -29,9 +29,9 @@ def upload_to_archive():
         "collection": "opensource_audio",
         "mediatype": "audio",
         "creator": "Sheikhul Hadith Maulana Muhammad Zakariyya",
-        "title": "Fazail-e-Sadaqat (Malayalam Audio)",
+        "title": "Fazail-e-Sadqaat (Malayalam Audio)",
         "description": (
-            "Fazail-e-Sadaqat (The Virtues of Charity) with audio chapters in Malayalam, "
+            "Fazail-e-Sadqaat (The Virtues of Charity) with audio chapters in Malayalam, "
             "authored by Sheikhul Hadith Maulana Muhammad Zakariyya. "
             "Includes individual chapter MP3 audio and text files."
         ),

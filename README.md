@@ -1,120 +1,92 @@
-# 📚 Gemini Book Toolkit
-### *Islamic Literature OCR & TTS Pipeline*
+# Gemini PDF Toolkit
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Gemini](https://img.shields.io/badge/AI-Gemini_3.1-orange?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
-[![Automation](https://img.shields.io/badge/Engine-Camoufox-green?style=for-the-badge&logo=firefox&logoColor=white)](https://camoufox.com)
-[![Package Manager](https://img.shields.io/badge/Managed_by-uv-purple?style=for-the-badge&logo=python&logoColor=white)](https://github.com/astral-sh/uv)
+OCR, translate, polish, and generate TTS audiobooks from PDFs using Google Gemini models.
 
-An end-to-end automation pipeline designed to transform Urdu/Arabic Islamic literature (like *Fazail-e-Sadaqat*) into professional, TTS-optimized Malayalam audiobooks.
-
----
-
-## 🚀 Key Features
-
-*   **🔍 Vision-Powered OCR**: Leverages Gemini 3.1 Flash-Lite to extract and translate complex Urdu/Arabic typography with high fidelity.
-*   **🧠 Contextual Continuity**: Intelligent multi-page batching that maintains context between pages, ensuring split sentences are reconstructed seamlessly.
-*   **🎙️ TTS-Optimized Scripting**: 
-    *   100% Malayalam script enforcement (no foreign characters).
-    *   Automatic expansion of honorifics (ﷺ, ؓ, etc.) into full Malayalam text.
-    *   Numeral-to-word conversion for natural speech.
-    *   Prosodic pause injection for chapter headers.
-*   **🤖 Browser Automation**: Uses **Camoufox** to drive Google Docs' high-quality TTS engine, bypassing standard API limitations.
-*   **⚡ High-Throughput Pipeline**: Multi-threaded processing with exponential backoff and smart rate-limiting to maximize API efficiency.
-*   **☁️ Archive Integration**: Automated uploads to Internet Archive with metadata synchronization.
-
----
-
-## 🛠️ Project Architecture
-
-```mermaid
-graph TD
-    A[Fazail-e-Sadaqat.pdf] -->|PyMuPDF| B(Image Extraction)
-    B -->|Gemini 3.1 Flash| C{OCR & Translation}
-    C -->|Contextual Batching| D[Fazail-e-Sadaqat_OCR.md]
-    D -->|Camoufox Automation| E[Google Docs TTS]
-    E -->|Fragment Generation| F(Audio Chunks)
-    F -->|FFmpeg| G[Final Malayalam Audiobook .mp3]
-    G -->|Internet Archive API| H((Cloud Archive))
-```
-
----
-
-## 📦 Installation
-
-This project uses `uv` for ultra-fast dependency management.
+## Setup
 
 ```bash
-# 1. Clone & Enter
-git clone <repository-url>
-cd gemini
-
-# 2. Setup Virtual Environment
-uv venv
-source .venv/bin/activate
-
-# 3. Install Dependencies
-uv pip install -r requirements.txt  # Or manually install:
-uv pip install google-genai pymupdf camoufox internetarchive
+uv venv && source .venv/bin/activate
+uv pip install -r requirements.txt
 ```
 
----
+Set at least one API key:
 
-## ⚙️ Configuration
-
-Create a `.env` file or export the following variables:
-
-| Variable | Description |
-| :--- | :--- |
-| `GOOGLE_API_KEY` | Your Google AI Studio API Key. |
-| `MISTRAL_API_KEY` | Required for `ocr.py` (if using Mistral fallback). |
-| `IA_ACCESS_KEY` | Internet Archive S3 Access Key. |
-| `IA_SECRET_KEY` | Internet Archive S3 Secret Key. |
-
----
-
-## 📖 Usage Guide
-
-### 1. OCR Extraction & Translation
-Processes the source PDF and generates a TTS-ready Markdown file.
 ```bash
-uv run ocr.py
-```
-*Configurable in `ocr.py`: `MAX_WORKERS`, `PAGES_PER_BATCH`, and `WAVE_DELAY`.*
-
-### 2. Audio Generation
-Converts the Markdown text into high-quality audio fragments.
-
-**First-time Login (Headful):**
-```bash
-uv run tts.py --login
+export GEMINI_API_KEY="your-key"
+# Or for key rotation:
+export GEMINI_API_KEY_1="key1"
+export GEMINI_API_KEY_2="key2"
 ```
 
-**Generate Audio:**
-```bash
-uv run tts.py Fazail-e-Sadaqat_OCR.md
-```
-*This will generate multiple MP3 chunks and automatically concatenate them using FFmpeg.*
+## Usage
 
-### 3. Archive Synchronization
-Upload the results to Internet Archive.
+### translate.py — OCR & Translation
+
+Extract and translate a PDF page-by-page using Gemini vision models. Supports resuming interrupted runs and configurable concurrency.
+
 ```bash
+uv run translate.py document.pdf -p prompt_translate.txt -o output.md
+```
+
+**Options:**
+
+| Flag | Default | Description |
+| :--- | :--- | :--- |
+| `pdf` | `Fazail-e-Sadqaat.pdf` | Input PDF path |
+| `-o, --output` | `<pdf>_OCR.md` | Output markdown file |
+| `-p, --prompt` | `prompt_translate.txt` | Prompt template file |
+| `-m, --model` | `gemini-3.1-flash-lite` | Gemini model name |
+| `-l, --limit` | _(none)_ | Process only N pages then stop |
+| `--pages-per-batch` | `2` | PDF pages per API request |
+| `-w, --workers` | `9` | Parallel API workers |
+| `--wave-delay` | `5` | Seconds between worker waves |
+| `-r, --retries` | `2` | Retries per failed batch |
+| `--no-clean` | _(off)_ | Skip auto-generating `_Clean.txt` |
+
+After translation, a cleaned plain-text version is automatically written to `<output>_Clean.txt` (strips page markers, separators, and skipped pages). Pass `--no-clean` to skip.
+
+### tts.py — Text-to-Speech
+
+Generates audio from a markdown file using Google Docs TTS via Camoufox.
+
+```bash
+uv run tts.py --login          # One-time login (headed)
+uv run tts.py output.md        # Generate audio chunks + concatenated MP3
+```
+
+### archive_upload.py — Archive.org Upload
+
+Upload generated files to Internet Archive.
+
+```bash
+export IA_ACCESS_KEY="your-key"
+export IA_SECRET_KEY="your-secret"
 uv run archive_upload.py
 ```
 
----
+### list_models.py
 
-## 🛠️ Utility Scripts
+List available Gemini models for your API key.
 
-| Script | Purpose |
+```bash
+uv run list_models.py
+```
+
+## Prompt Files
+
+| File | Purpose |
 | :--- | :--- |
-| `list_models.py` | Lists available Gemini models for your API key. |
-| `clean.py` | Sanitizes extracted text for better TTS compatibility. |
-| `comfi.py` | Modal-powered app for ComfyUI image editing (Bonus). |
-| `sample.py` | Quick test for Gemini API connectivity. |
+| `prompt_translate.txt` | Prompt for OCR + translation pass |
+| `prompt_polish.txt` | Prompt for post-translation polishing pass |
 
----
+Both contain formatting rules, honorific expansions, and TTS-optimization instructions tailored for Malayalam output. Edit them to suit your target language or domain.
 
-## 📜 License
+## Project Files
 
-[MIT License](LICENSE) — Created with ❤️ for the Malayalam-speaking community.
+| File | Description |
+| :--- | :--- |
+| `translate.py` | Main OCR, translation, and polishing pipeline |
+| `tts.py` | Google Docs TTS via Camoufox automation |
+| `archive_upload.py` | Internet Archive uploader |
+| `list_models.py` | Lists available Gemini models |
+| `comfi.py` | ComfyUI image generation via Modal |

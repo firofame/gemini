@@ -1,36 +1,29 @@
+import argparse
 import os
 import re
 import time
-import json
-from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import fitz  # pymupdf — renders PDF pages as images
 from google import genai
 from google.genai import types
 
-# --- Configuration ---
-PDF_PATH = "Fazail-e-Sadaqat.pdf"
-OUTPUT_FILE = "Fazail-e-Sadaqat_OCR.md"
-PROMPT_FILE = "prompt_translate.txt"
-MODEL = "gemini-3.1-flash-lite"
-# MODEL = "gemma-4-31b-it"
+import itertools
+import threading
 
-# Set this to True if you want to limit how many pages are processed in one run
-LIMIT_PROCESSING = False
-# How many pages to process before stopping
-MAX_PAGES_TO_PROCESS = 10
-# How many PDF pages to send per API request (1 = safest, 2 = halves requests)
-PAGES_PER_BATCH = 2
-# Number of parallel API requests (tune to your RPM limit)
-# Free tier gemma-4-31b: 15 RPM — keep workers low to avoid 429s
-MAX_WORKERS = 3
-# Seconds to wait between waves of requests (5 workers every 25s = 12 RPM, safely under 15)
-WAVE_DELAY = 2
-# Max retry attempts per batch (increased for transient 500s and 429s)
-MAX_RETRIES = 2
-# ---------------------
+API_KEYS = [v for k, v in sorted(os.environ.items()) if k.startswith("GEMINI_API_KEY_")]
+if not API_KEYS:
+    key = os.environ.get("GEMINI_API_KEY", "")
+    API_KEYS = [key] if key else []
+if not API_KEYS:
+    raise RuntimeError("No GEMINI_API_KEY or GEMINI_API_KEY_N environment variables found")
 
-client = genai.Client()
+_clients = [genai.Client(api_key=k) for k in API_KEYS]
+_client_cycle = itertools.cycle(_clients)
+_client_lock = threading.Lock()
+
+def get_client():
+    with _client_lock:
+        return next(_client_cycle)
 
 def get_processed_pages(filename):
     """Parses the output file to find which pages are already completed using regex.
@@ -78,11 +71,9 @@ def parse_retry_delay(error_msg):
     return None
 
 
-def process_single_batch(doc, batch_pages, prompt, previous_text="", max_retries=None):
+def process_single_batch(doc, batch_pages, prompt, model, previous_text="", max_retries=2):
     """Process a single batch of pages. Returns (batch_pages, result_text, error).
     This function is thread-safe and called from the thread pool."""
-    if max_retries is None:
-        max_retries = MAX_RETRIES
 
     # Render pages as PNG images
     image_parts = []
@@ -115,8 +106,8 @@ def process_single_batch(doc, batch_pages, prompt, previous_text="", max_retries
     attempts = 0
     while attempts < max_retries:
         try:
-            response = client.models.generate_content(
-                model=MODEL,
+            response = get_client().models.generate_content(
+                model=model,
                 contents=image_parts + [context_prompt]
             )
             if response.text is None:
@@ -190,52 +181,53 @@ def format_result(batch_pages, content, processed_pages):
     return (text_to_write, context_text, len(batch_pages))
 
 
-def ocr_pdf():
-    if not os.path.exists(PDF_PATH):
-        print(f"Error: {PDF_PATH} not found.")
+def ocr_pdf(pdf_path, output_file, prompt_file, model,
+            limit=None, pages_per_batch=2,
+            max_workers=9, wave_delay=5, max_retries=2):
+    if not os.path.exists(pdf_path):
+        print(f"Error: {pdf_path} not found.")
         return
 
-    if not os.path.exists(PROMPT_FILE):
-        print(f"Error: {PROMPT_FILE} not found.")
+    if not os.path.exists(prompt_file):
+        print(f"Error: {prompt_file} not found.")
         return
 
-    with open(PROMPT_FILE, "r", encoding="utf-8") as f:
+    with open(prompt_file, "r", encoding="utf-8") as f:
         prompt = f.read().strip()
 
-    doc = fitz.open(PDF_PATH)
+    doc = fitz.open(pdf_path)
     total_pages = len(doc)
-    processed_pages = get_processed_pages(OUTPUT_FILE)
+    processed_pages = get_processed_pages(output_file)
     
     print(f"Total pages in PDF: {total_pages}")
     print(f"Already processed: {len(processed_pages)} pages.")
 
     # Load context from the last previously processed page (for cross-page continuity)
-    previous_text = get_last_page_text(OUTPUT_FILE)
+    previous_text = get_last_page_text(output_file)
     if previous_text:
         print(f"Loaded {len(previous_text)} chars of context from previous run.")
 
     # Build the list of all batches that need processing
     all_batches = []
-    for batch_start in range(1, total_pages + 1, PAGES_PER_BATCH):
-        batch_end = min(batch_start + PAGES_PER_BATCH - 1, total_pages)
+    for batch_start in range(1, total_pages + 1, pages_per_batch):
+        batch_end = min(batch_start + pages_per_batch - 1, total_pages)
         batch_pages = list(range(batch_start, batch_end + 1))
         if all(pn in processed_pages for pn in batch_pages):
             continue
         all_batches.append(batch_pages)
 
-    if LIMIT_PROCESSING:
-        # Limit batches so total pages don't exceed MAX_PAGES_TO_PROCESS
+    if limit is not None:
         limited = []
         count = 0
         for batch in all_batches:
-            if count >= MAX_PAGES_TO_PROCESS:
+            if count >= limit:
                 break
             limited.append(batch)
             count += len(batch)
         all_batches = limited
 
     print(f"Batches to process: {len(all_batches)} ({sum(len(b) for b in all_batches)} pages)")
-    print(f"Parallel workers: {MAX_WORKERS}")
+    print(f"Parallel workers: {max_workers}")
 
     pages_processed_this_run = 0
 
@@ -243,21 +235,21 @@ def ocr_pdf():
     failed_batches = []
     total_batches = len(all_batches)
 
-    for wave_start in range(0, total_batches, MAX_WORKERS):
-        wave = all_batches[wave_start : wave_start + MAX_WORKERS]
-        wave_num = wave_start // MAX_WORKERS + 1
-        total_waves = (total_batches + MAX_WORKERS - 1) // MAX_WORKERS
+    for wave_start in range(0, total_batches, max_workers):
+        wave = all_batches[wave_start : wave_start + max_workers]
+        wave_num = wave_start // max_workers + 1
+        total_waves = (total_batches + max_workers - 1) // max_workers
         print(f"\n--- Wave {wave_num}/{total_waves} ---")
 
         # Submit all batches in this wave concurrently
         # Only the first batch in the wave gets cross-page context
         futures = {}
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
             for i, batch_pages in enumerate(wave):
                 label = f"Pages {batch_pages[0]}-{batch_pages[-1]}" if len(batch_pages) > 1 else f"Page {batch_pages[0]}"
                 print(f"  Submitting {label}...")
                 ctx = previous_text if i == 0 else ""
-                future = executor.submit(process_single_batch, doc, batch_pages, prompt, ctx)
+                future = executor.submit(process_single_batch, doc, batch_pages, prompt, model, ctx)
                 futures[future] = batch_pages
 
             # Collect results as they complete
@@ -276,7 +268,7 @@ def ocr_pdf():
             text_to_write, context_text, count = format_result(batch_pages, content, processed_pages)
 
             if text_to_write:
-                with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
+                with open(output_file, "a", encoding="utf-8") as f:
                     f.write(text_to_write)
 
             if context_text:
@@ -288,9 +280,9 @@ def ocr_pdf():
                 print(f"  ✅ {label}")
 
         # Rate-limit delay between waves
-        if wave_start + MAX_WORKERS < total_batches:
-            print(f"  ⏳ Waiting {WAVE_DELAY}s before next wave (rate limit)...")
-            time.sleep(WAVE_DELAY)
+        if wave_start + max_workers < total_batches:
+            print(f"  ⏳ Waiting {wave_delay}s before next wave (rate limit)...")
+            time.sleep(wave_delay)
 
     # --- Retry pass for failed pages (one-at-a-time with generous delays) ---
     if failed_batches:
@@ -303,7 +295,7 @@ def ocr_pdf():
             print(f"  🔄 Retrying page(s) {page_list}...")
             time.sleep(15)  # generous delay before each retry
             batch_pages_result, content, error = process_single_batch(
-                doc, batch_pages, prompt, previous_text, max_retries=5
+                doc, batch_pages, prompt, model, previous_text, max_retries=5
             )
             if error:
                 print(f"  ❌ {error}")
@@ -313,7 +305,7 @@ def ocr_pdf():
                     batch_pages_result, content, processed_pages
                 )
                 if text_to_write:
-                    with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
+                    with open(output_file, "a", encoding="utf-8") as f:
                         f.write(text_to_write)
                 if context_text:
                     previous_text = context_text
@@ -325,7 +317,85 @@ def ocr_pdf():
             print(f"\n⚠️  Permanently failed pages: {failed_pages}")
             print(f"   Re-run the script to retry these pages.")
 
-    print(f"\nFinished. Extracted {pages_processed_this_run} pages. Results saved to {OUTPUT_FILE}")
+    print(f"\nFinished. Extracted {pages_processed_this_run} pages. Results saved to {output_file}")
+
+
+def clean_output(input_file):
+    """Strip page markers and formatting, producing a clean plain-text version."""
+    output_file = input_file.replace(".md", "_Clean.txt")
+
+    with open(input_file, "r", encoding="utf-8") as f:
+        text = f.read()
+
+    text = re.sub(r'^## Page \d+\s*$', '', text, flags=re.MULTILINE)
+    text = re.sub(r'^---\s*$', '', text, flags=re.MULTILINE)
+    text = re.sub(r'^\s*<!-- SKIPPED:.*?-->\s*$', '', text, flags=re.MULTILINE)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(text.strip())
+
+    print(f"Cleaned text saved to {output_file}")
 
 if __name__ == "__main__":
-    ocr_pdf()
+    parser = argparse.ArgumentParser(
+        description="OCR and translate a PDF using Gemini models."
+    )
+    parser.add_argument(
+        "pdf", nargs="?", default="book.pdf",
+        help="Path to the PDF file (default: book.pdf)"
+    )
+    parser.add_argument(
+        "-o", "--output", default=None,
+        help="Output markdown file (default: <pdf_name>_OCR.md)"
+    )
+    parser.add_argument(
+        "-p", "--prompt", default="prompt_translate.txt",
+        help="Prompt file (default: prompt_translate.txt)"
+    )
+    parser.add_argument(
+        "-m", "--model", default="gemini-3.1-flash-lite",
+        help="Gemini model name (default: gemini-3.1-flash-lite)"
+    )
+    parser.add_argument(
+        "-l", "--limit", type=int, default=None,
+        help="Limit processing to N pages"
+    )
+    parser.add_argument(
+        "--pages-per-batch", type=int, default=2,
+        help="Pages per API batch request (default: 2)"
+    )
+    parser.add_argument(
+        "-w", "--workers", type=int, default=9,
+        help="Max parallel API workers (default: 9)"
+    )
+    parser.add_argument(
+        "--wave-delay", type=int, default=5,
+        help="Seconds delay between waves (default: 5)"
+    )
+    parser.add_argument(
+        "-r", "--retries", type=int, default=2,
+        help="Max retries per batch (default: 2)"
+    )
+    parser.add_argument(
+        "--no-clean", action="store_true",
+        help="Skip generating the cleaned plain-text output"
+    )
+    args = parser.parse_args()
+
+    output_file = args.output or args.pdf.replace(".pdf", "_OCR.md")
+
+    ocr_pdf(
+        pdf_path=args.pdf,
+        output_file=output_file,
+        prompt_file=args.prompt,
+        model=args.model,
+        limit=args.limit,
+        pages_per_batch=args.pages_per_batch,
+        max_workers=args.workers,
+        wave_delay=args.wave_delay,
+        max_retries=args.retries,
+    )
+
+    if not args.no_clean and os.path.exists(output_file):
+        clean_output(output_file)

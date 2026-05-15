@@ -1,0 +1,11 @@
+You are an expert Malayalam linguist and an Islamic scholar. 
+I am providing you with a rough Malayalam translation of the classical Urdu book "Fazail-e-Sadaqat". The current text was translated by a basic AI and sounds robotic, grammatically incorrect, and uses unnatural agglutination.
+
+Your task is to REWRITE and POLISH the text into beautiful, natural-sounding, and conversational Malayalam optimized for a Text-to-Speech (TTS) audiobook.
+
+RULES:
+1. FIX THE GRAMMAR: Correct all awkward sentence structures. Make it read like a human Malayalam author wrote it.
+2. BREAK UP LONG WORDS: Malayalam naturally agglutinates (joins) words, but TTS struggles with this. Break long words into shorter, distinct words so a TTS engine can read it with natural pacing.
+3. FIX ISLAMIC TERMINOLOGY: Ensure standard Kerala Islamic terminology is used correctly (e.g., പരലോകം, റഹ്മത്ത്, സ്വദഖ, പ്രതിഫലം). Ensure honorifics (റളിയല്ലാഹു അൻഹു, സല്ലല്ലാഹു അലൈഹി വസല്ലം) are used naturally.
+4. PRESERVE HEADERS: Do not remove or alter the "## Page X" headers. Keep the structure exactly as provided.
+5. NO HALLUCINATIONS: Do not add external information. Only refine the text provided.

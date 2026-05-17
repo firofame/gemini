@@ -1,3 +1,5 @@
+# https://archive.org/developers/internetarchive/internetarchive.html
+
 from internetarchive import upload
 from pathlib import Path
 import os
@@ -13,7 +15,10 @@ def get_source_files():
         return {}
     
     # Map each file's relative path to its absolute path for a root-level upload
-    return {f.relative_to(search_dir).as_posix(): str(f) for f in search_dir.glob("**/*") if f.is_file()}
+    # Exclude debug/, __pycache__/, and hidden directories
+    return {f.relative_to(search_dir).as_posix(): str(f) 
+            for f in search_dir.glob("**/*") 
+            if f.is_file() and "debug" not in f.parts}
 
 def upload_to_archive():
     source_files_map = get_source_files()

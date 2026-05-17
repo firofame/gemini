@@ -79,7 +79,7 @@ def process_single_batch(doc, batch_pages, prompt, model, previous_text="", max_
     image_parts = []
     for pn in batch_pages:
         page = doc[pn - 1]  # fitz uses 0-based indexing
-        pix = page.get_pixmap(dpi=200)
+        pix = page.get_pixmap(dpi=300)
         img_bytes = pix.tobytes("png")
         image_parts.append(
             types.Part.from_bytes(data=img_bytes, mime_type='image/png')
@@ -250,15 +250,16 @@ def ocr_pdf(pdf_path, output_file, prompt_file, model,
                 print(f"  Submitting {label}...")
                 ctx = previous_text if i == 0 else ""
                 future = executor.submit(process_single_batch, doc, batch_pages, prompt, model, ctx)
-                futures[future] = batch_pages
+                futures[future] = ctx
 
             # Collect results as they complete
             results = {}
             for future in as_completed(futures):
                 batch_pages, content, error = future.result()
+                ctx = futures[future]
                 if error:
                     print(f"  ❌ {error}")
-                    failed_batches.append(batch_pages)
+                    failed_batches.append((batch_pages, ctx))
                 else:
                     results[batch_pages[0]] = (batch_pages, content)
 
@@ -290,25 +291,23 @@ def ocr_pdf(pdf_path, output_file, prompt_file, model,
         print(f"Retrying {len(failed_batches)} failed batch(es) sequentially...")
         print(f"{'='*50}")
         still_failed = []
-        for batch_pages in failed_batches:
+        for batch_pages, ctx in failed_batches:
             page_list = ", ".join(str(p) for p in batch_pages)
             print(f"  🔄 Retrying page(s) {page_list}...")
             time.sleep(15)  # generous delay before each retry
             batch_pages_result, content, error = process_single_batch(
-                doc, batch_pages, prompt, model, previous_text, max_retries=5
+                doc, batch_pages, prompt, model, ctx, max_retries=5
             )
             if error:
                 print(f"  ❌ {error}")
                 still_failed.append(batch_pages)
             else:
-                text_to_write, context_text, count = format_result(
+                text_to_write, _, count = format_result(
                     batch_pages_result, content, processed_pages
                 )
                 if text_to_write:
                     with open(output_file, "a", encoding="utf-8") as f:
                         f.write(text_to_write)
-                if context_text:
-                    previous_text = context_text
                 pages_processed_this_run += count
                 print(f"  ✅ Page(s) {page_list} recovered!")
 
@@ -317,7 +316,41 @@ def ocr_pdf(pdf_path, output_file, prompt_file, model,
             print(f"\n⚠️  Permanently failed pages: {failed_pages}")
             print(f"   Re-run the script to retry these pages.")
 
+    sort_output(output_file)
+
     print(f"\nFinished. Extracted {pages_processed_this_run} pages. Results saved to {output_file}")
+
+
+def sort_output(output_file):
+    """Reads the markdown file, sorts sections by page number, and writes back."""
+    if not os.path.exists(output_file):
+        return
+
+    with open(output_file, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    parts = re.split(r'^(#*\s*Page\s+(\d+))', content, flags=re.MULTILINE | re.IGNORECASE)
+
+    if len(parts) < 4:
+        return
+
+    pre_text = parts[0]
+    pages = []
+
+    for i in range(1, len(parts), 3):
+        header = parts[i]
+        page_num = int(parts[i+1])
+        body = parts[i+2] if (i+2) < len(parts) else ""
+        pages.append((page_num, header, body))
+
+    pages.sort(key=lambda x: x[0])
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(pre_text)
+        for _, header, body in pages:
+            f.write(header + body)
+
+    print(f"\n  -> Sorted output file '{os.path.basename(output_file)}' numerically by page number.")
 
 
 def clean_output(input_file):
@@ -342,16 +375,16 @@ if __name__ == "__main__":
         description="OCR and translate a PDF using Gemini models."
     )
     parser.add_argument(
-        "pdf", nargs="?", default="book.pdf",
-        help="Path to the PDF file (default: book.pdf)"
+        "pdf", nargs="?", default="Malfoozat-Maulana-Ilyas.pdf",
+        help="Path to the PDF file (default: Malfoozat-Maulana-Ilyas.pdf)"
     )
     parser.add_argument(
         "-o", "--output", default=None,
         help="Output markdown file (default: <pdf_name>_OCR.md)"
     )
     parser.add_argument(
-        "-p", "--prompt", default="prompt_translate.txt",
-        help="Prompt file (default: prompt_translate.txt)"
+        "-p", "--prompt", default="prompt_urdu_ocr.txt",
+        help="Prompt file (default: prompt_urdu_ocr.txt)"
     )
     parser.add_argument(
         "-m", "--model", default="gemini-3.1-flash-lite",
@@ -362,16 +395,16 @@ if __name__ == "__main__":
         help="Limit processing to N pages"
     )
     parser.add_argument(
-        "--pages-per-batch", type=int, default=2,
-        help="Pages per API batch request (default: 2)"
+        "--pages-per-batch", type=int, default=1,
+        help="Pages per API batch request (default: 1)"
     )
     parser.add_argument(
-        "-w", "--workers", type=int, default=9,
-        help="Max parallel API workers (default: 9)"
+        "-w", "--workers", type=int, default=12,
+        help="Max parallel API workers (default: 12)"
     )
     parser.add_argument(
-        "--wave-delay", type=int, default=5,
-        help="Seconds delay between waves (default: 5)"
+        "--wave-delay", type=int, default=2,
+        help="Seconds delay between waves (default: 2)"
     )
     parser.add_argument(
         "-r", "--retries", type=int, default=2,

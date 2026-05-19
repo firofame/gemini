@@ -8,7 +8,7 @@ import asyncio
 from pathlib import Path
 from typing import Any
 from dataclasses import dataclass
-from camoufox.async_api import AsyncCamoufox
+from cloakbrowser import launch_persistent_context_async
 
 # Configuration
 CONFIG = {
@@ -18,10 +18,10 @@ CONFIG = {
     'timeout': 120_000,
     'retry_attempts': 3,
     'retry_delay_seconds': 5,
-    'profile_dir': Path.home() / '.camoufox-profile',
+    'profile_dir': Path.home() / '.cloakbrowser-profile',
     'login_window_size': (1100, 700),
     'debug': True,
-    'headless': True,
+    'headless': False,
 }
 
 SELECTORS = {
@@ -301,8 +301,9 @@ async def process_chunk(page: Any, text: str, output_path: Path, prev_blob_url: 
 
 
 async def open_tts_page(context):
-    """Open a page in the persistent Camoufox profile."""
-    page = await context.new_page()
+    """Open a page in the persistent CloakBrowser profile."""
+    # Use the default persistent page if it exists, otherwise create a new one
+    page = context.pages[0] if context.pages else await context.new_page()
     await page.goto(CONFIG['doc_url'], wait_until='domcontentloaded')
     await page.wait_for_selector(SELECTORS['editor'], timeout=CONFIG['timeout'])
     return page
@@ -310,7 +311,7 @@ async def open_tts_page(context):
 
 async def login_flow(context):
     """Open the document in a visible browser and let the user sign in."""
-    page = await context.new_page()
+    page = context.pages[0] if context.pages else await context.new_page()
     await page.goto(CONFIG['doc_url'], wait_until='domcontentloaded')
     print(f'Browser profile: {CONFIG["profile_dir"]}')
     print('Log in to Google in the opened browser, then press Enter here to continue.')
@@ -328,13 +329,15 @@ async def main():
     # Force visible browser for login flow
     is_headless = CONFIG['headless'] if not args.login_only else False
 
-    async with AsyncCamoufox(
-        headless=is_headless,
-        persistent_context=True,
+    # Initialize CloakBrowser context
+    context = await launch_persistent_context_async(
         user_data_dir=str(CONFIG['profile_dir']),
-        window=CONFIG['login_window_size'],
-        firefox_user_prefs={'media.volume_scale': '0.0'}
-    ) as context:
+        headless=is_headless,
+        viewport={'width': CONFIG['login_window_size'][0], 'height': CONFIG['login_window_size'][1]},
+        args=['--mute-audio']  # Replaces Firefox volume prefs to keep generation silent
+    )
+
+    try:
         if args.login_only:
             await login_flow(context)
             print('Login session saved.')
@@ -398,6 +401,8 @@ async def main():
             print('\nDone!')
         finally:
             await page.close()
+    finally:
+        await context.close()
 
 
 if __name__ == '__main__':

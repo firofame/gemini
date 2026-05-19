@@ -375,8 +375,8 @@ if __name__ == "__main__":
         description="OCR and translate a PDF using Gemini models."
     )
     parser.add_argument(
-        "pdf", nargs="?", default="Malfoozat-Maulana-Ilyas.pdf",
-        help="Path to the PDF file (default: Malfoozat-Maulana-Ilyas.pdf)"
+        "pdf", nargs="?", default="Fazail-e-Sadaqat.pdf",
+        help="Path to the PDF file (default: Fazail-e-Sadaqat.pdf)"
     )
     parser.add_argument(
         "-o", "--output", default=None,

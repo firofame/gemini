@@ -196,9 +196,17 @@ async def clear_editor(page: Any):
         await page.keyboard.press(f'{mod}+Home')
         await asyncio.sleep(0.5)
 
-        # Select all and delete
+        # Select all and delete - double execution to ensure full clearance
         await page.keyboard.press(f'{mod}+A')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
+        await page.keyboard.press(f'{mod}+A')  # Double select to catch everything
+        await asyncio.sleep(0.5)
+        await page.keyboard.press('Backspace')
+        await asyncio.sleep(0.5)
+        
+        # Second pass just in case
+        await page.keyboard.press(f'{mod}+A')
+        await asyncio.sleep(0.5)
         await page.keyboard.press('Backspace')
         await asyncio.sleep(1.5)
 

@@ -5,23 +5,34 @@ import os
 import sys
 import base64
 import asyncio
+import re
+import json
 from pathlib import Path
 from typing import Any
 from dataclasses import dataclass
 from cloakbrowser import launch_persistent_context_async
 
+# Google API Client Imports
+from google.oauth2 import service_account
+from google.oauth2.credentials import Credentials as UserCredentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from googleapiclient.discovery import build
+
 # Configuration
 CONFIG = {
     'doc_url': 'https://docs.google.com/document/d/1WVxgs-UywesdGppo1zLFR-YA57TQiwEpXDjKoq9EfyM/edit?usp=sharing',
     'max_chunk_length': 20_000,
-    'insert_chunk_size': 4000,
     'timeout': 120_000,
     'retry_attempts': 3,
     'retry_delay_seconds': 5,
     'profile_dir': Path.home() / '.cloakbrowser-profile',
     'login_window_size': (1100, 700),
     'debug': True,
-    'headless': False,
+    'save_success_screenshots': False,
+    'headless': True,
+    'google_credentials_json': 'credentials.json',
+    'google_token_json': 'google_token.json',
 }
 
 SELECTORS = {
@@ -33,11 +44,80 @@ SELECTORS = {
 }
 
 
+def get_doc_id(url: str) -> str:
+    """Parse unique Google Document ID from the URL."""
+    match = re.search(r'/document/d/([a-zA-Z0-9-_]+)', url)
+    if not match:
+        raise ValueError(f"Could not parse document ID from URL: {url}")
+    return match.group(1)
+
+
+def get_google_credentials():
+    """Retrieve Google credentials (supports Service Account and User OAuth flows)."""
+    creds_path = CONFIG['google_credentials_json']
+    token_path = CONFIG['google_token_json']
+    scopes = ['https://www.googleapis.com/auth/documents']
+    
+    # 1. Try to load service account credentials if the file exists and is a service account
+    if os.path.exists(creds_path):
+        try:
+            with open(creds_path, 'r') as f:
+                data = json.load(f)
+            if data.get('type') == 'service_account':
+                print(f"Using Google Service Account from '{creds_path}'")
+                return service_account.Credentials.from_service_account_file(creds_path, scopes=scopes)
+        except Exception as e:
+            print(f"Error checking service account: {e}")
+            
+    # 2. Try loading user credentials from saved token
+    creds = None
+    if os.path.exists(token_path):
+        try:
+            creds = UserCredentials.from_authorized_user_file(token_path, scopes)
+        except Exception as e:
+            print(f"Error loading saved token: {e}")
+
+    # If no valid token, but we have credentials file, run OAuth flow
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            print("Refreshing expired Google credentials...")
+            try:
+                creds.refresh(Request())
+            except Exception as e:
+                print(f"Error refreshing token: {e}")
+                creds = None
+                
+        if not creds:
+            if not os.path.exists(creds_path):
+                raise FileNotFoundError(
+                    f"Google credentials file not found at '{creds_path}'.\n"
+                    f"Please obtain a Google Cloud credentials JSON (Service Account or OAuth client) "
+                    f"and save it to '{creds_path}'."
+                )
+            
+            print(f"Starting Google OAuth flow using '{creds_path}'...")
+            flow = InstalledAppFlow.from_client_secrets_file(creds_path, scopes)
+            creds = flow.run_local_server(port=0)
+            
+            # Save token for next time
+            with open(token_path, 'w') as token:
+                token.write(creds.to_json())
+                print(f"Saved OAuth token to '{token_path}'")
+                
+    return creds
+
+
+@dataclass
+class FileJob:
+    """Represents a text-to-speech job for a single file."""
+    input_path: Path
+    output_path: Path
+
+
 @dataclass
 class Args:
     """Command line arguments."""
-    input_path: Path | None
-    output_path: Path | None
+    jobs: list[FileJob]
     login_only: bool = False
 
 
@@ -55,22 +135,65 @@ def parse_args() -> Args:
 
     if not args:
         print(
-            'Usage: python tts.py [--debug] [--headless] --login | input.txt [output.mp3|output_dir]',
+            'Usage: python tts.py [--debug] [--headless] --login | input_path [output_path|output_dir]\n'
+            '       python tts.py [--debug] [--headless] input_file1 [input_file2 ...] [output_dir]',
             file=sys.stderr,
         )
         sys.exit(1)
 
     if args[0] == '--login':
-        return Args(input_path=None, output_path=None, login_only=True)
+        return Args(jobs=[], login_only=True)
 
-    input_path = Path(args[0]).resolve()
+    # Resolve paths
+    resolved_paths = [Path(a).resolve() for a in args]
 
-    if len(args) > 1:
-        output_path = Path(args[1]).resolve()
+    # Check if the last argument should be treated as output dir
+    output_dir = None
+    if len(resolved_paths) > 1:
+        last_path = resolved_paths[-1]
+        if last_path.is_dir() or (not last_path.exists() and not last_path.suffix):
+            output_dir = last_path
+            resolved_paths.pop()
+
+    jobs = []
+
+    # If we have only one path left and it's a directory, expand it
+    if len(resolved_paths) == 1 and resolved_paths[0].is_dir():
+        input_dir = resolved_paths[0]
+        files = sorted([
+            p for p in input_dir.iterdir()
+            if p.is_file() and p.suffix.lower() in ('.md', '.txt')
+        ])
+        if not files:
+            print(f"No .md or .txt files found in directory: {input_dir}", file=sys.stderr)
+            sys.exit(1)
+            
+        for f in files:
+            out_path = (output_dir / f.with_suffix('.mp3').name) if output_dir else f.with_suffix('.mp3')
+            jobs.append(FileJob(input_path=f, output_path=out_path))
+
+    elif len(resolved_paths) == 1:
+        f = resolved_paths[0]
+        if f.is_dir():
+            print(f"Error: {f} is a directory but expected files.", file=sys.stderr)
+            sys.exit(1)
+        out_path = (output_dir / f.with_suffix('.mp3').name) if output_dir else f.with_suffix('.mp3')
+        jobs.append(FileJob(input_path=f, output_path=out_path))
+
+    elif len(resolved_paths) == 2 and not output_dir:
+        infile = resolved_paths[0]
+        outfile = resolved_paths[1]
+        jobs.append(FileJob(input_path=infile, output_path=outfile))
+
     else:
-        output_path = input_path.with_suffix('.mp3')
+        for f in resolved_paths:
+            if f.is_dir():
+                print(f"Error: {f} is a directory. Multiple inputs must be files.", file=sys.stderr)
+                sys.exit(1)
+            out_path = (output_dir / f.with_suffix('.mp3').name) if output_dir else f.with_suffix('.mp3')
+            jobs.append(FileJob(input_path=f, output_path=out_path))
 
-    return Args(input_path=input_path, output_path=output_path)
+    return Args(jobs=jobs)
 
 
 
@@ -181,62 +304,58 @@ async def close_player(page: Any):
         pass  # Already closed
 
 
-async def clear_editor(page: Any):
-    """Clear editor content with retry and verification.
+def _update_google_doc_content(creds: Any, doc_id: str, text: str):
+    """Synchronous helper that handles the Google Docs API update."""
+    service = build('docs', 'v1', credentials=creds)
 
-    Ctrl+A intermittently fails in Google Docs, leaving old text behind.
-    We retry up to 5 times, checking the page count to verify the clear worked.
+    # Fetch the document to find the current end index
+    doc = service.documents().get(documentId=doc_id).execute()
+    content = doc.get('body', {}).get('content', [])
+    end_index = content[-1].get('endIndex') if content else 1
+
+    requests = []
+    # Clear the entire document if it contains text
+    # A blank document has end_index == 2 (contains a single paragraph with '\n')
+    if end_index > 2:
+        requests.append({
+            'deleteContentRange': {
+                'range': {
+                    'startIndex': 1,
+                    'endIndex': end_index - 1
+                }
+            }
+        })
+
+    # Insert the new text at index 1
+    requests.append({
+        'insertText': {
+            'text': text,
+            'location': {
+                'index': 1
+            }
+        }
+    })
+
+    service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
+
+
+async def insert_text(page: Any, creds: Any, doc_id: str, text: str):
+    """Insert text into document editor using the Google Docs REST API.
+
+    This avoids slow, flaky virtual keypress simulations by updating the doc
+    directly via the REST API and allowing real-time collaboration to sync it.
     """
-    mod = 'Meta' if sys.platform == 'darwin' else 'Control'
+    normalized = text.replace('\r\n', '\n')
 
-    for attempt in range(5):
-        # Focus the editor and scroll to top first
-        await click(page, SELECTORS['editor'])
-        await asyncio.sleep(1)
-        await page.keyboard.press(f'{mod}+Home')
-        await asyncio.sleep(0.5)
+    # Run blocking API call in a separate thread to keep asyncio loop responsive
+    await asyncio.to_thread(_update_google_doc_content, creds, doc_id, normalized)
 
-        # Select all and delete - double execution to ensure full clearance
-        await page.keyboard.press(f'{mod}+A')
-        await asyncio.sleep(0.5)
-        await page.keyboard.press(f'{mod}+A')  # Double select to catch everything
-        await asyncio.sleep(0.5)
-        await page.keyboard.press('Backspace')
-        await asyncio.sleep(0.5)
-        
-        # Second pass just in case
-        await page.keyboard.press(f'{mod}+A')
-        await asyncio.sleep(0.5)
-        await page.keyboard.press('Backspace')
-        await asyncio.sleep(1.5)
+    # Allow a moment for real-time collaboration to synchronize to browser tab
+    await asyncio.sleep(1.5)
 
-        # Verify: check if page count is 1 (cleared doc is always 1 page)
-        page_count = await page.evaluate(r"""() => {
-            const el = document.querySelector('.kix-page-paginator');
-            if (!el) return 1;
-            const m = (el.textContent || '').match(/(\d+)\s*of\s*(\d+)/i);
-            return m ? parseInt(m[2]) : 1;
-        }""")
-
-        if page_count <= 1:
-            return
-        print(f'  Clear attempt {attempt + 1}: still {page_count} pages, retrying...')
-
-
-async def insert_text(page: Any, text: str):
-    """Insert text into document editor."""
+    # Focus the editor and scroll/jump cursor to top so TTS is triggered from the beginning
     await click(page, SELECTORS['editor'])
     await asyncio.sleep(0.5)
-    await clear_editor(page)
-
-    # Insert text in chunks
-    normalized = text.replace('\r\n', '\n')
-    chunk_size = CONFIG['insert_chunk_size']
-
-    for i in range(0, len(normalized), chunk_size):
-        await page.keyboard.insert_text(normalized[i:i + chunk_size])
-
-    # Scroll back to top after inserting
     mod = 'Meta' if sys.platform == 'darwin' else 'Control'
     await page.keyboard.press(f'{mod}+Home')
     await asyncio.sleep(0.5)
@@ -256,7 +375,7 @@ async def generate_audio(page: Any, prev_blob_url: str) -> str:
     return await get_blob_url(page, prev_blob_url)
 
 
-async def process_chunk(page: Any, text: str, output_path: Path, prev_blob_url: str) -> str:
+async def process_chunk(page: Any, creds: Any, doc_id: str, text: str, output_path: Path, prev_blob_url: str) -> str:
     """Process a single text chunk with retry on failure."""
     attempts = CONFIG['retry_attempts']
     debug_dir = output_path.parent / 'debug'
@@ -275,12 +394,14 @@ async def process_chunk(page: Any, text: str, output_path: Path, prev_blob_url: 
             normalized = normalize_lines(text, num_lines=attempt)
 
             print(f'Inserting {len(normalized)} chars...')
-            await insert_text(page, normalized)
-            await debug_screenshot(f'after_insert_attempt{attempt}')
+            await insert_text(page, creds, doc_id, normalized)
+            if CONFIG.get('save_success_screenshots', False):
+                await debug_screenshot(f'after_insert_attempt{attempt}')
 
             print('Generating audio...')
             blob_url = await generate_audio(page, prev_blob_url)
-            await debug_screenshot(f'after_audio_attempt{attempt}')
+            if CONFIG.get('save_success_screenshots', False):
+                await debug_screenshot(f'after_audio_attempt{attempt}')
 
             print('Saving...')
             await save_blob(page, blob_url, output_path)
@@ -343,62 +464,98 @@ async def main():
             print('Login session saved.')
             return
 
-        assert args.input_path is not None
-        assert args.output_path is not None
+        if not args.jobs:
+            print("❌ No input files specified to process.", file=sys.stderr)
+            sys.exit(1)
 
-        text = args.input_path.read_text(encoding='utf-8')
-        chunks = split_text(text)
-        print(f'Processing {len(chunks)} chunk(s)...')
+        # Authenticate with Google Docs API once
+        try:
+            google_creds = get_google_credentials()
+            doc_id = get_doc_id(CONFIG['doc_url'])
+        except Exception as e:
+            print(f"❌ Google Docs API authentication error: {e}", file=sys.stderr)
+            sys.exit(1)
 
+        print(f"Starting browser page for {len(args.jobs)} file(s)...")
         page = await open_tts_page(context)
-        last_blob_url = ''
 
         try:
-            for i, chunk in enumerate(chunks):
-                print(f'\n--- Chunk {i + 1}/{len(chunks)} ---')
+            for job_idx, job in enumerate(args.jobs):
+                print(f"\n==================================================")
+                print(f"Processing File {job_idx + 1}/{len(args.jobs)}")
+                print(f"Input:  {job.input_path}")
+                print(f"Output: {job.output_path}")
+                print(f"==================================================")
 
-                if len(chunks) > 1:
-                    out = suffix_path(args.output_path, f'-{i + 1}')
-                else:
-                    out = args.output_path
+                # Ensure output directory exists
+                job.output_path.parent.mkdir(parents=True, exist_ok=True)
 
-                # Resume support: skip chunks already on disk
-                if out.exists() and out.stat().st_size > 0:
-                    print(f'⏭️  {out} already exists, skipping.')
+                # Resume support: skip if the final concatenated file already exists
+                if job.output_path.exists() and job.output_path.stat().st_size > 0:
+                    print(f'⏭️  {job.output_path} already exists, skipping entire file.')
                     continue
 
-                last_blob_url = await process_chunk(page, chunk, out, last_blob_url)
-                await close_player(page)
+                text = job.input_path.read_text(encoding='utf-8')
+                chunks = split_text(text)
+                print(f'Split into {len(chunks)} chunk(s)...')
 
-            # Concatenate multiple audio chunks into a single file
-            if len(chunks) > 1:
-                print('\nConcatenating audio chunks...')
-                list_file = args.output_path.parent / 'ffmpeg_concat_list.txt'
-                try:
-                    with open(list_file, 'w') as f:
-                        for i in range(len(chunks)):
-                            chunk_path = suffix_path(args.output_path, f'-{i + 1}')
-                            f.write(f"file '{chunk_path}'\n")
+                last_blob_url = ''
+                all_chunks_skipped = True
 
-                    ret = os.system(
-                        f"ffmpeg -y -f concat -safe 0 -i '{list_file}' -c copy '{args.output_path}'"
-                    )
-                    if ret == 0:
-                        print(f'✅ Final audiobook saved as {args.output_path}')
-                        # Clean up individual chunk files
-                        for i in range(len(chunks)):
-                            chunk_path = suffix_path(args.output_path, f'-{i + 1}')
-                            if chunk_path.exists():
-                                chunk_path.unlink()
-                        print(f'Cleaned up {len(chunks)} chunk files.')
+                for i, chunk in enumerate(chunks):
+                    print(f'\n--- Chunk {i + 1}/{len(chunks)} ---')
+
+                    if len(chunks) > 1:
+                        out = suffix_path(job.output_path, f'-{i + 1}')
                     else:
-                        print(f'⚠️  ffmpeg concatenation failed (exit code {ret}).')
-                        print(f'Individual chunks are preserved as {args.output_path.stem}-N{args.output_path.suffix}')
-                finally:
-                    if list_file.exists():
-                        list_file.unlink()
+                        out = job.output_path
 
-            print('\nDone!')
+                    # Resume support: skip chunks already on disk
+                    if out.exists() and out.stat().st_size > 0:
+                        print(f'⏭️  {out} already exists, skipping.')
+                        continue
+
+                    all_chunks_skipped = False
+                    last_blob_url = await process_chunk(page, google_creds, doc_id, chunk, out, last_blob_url)
+                    await close_player(page)
+
+                # Concatenate multiple audio chunks into a single file
+                if len(chunks) > 1:
+                    chunks_exist = all(
+                        suffix_path(job.output_path, f'-{i + 1}').exists()
+                        for i in range(len(chunks))
+                    )
+                    
+                    if chunks_exist:
+                        print('\nConcatenating audio chunks...')
+                        list_file = job.output_path.parent / 'ffmpeg_concat_list.txt'
+                        try:
+                            with open(list_file, 'w') as f:
+                                for i in range(len(chunks)):
+                                    chunk_path = suffix_path(job.output_path, f'-{i + 1}')
+                                    f.write(f"file '{chunk_path}'\n")
+
+                            ret = os.system(
+                                f"ffmpeg -y -f concat -safe 0 -i '{list_file}' -c copy '{job.output_path}'"
+                            )
+                            if ret == 0:
+                                print(f'✅ Final audiobook saved as {job.output_path}')
+                                # Clean up individual chunk files
+                                for i in range(len(chunks)):
+                                    chunk_path = suffix_path(job.output_path, f'-{i + 1}')
+                                    if chunk_path.exists():
+                                        chunk_path.unlink()
+                                print(f'Cleaned up {len(chunks)} chunk files.')
+                            else:
+                                print(f'⚠️  ffmpeg concatenation failed (exit code {ret}).')
+                                print(f'Individual chunks are preserved as {job.output_path.stem}-N{job.output_path.suffix}')
+                        finally:
+                            if list_file.exists():
+                                list_file.unlink()
+                    else:
+                        print('⚠️  Cannot concatenate: not all chunk files are present.')
+
+            print('\nAll files processed successfully!')
         finally:
             await page.close()
     finally:

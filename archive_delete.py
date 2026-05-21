@@ -9,7 +9,7 @@ def delete_from_archive():
 
     print(f"\n⚠️  DELETE OPERATION")
     print(f"   Item: https://archive.org/details/{identifier}")
-    print(f"   This will remove ALL files from the item.\n")
+    print(f"   This will remove ONLY Malayalam_Chapters files from the item.\n")
 
     if not access_key or not secret_key:
         print("✗ Missing credentials. Set IA_ACCESS_KEY and IA_SECRET_KEY environment variables.")
@@ -19,11 +19,10 @@ def delete_from_archive():
         item = get_item(identifier)
         all_files = list(item.get_files())
 
-        system_prefix = f"{identifier}_"
-        files_to_delete = [f.name for f in all_files if not f.name.startswith(system_prefix)]
+        files_to_delete = [f.name for f in all_files if f.name.startswith("Malayalam_Chapters/")]
 
         if not files_to_delete:
-            print("✓ No content files to delete.")
+            print("✓ No content files in Malayalam_Chapters/ to delete.")
             return
 
         print(f"Found {len(files_to_delete)} file(s) to delete:")

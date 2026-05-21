@@ -1,5 +1,3 @@
-import os, subprocess
-from pathlib import Path
+import subprocess
 
-for f in sorted(Path("Malayalam_Chapters").glob("*.md")):
-    subprocess.run(["uv", "run", "tts.py", str(f)])
+subprocess.run(["uv", "run", "tts.py", "Fazail-e-Sadaqat/Malayalam_Chapters"])

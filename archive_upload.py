@@ -6,8 +6,8 @@ import os
 import datetime
 
 # Configuration
-identifier = "Fazail-e-Sadqaat-Malayalam-Audio"
-search_dir = Path("./Fazail-e-Sadaqat")
+identifier = "Hayat-us-Sahabah-Malayalam-Audio"
+search_dir = Path("./Hayat al-Sahaba")
 
 def safe_component(name, max_bytes=225):
     """Truncate a path component so its UTF-8 encoding doesn't exceed max_bytes."""
@@ -66,18 +66,20 @@ def upload_to_archive():
     metadata = {
         "collection": "opensource_audio",
         "mediatype": "audio",
-        "creator": "Shaikhul Hadith Maulana Muhammad Zakariyya Kandhlawi",
-        "title": "Fazail-e-Sadaqat (Malayalam Audio)",
+        "creator": "Maulana Muhammad Yusuf Khandalwi",
+        "title": "Hayat us-Sahabah (Malayalam Audio & Texts)",
         "description": (
-            "Fazail-e-Sadaqat (Virtues of Charity) by Shaikhul Hadith Maulana Muhammad Zakariyya Kandhlawi "
-            "with Malayalam audio chapters, Urdu text chapters, and the full PDF."
+            "Hayat us-Sahabah (The Lives of the Sahabah) by Maulana Muhammad Yusuf Khandalwi "
+            "with Malayalam audio chapters, Malayalam & Arabic text chapters, and the full PDFs."
         ),
         "subject": [
             "Islam",
-            "Fazail-e-Sadaqat",
-            "Maulana Zakariyya",
+            "Hayat us-Sahabah",
+            "Hayat al-Sahaba",
+            "Maulana Muhammad Yusuf Khandalwi",
             "Malayalam",
             "Audio",
+            "Sahabah",
         ],
         "language": "mal",
         "date": str(datetime.datetime.now().year),

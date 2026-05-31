@@ -261,7 +261,7 @@ def translate_all_chapters(input_dir, output_dir, prompt_file, model):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Translate Audiobook Chapters to Malayalam TTS script in parallel.")
-    parser.add_argument("-i", "--input-dir", default="Urdu_Chapters", help="Directory containing chapter .txt files")
+    parser.add_argument("-i", "--input-dir", default="Hayat al-Sahaba/Arabic_Chapters", help="Directory containing chapter .txt files")
     parser.add_argument("-o", "--output-dir", default="Malayalam_Chapters", help="Directory to save translated .md files")
     parser.add_argument("-p", "--prompt", default="prompt_tts_malayalam.txt", help="Master prompt file")
     parser.add_argument("-m", "--model", default="gemini-3.1-flash-lite", help="Gemini Model") # Updated to default to the newest flash

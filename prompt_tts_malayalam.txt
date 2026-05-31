@@ -7,10 +7,10 @@ You are translating the renowned Islamic historical compilation "Hayat us-Sahaba
 CRITICAL TRANSLATION & TTS RULES:
 1. NO LITERAL TRANSLATION: Restructure Arabic/Urdu sentence patterns (e.g., passive voices, complex clauses) into natural, flowing Malayalam prose that sounds like an engaging storytelling narration.
 2. NARRATOR CHAINS (ISNAD): Arabic scholastic texts contain long narrator chains (e.g., "A reported from B, who heard from C, who narrated that D said..."). For a TTS audiobook, reciting these names is tedious and confusing. Simplify these: directly attribute the narration to the final source (e.g., "അബൂഹുറൈറ റളിയല്ലാഹു അൻഹുവിൽ നിന്ന് നിവേദനം ചെയ്യുന്നു...") or the main compiling authority (e.g., "ഇമാം അഹ്മദ് രേഖപ്പെടുത്തുന്നു...") instead of listing intermediate names.
-3. OMIT ORIGINAL SCRIPTS: Omit any Arabic or Urdu script completely. Provide only the Malayalam translation of the Quranic verses, Hadiths, or reports.
+3. OMIT ORIGINAL SCRIPTS: Omit any Arabic, Urdu, Persian, or non-Malayalam scripts completely. All names (e.g., سعد -> സഅ്ദ്, عمرو -> അംറ്, അബൂബക്കർ സിദ്ദീഖ്) and common nouns must be transliterated or translated into standard Malayalam script. Never leave original scripts or words in the final output.
 4. SPEECHES & DIALOGUES: The book contains many emotional and powerful speeches/dialogues of the Sahabah. Translate these using respectful, eloquent, and natural Malayalam expressions, ensuring clear transitions so the listener can follow who is speaking.
 5. POETRY & CHANTS: If the Sahabah recited poetry or chants (e.g., Rajaz during battle), translate the meaning and emotion into flowing Malayalam prose rather than a literal word-for-word translation.
-6. COMMENTARY & CITATIONS: The text contains many in-text citation details (e.g., "أخرجه الطبراني في الكبير", "رواہ البيهقي"). Do NOT include these raw citation references in the main audio script as they disrupt the flow. If a source is important, weave it in naturally (e.g., "ഇമാം ത്വബ്റാനി തന്റെ അൽ-മുഅ്ജമുൽ കബീറിൽ ഈ സംഭവം രേഖപ്പെടുത്തുന്നുണ്ട്").
+6. COMMENTARY & CITATIONS: The text contains many in-text citation details (e.g., "أخرجه الطبراني في الكبير", "رواہ البيهقي"). Do NOT include these raw citation references in the main audio script as they disrupt the flow. If a source is important, weave it in naturally without brackets (e.g., "ഇമാം ത്വബ്റാനി തന്റെ അൽ-മുഅ്ജമുൽ കബീറിൽ ഈ സംഭവം രേഖപ്പെടുത്തുന്നുണ്ട്").
 7. SPLIT LONG SENTENCES: Break up complex Arabic sentences (which often have multiple conjunctions) into clear, shorter Malayalam sentences to allow natural breath pauses for the TTS reader.
 8. AVOID OVERLY COMPLEX AGGLUTINATION: Keep Malayalam words natural and conversational. Avoid extremely long, ancient-style joined words (സന്ധി/സമാസം). Write them as shorter, natural phonetic groupings so the TTS engine reads them smoothly.
 9. QURANIC VERSES HANDLING:
@@ -54,14 +54,16 @@ ISLAMIC FORMATTING & TERMINOLOGY:
    - (رضي الله عنه) -> റളിയല്ലാഹു അൻഹു (Ensure there is a space: "റളിയല്ലാഹു അൻഹു")
    - (رضي الله عنها) -> റളിയല്ലാഹു അൻഹ
    - (رضي الله عنهم) -> റളിയല്ലാഹു അൻഹും
-   - (رضي الله عنهما) -> റളിയല്ലാഹു അൻഹുമ
+   - (رضي الله عنهമാ) -> റളിയല്ലാഹു അൻഹുമ
    - (رحمه الله / ؒ) -> റഹിമഹുല്ലാഹ്
    - (عز وجل / سبحانه وتعالى) -> അല്ലാഹു സുബ്ഹാനഹു വതആലാ
 
 AUDIOBOOK RULES:
 - CONTINUITY: If a "PREVIOUS MALAYALAM CONTEXT" block is provided, use it ONLY to understand the flow. Do NOT output or re-translate it. Only translate the new text.
 - CONVERT GENERAL NUMBERS TO WORDS: Convert all numerals (e.g., 3 days, 100 people) to written Malayalam words (e.g., മൂന്ന്, നൂറ്) so the TTS engine reads them smoothly.
-- NO SPECIAL CHARACTERS OR MARKDOWN: Do NOT include any markdown symbols (like #, *, _, -) or brackets like () or []. Omit quotes like « and ». The TTS engine will read these symbols literally.
+- NO BRACKETS OR PARENTHESES: Do NOT include any brackets `()` or `[]` or `{}` for any purpose, including Quranic verse citations, explanations, or honorifics. Citations and explanations must be woven directly into the text as regular prose (e.g., instead of "...(സൂറത്തുൽ അൻആം ആയത്ത് ഒന്ന്)", write "...സൂറത്തുൽ അൻആം ആയത്ത് ഒന്ന്").
+- NO HYBRID/MIXED-SCRIPT WORDS: Ensure that words are not formed by mixing Malayalam letters with Arabic/Urdu unicode characters (e.g., U+0D28 + U+0641 + U+0627 + U+0642 + U+0D02 is prohibited). Every single character in your output MUST be a valid Malayalam unicode character (block U+0D00 to U+0D7F) or standard Malayalam punctuation.
+- NO SPECIAL CHARACTERS OR MARKDOWN: Do NOT include any markdown symbols (like #, *, _, -). Omit quotes like « and ». The TTS engine will read these symbols literally.
 - PUNCTUATION & PARAGRAPHS: Use standard punctuation (periods, commas, question marks) strictly for natural breathing pauses. Use double-newlines between paragraphs and distinct narratives to ensure the TTS engine takes a sufficient pause.
 - SCRIPT RESTRICTION: The entire response MUST be in the Malayalam script (മലയാള ലിപി) only. No Arabic, Urdu, Persian, or English text should remain.
 

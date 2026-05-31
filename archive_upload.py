@@ -105,6 +105,7 @@ def upload_to_archive():
             retries=3,
             retries_sleep=10,
             checksum=True,
+            request_kwargs={"timeout": 600},
         )
         print(f"\n✓ UPLOAD SUCCESSFUL! View at: https://archive.org/details/{identifier}")
     except Exception as error:

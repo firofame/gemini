@@ -21,6 +21,7 @@ wheels/
 *.egg
 
 # Specific to this project
+.antigravitycli
 .camoufox-profile
 images/
 .resume

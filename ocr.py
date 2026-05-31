@@ -375,16 +375,16 @@ if __name__ == "__main__":
         description="OCR and translate a PDF using Gemini models."
     )
     parser.add_argument(
-        "pdf", nargs="?", default="Fazail-e-Sadaqat.pdf",
-        help="Path to the PDF file (default: Fazail-e-Sadaqat.pdf)"
+        "pdf", nargs="?", default="Hayat al-Sahaba/Hayat us-Sahabah - Maulana Muhammad Yusuf Khandalwi - Volume 1.pdf",
+        help="Path to the PDF file (default: Hayat al-Sahaba/Hayat us-Sahabah - Maulana Muhammad Yusuf Khandalwi - Volume 1.pdf)"
     )
     parser.add_argument(
         "-o", "--output", default=None,
         help="Output markdown file (default: <pdf_name>_OCR.md)"
     )
     parser.add_argument(
-        "-p", "--prompt", default="prompt_urdu_ocr.txt",
-        help="Prompt file (default: prompt_urdu_ocr.txt)"
+        "-p", "--prompt", default="prompt_arabic_ocr.txt",
+        help="Prompt file (default: prompt_arabic_ocr.txt)"
     )
     parser.add_argument(
         "-m", "--model", default="gemini-3.1-flash-lite",

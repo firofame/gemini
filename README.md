@@ -1,6 +1,6 @@
 # Gemini Tools
 
-Small utility scripts for Gemini model listing, Internet Archive file management, and Modal-hosted ComfyUI.
+Small utility scripts for Gemini model listing and Modal-hosted ComfyUI.
 
 The book OCR/translation pipeline was moved to:
 
@@ -36,21 +36,6 @@ Numbered Gemini API keys are also supported:
 export GEMINI_API_KEY_1="key1"
 export GEMINI_API_KEY_2="key2"
 ```
-
-## Internet Archive
-
-The `archive/` scripts manage Internet Archive items:
-
-```bash
-export IA_ACCESS_KEY="your-key"
-export IA_SECRET_KEY="your-secret"
-
-uv run archive/upload.py
-uv run archive/download.py
-uv run archive/delete.py
-```
-
-Check each script before running; item identifiers and file paths are script-local configuration.
 
 ## ComfyUI On Modal
 

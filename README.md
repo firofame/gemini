@@ -14,6 +14,18 @@ The Google Docs TTS tool was moved to:
 /home/firoz/Desktop/google-docs-tts
 ```
 
+The Modal-hosted ComfyUI runner was moved to:
+
+```text
+/home/firoz/Desktop/comfi
+```
+
+The Internet Archive management tool was moved to:
+
+```text
+/home/firoz/Desktop/archive
+```
+
 ## Setup
 
 ```bash

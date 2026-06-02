@@ -1,43 +1,23 @@
-# Python
+# Python bytecode and cache
 __pycache__/
 *.py[cod]
-*$py.class
+
+# Virtual environments
 .venv/
 venv/
 env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Specific to this project
-.antigravitycli
-.camoufox-profile
-images/
-.resume
-*.resume
-translated_book.md
-temp_chunks/
-temp_chunks_*/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# API Keys/Secrets
+# Secrets and credentials
 .env
+*.key
 auth.json
 cookies.json
-*.key
 credentials.json
 google_token.json
+
+# Tool and OS metadata
+.DS_Store
+.antigravitycli/
+.agents/
+.codex/
+

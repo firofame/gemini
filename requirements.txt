@@ -1,5 +1,4 @@
 google-genai
-pymupdf
 cloakbrowser
 internetarchive
 modal

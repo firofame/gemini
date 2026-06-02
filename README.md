@@ -1,6 +1,6 @@
 # Gemini Tools
 
-Small utility scripts for Gemini model listing and Modal-hosted ComfyUI.
+Small utility scripts for Gemini model listing.
 
 The book OCR/translation pipeline was moved to:
 
@@ -35,12 +35,4 @@ Numbered Gemini API keys are also supported:
 ```bash
 export GEMINI_API_KEY_1="key1"
 export GEMINI_API_KEY_2="key2"
-```
-
-## ComfyUI On Modal
-
-`comfi.py` defines a Modal app that launches ComfyUI with preloaded models:
-
-```bash
-uv run modal serve comfi.py
 ```
